@@ -2,7 +2,7 @@ package fortnite.eugene.com.fortnitetracker.model.stats
 
 import com.google.gson.annotations.SerializedName
 
-data class Top25(
+data class Top(
     @SerializedName("label") val label: String?,
     @SerializedName("field") val field: String?,
     @SerializedName("category") val category: String?,

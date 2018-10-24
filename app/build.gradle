@@ -23,12 +23,13 @@ android {
 
 dependencies {
     def x_version = "1.0.0"
-    def dagger_version = "2.16" // Can't upgrade to latest version due to androidx compatibility issues
+    def dagger_version = "2.16"
+
+    // Can't upgrade to latest version due to androidx compatibility issues
     def retrofit_version = "2.4.0"
     def lifecycle_version = "2.0.0"
     def room_version = "2.1.0-alpha01"
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
@@ -49,7 +50,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     // LiveData Retrofit Adapter
-    implementation "com.github.leonardoxh:retrofit2-livedata-adapter:1.1.2"
+    implementation 'com.github.leonardoxh:retrofit2-livedata-adapter:1.1.2'
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"
@@ -59,8 +60,15 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
+    //    implementation 'com.github.savvyapps:ToggleButtonLayout:1.2.0'
+
+    //    implementation 'com.github.savvyapps:ToggleButtonLayout:1.1.0'
+
+    /** Libs **/
+
     // Testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-beta02'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta02'
+    implementation project(':togglebuttonlayout')
 }
