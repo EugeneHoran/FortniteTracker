@@ -5,4 +5,5 @@
     <color name="colorPrimaryLight">#4f4f4f</color>
     <color name="colorAccent">#F3EC60</color>
     <color name="white">#ffffff</color>
+    <color name="progressBlue">#4583FA</color>
 </resources>

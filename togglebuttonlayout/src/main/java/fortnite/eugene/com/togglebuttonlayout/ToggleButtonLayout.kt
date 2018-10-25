@@ -178,7 +178,7 @@ class ToggleButtonLayout : androidx.cardview.widget.CardView {
         MenuInflater(context).inflate(menuId, menu)
         for (i in 0 until menu.size()) {
             val item = menu.getItem(i)
-            val toggle = Toggle(item.itemId, item.icon, item.title)
+            val toggle = Toggle(item.itemId, i, item.icon, item.title)
             if (i == 0) {
                 selectedToggle = toggle
             }

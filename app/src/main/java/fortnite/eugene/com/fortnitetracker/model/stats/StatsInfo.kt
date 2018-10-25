@@ -2,6 +2,7 @@ package fortnite.eugene.com.fortnitetracker.model.stats
 
 import com.google.gson.annotations.SerializedName
 
+
 data class StatsInfo(
     @SerializedName("trnRating") val trnRating: TrnRating?,
     @SerializedName("score") val score: Score?,
@@ -18,4 +19,37 @@ data class StatsInfo(
     @SerializedName("kills") val kills: Kills?,
     @SerializedName("kpg") val kpg: Kpg?,
     @SerializedName("scorePerMatch") val scorePerMatch: ScorePerMatch?
-)
+) {
+    fun getDisplayStats(): List<DisplayStatsItem> {
+        val statsItemList = mutableListOf<DisplayStatsItem>()
+        statsItemList.add(kd!!)
+        statsItemList.add(matches!!)
+        statsItemList.add(kills!!)
+        statsItemList.add(kpg!!)
+        statsItemList.add(top1!!)
+        if (winRatio != null) {
+            statsItemList.add(winRatio)
+        } else {
+            statsItemList.add(WinRatio())
+        }
+        if (!top3!!.getDisplayText().equals("0", true)) {
+            statsItemList.add(top3)
+        }
+        if (!top5!!.getDisplayText().equals("0", true)) {
+            statsItemList.add(top5)
+        }
+        if (!top6!!.getDisplayText().equals("0", true)) {
+            statsItemList.add(top6)
+        }
+        if (!top10!!.getDisplayText().equals("0", true)) {
+            statsItemList.add(top10)
+        }
+        if (!top12!!.getDisplayText().equals("0", true)) {
+            statsItemList.add(top12)
+        }
+        if (!top25!!.getDisplayText().equals("0", true)) {
+            statsItemList.add(top25)
+        }
+        return statsItemList
+    }
+}

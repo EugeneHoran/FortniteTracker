@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"/>
+
+    <TextView
+            android:id="@+id/displayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="22sp"/>
+
+
+    <TextView
+            android:id="@+id/itemPercentile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="14sp"/>
+
+    <ProgressBar
+            android:id="@+id/percentileProgress"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:theme="@style/ProgressBarStyle"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:max="100"/>
+
+    <TextView
+            android:id="@+id/itemRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+</LinearLayout>

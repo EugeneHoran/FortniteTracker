@@ -7,20 +7,21 @@ import android.graphics.drawable.Drawable
  */
 class Toggle(
 
-        /**
-         * The ID provided within the Toggle
-         */
-        val id: Int,
+    /**
+     * The ID provided within the Toggle
+     */
+    val id: Int,
+    val position: Int,
+    /**
+     * The icon drawable inflated by the menu resource or passed during creation
+     */
+    val icon: Drawable?,
 
-        /**
-         * The icon drawable inflated by the menu resource or passed during creation
-         */
-        val icon: Drawable?,
-
-        /**
-         * Optional title
-         */
-        val title: CharSequence?) {
+    /**
+     * Optional title
+     */
+    val title: CharSequence?
+) {
 
     /**
      * The selection state of the toggle
