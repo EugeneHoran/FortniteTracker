@@ -1,5 +1,7 @@
 package fortnite.eugene.com.fortnitetracker.model.stats
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 
@@ -19,11 +21,11 @@ data class StatsInfo(
     @SerializedName("kills") val kills: Kills?,
     @SerializedName("kpg") val kpg: Kpg?,
     @SerializedName("scorePerMatch") val scorePerMatch: ScorePerMatch?
-) {
+) : Parcelable {
     fun getDisplayStats(): List<DisplayStatsItem> {
         val statsItemList = mutableListOf<DisplayStatsItem>()
-        statsItemList.add(kd!!)
         statsItemList.add(matches!!)
+        statsItemList.add(kd!!)
         statsItemList.add(kills!!)
         statsItemList.add(kpg!!)
         statsItemList.add(top1!!)
@@ -51,5 +53,58 @@ data class StatsInfo(
             statsItemList.add(top25)
         }
         return statsItemList
+    }
+
+    /**
+     * Parcel
+     */
+    constructor(parcel: Parcel) : this(
+        parcel.readParcelable(TrnRating::class.java.classLoader),
+        parcel.readParcelable(Score::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Top::class.java.classLoader),
+        parcel.readParcelable(Kd::class.java.classLoader),
+        parcel.readParcelable(WinRatio::class.java.classLoader),
+        parcel.readParcelable(Matches::class.java.classLoader),
+        parcel.readParcelable(Kills::class.java.classLoader),
+        parcel.readParcelable(Kpg::class.java.classLoader),
+        parcel.readParcelable(ScorePerMatch::class.java.classLoader)
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeParcelable(trnRating, flags)
+        parcel.writeParcelable(score, flags)
+        parcel.writeParcelable(top1, flags)
+        parcel.writeParcelable(top3, flags)
+        parcel.writeParcelable(top5, flags)
+        parcel.writeParcelable(top6, flags)
+        parcel.writeParcelable(top10, flags)
+        parcel.writeParcelable(top12, flags)
+        parcel.writeParcelable(top25, flags)
+        parcel.writeParcelable(kd, flags)
+        parcel.writeParcelable(winRatio, flags)
+        parcel.writeParcelable(matches, flags)
+        parcel.writeParcelable(kills, flags)
+        parcel.writeParcelable(kpg, flags)
+        parcel.writeParcelable(scorePerMatch, flags)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<StatsInfo> {
+        override fun createFromParcel(parcel: Parcel): StatsInfo {
+            return StatsInfo(parcel)
+        }
+
+        override fun newArray(size: Int): Array<StatsInfo?> {
+            return arrayOfNulls(size)
+        }
     }
 }

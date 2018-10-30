@@ -232,6 +232,12 @@ class ToggleButtonLayout : androidx.cardview.widget.CardView {
         }
     }
 
+    var togglePosition = 0
+
+    fun getSelectedTogglePosition(): Int {
+        return togglePosition
+    }
+
     /**
      * Manually set the toggled state of the specified toggle.
      *
@@ -243,6 +249,7 @@ class ToggleButtonLayout : androidx.cardview.widget.CardView {
             if (toggle.id == toggleId) {
                 toggle.isSelected = toggled
                 toggleState(toggle)
+                togglePosition = toggle.position
                 if (!multipleSelection) {
                     for (otherToggle in toggles) {
                         if (otherToggle != toggle && otherToggle.isSelected) {

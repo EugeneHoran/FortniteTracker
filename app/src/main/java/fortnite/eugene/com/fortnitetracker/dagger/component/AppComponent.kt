@@ -7,6 +7,7 @@ import fortnite.eugene.com.fortnitetracker.dagger.module.ContextModule
 import fortnite.eugene.com.fortnitetracker.dagger.module.FortniteDatabaseModule
 import fortnite.eugene.com.fortnitetracker.dagger.module.HttpLoggingInterceptorModule
 import fortnite.eugene.com.fortnitetracker.ui.MainActivity
+import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginViewModel
 import fortnite.eugene.com.fortnitetracker.ui.stats.StatsViewModel
 import javax.inject.Singleton
 
@@ -22,5 +23,7 @@ import javax.inject.Singleton
 )
 interface AppComponent {
     fun inject(activity: MainActivity)
+    fun inject(epicLoginViewModel: EpicLoginViewModel)
     fun inject(statsViewModel: StatsViewModel)
+
 }

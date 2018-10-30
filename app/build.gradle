@@ -60,12 +60,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    //    implementation 'com.github.savvyapps:ToggleButtonLayout:1.2.0'
-
-    //    implementation 'com.github.savvyapps:ToggleButtonLayout:1.1.0'
-
     /** Libs **/
     implementation project(':togglebuttonlayout')
+    implementation "org.jetbrains.anko:anko-coroutines:0.10.7"
 
     // Testing
     testImplementation 'junit:junit:4.12'

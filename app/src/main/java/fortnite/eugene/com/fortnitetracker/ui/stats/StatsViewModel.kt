@@ -1,7 +1,7 @@
 package fortnite.eugene.com.fortnitetracker.ui.stats
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import fortnite.eugene.com.fortnitetracker.App
@@ -19,29 +19,27 @@ class StatsViewModel : ViewModel() {
     @Inject
     lateinit var userAccountDao: UserAccountDao
 
+    var platform: String? = null
+    var epicUser: String? = null
+
     var error: SingleLiveEvent<String> = SingleLiveEvent()
-    var userStats: MediatorLiveData<AccountStats> = MediatorLiveData()
+    var userStats: MutableLiveData<AccountStats> = MutableLiveData()
     var seasonToggle: Int = Constants.SEASON_LIFETIME
     var soloStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var duoStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var squadStats: MutableLiveData<StatsInfo> = MutableLiveData()
+    var userSignedIn: Boolean = false
 
     init {
         App.graph.inject(this)
     }
 
-    fun getUserStats(platform: String, epicUserHandle: String): LiveData<AccountStats> {
-        userStats.addSource(statsService.getUserStats(platform, epicUserHandle)) {
-            if (it != null && it.resource != null) {
-                if (it.resource!!.error == null) {
-                    userStats.value = it.resource
-                    updateStatFragments(seasonToggle)
-                } else {
-                    userStats.value = null
-                    error.value = it.resource!!.error
-                }
-            }
-        }
+    fun setUserStats(accountStats: AccountStats) {
+        userStats.value = accountStats
+        updateStatFragments(Constants.SEASON_LIFETIME)
+    }
+
+    fun getUserStats(): LiveData<AccountStats> {
         return userStats
     }
 
@@ -52,6 +50,7 @@ class StatsViewModel : ViewModel() {
         }
         when (seasonToggle) {
             Constants.SEASON_LIFETIME -> {
+                Log.e("Testing", "updateStatFragments()")
                 soloStats.value = userStats.value!!.stats!!.lifetimeSolo
                 duoStats.value = userStats.value!!.stats!!.lifetimeDuo
                 squadStats.value = userStats.value!!.stats!!.lifetimeSquads
@@ -62,13 +61,5 @@ class StatsViewModel : ViewModel() {
                 squadStats.value = userStats.value!!.stats!!.seasonSquads
             }
         }
-    }
-
-    private fun resetData() {
-        userStats.value = null
-        seasonToggle = Constants.SEASON_LIFETIME
-        soloStats.value = null
-        duoStats.value = null
-        squadStats.value = null
     }
 }

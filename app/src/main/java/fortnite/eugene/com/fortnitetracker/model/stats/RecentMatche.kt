@@ -1,5 +1,7 @@
 package fortnite.eugene.com.fortnitetracker.model.stats
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class RecentMatche(
@@ -21,4 +23,60 @@ data class RecentMatche(
     @SerializedName("platform") val platform: Int?,
     @SerializedName("trnRating") val trnRating: Double?,
     @SerializedName("trnRatingChange") val trnRatingChange: Double?
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readValue(Double::class.java.classLoader) as? Double
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(id)
+        parcel.writeString(accountId)
+        parcel.writeString(playlist)
+        parcel.writeValue(kills)
+        parcel.writeValue(minutesPlayed)
+        parcel.writeValue(top1)
+        parcel.writeValue(top5)
+        parcel.writeValue(top6)
+        parcel.writeValue(top10)
+        parcel.writeValue(top12)
+        parcel.writeValue(top25)
+        parcel.writeValue(matches)
+        parcel.writeValue(top3)
+        parcel.writeString(dateCollected)
+        parcel.writeValue(score)
+        parcel.writeValue(platform)
+        parcel.writeValue(trnRating)
+        parcel.writeValue(trnRatingChange)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<RecentMatche> {
+        override fun createFromParcel(parcel: Parcel): RecentMatche {
+            return RecentMatche(parcel)
+        }
+
+        override fun newArray(size: Int): Array<RecentMatche?> {
+            return arrayOfNulls(size)
+        }
+    }
+}

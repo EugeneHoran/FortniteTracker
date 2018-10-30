@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.login.EpicLoginFragment">
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            app:title="Search Player Stats"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:id="@+id/linearLayoutHide"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimaryLight"
+                    android:layout_marginBottom="12dp"
+                    android:focusableInTouchMode="true"/>
+
+            <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
+                    android:id="@+id/toggleButtonPlatform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:selectedColor="?attr/colorPrimaryDark"
+                    android:layout_margin="12dp"
+                    app:allowDeselection="false"
+                    app:cardCornerRadius="3dp"
+                    app:cardBackgroundColor="@color/colorPrimaryLight"
+                    app:customLayout="@layout/view_toggle_button"
+                    app:menu="@menu/toggle_console"
+                    app:toggleMode="even"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextEpicUserName"
+                    android:hint="@string/epic_username"
+                    android:layout_margin="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSearch"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_search_24dp"
+                    android:layout_margin="12dp"
+                    app:iconTint="@android:color/black"
+                    app:iconGravity="textStart"
+                    android:text="Search"
+                    android:textColor="@android:color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

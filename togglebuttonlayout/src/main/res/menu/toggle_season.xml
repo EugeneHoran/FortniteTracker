@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/navigation_home"
+            android:id="@+id/toggle_lifetime"
             android:title="Lifetime"/>
 
     <item
-            android:id="@+id/navigation_dashboard"
+            android:id="@+id/toggle_season"
             android:title="Season 6"/>
-    o
 </menu>
