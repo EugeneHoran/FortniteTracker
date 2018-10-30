@@ -23,4 +23,8 @@ class MainActivity : AppCompatActivity(), OnAccountListener {
         supportFragmentManager.beginTransaction().replace(R.id.container, StatsMainFragment.newInstance(accountStats))
             .commit()
     }
+
+    override fun onSearchClicked() {
+        supportFragmentManager.beginTransaction().replace(R.id.container, EpicLoginFragment.newInstance()).commit()
+    }
 }

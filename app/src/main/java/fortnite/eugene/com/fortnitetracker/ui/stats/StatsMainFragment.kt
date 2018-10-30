@@ -1,5 +1,6 @@
 package fortnite.eugene.com.fortnitetracker.ui.stats
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
+import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import kotlinx.android.synthetic.main.fragment_stats.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -24,10 +26,6 @@ import org.jetbrains.anko.coroutines.experimental.asReference
 private const val ARG_PARAM1 = "param1"
 
 class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
-//    companion object {
-//        @JvmStatic
-//        fun newInstance() = StatsMainFragment()
-//    }
 
     companion object {
         @JvmStatic
@@ -39,7 +37,7 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
     }
 
-
+    private var listener: OnAccountListener? = null
     private lateinit var statsViewModel: StatsViewModel
     private lateinit var statsPagerAdapter: StatsMainPagerAdapter
     private val consoleImages = mapOf(1 to R.drawable.ic_xbox, 2 to R.drawable.ic_playstation, 3 to R.drawable.ic_pc)
@@ -108,10 +106,23 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.menu_search -> {
-                //todo
+                listener!!.onSearchClicked()
             }
         }
         return true
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnAccountListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
 }
