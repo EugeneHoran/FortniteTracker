@@ -5,6 +5,7 @@
     <string name="title_notifications">Notifications</string>
 
     <string name="search">Search</string>
+    <string name="clear_history">Clear Search History</string>
 
     <string name="epic_username">Epic Username</string>
     <string name="search_player_stats">Search Player Stats</string>

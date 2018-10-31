@@ -65,6 +65,7 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
                 app_bar.setExpanded(true, true)
             }
         })
+        // There is too much going on so I am posting the child fragment creations
         pagerStats.post {
             if (fragRef.get() != null) {
                 if (fragRef.get()!!.pagerStats != null && fragRef.get()!!.tabs != null) {

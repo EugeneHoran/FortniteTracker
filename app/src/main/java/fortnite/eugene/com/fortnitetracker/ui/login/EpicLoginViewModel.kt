@@ -25,7 +25,6 @@ class EpicLoginViewModel : ViewModel() {
     }
 
     var userAccountList: LiveData<List<UserAccount>> = userAccountDao.getUserList()
-
     var seasonToggle: Int = Constants.SEASON_LIFETIME
     var userStats: MediatorLiveData<AccountStats> = MediatorLiveData()
     var error: SingleLiveEvent<String> = SingleLiveEvent()
@@ -47,6 +46,12 @@ class EpicLoginViewModel : ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    fun clearSearchHistory() {
+        ioThread {
+            userAccountDao.deleteAccounts(userAccountList.value!!)
         }
     }
 }
