@@ -2,7 +2,6 @@ package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -17,10 +16,7 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import kotlinx.android.synthetic.main.fragment_stats.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.coroutines.experimental.Ref
-import org.jetbrains.anko.coroutines.experimental.asReference
+import java.lang.ref.WeakReference
 
 
 private const val ARG_PARAM1 = "param1"
@@ -37,20 +33,19 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             }
     }
 
+    private val fragRef: WeakReference<StatsMainFragment> = WeakReference(this)
+
     private var listener: OnAccountListener? = null
     private lateinit var statsViewModel: StatsViewModel
-    private lateinit var statsPagerAdapter: StatsMainPagerAdapter
     private val consoleImages = mapOf(1 to R.drawable.ic_xbox, 2 to R.drawable.ic_playstation, 3 to R.drawable.ic_pc)
-    private lateinit var accountStats: AccountStats
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        statsPagerAdapter = StatsMainPagerAdapter(childFragmentManager)
-        arguments?.let {
-            accountStats = it.getParcelable(ARG_PARAM1)!!
+        statsViewModel = ViewModelProviders.of(this)[StatsViewModel::class.java]
+        if (savedInstanceState == null) {
+            statsViewModel.setUserStats(arguments?.getParcelable(ARG_PARAM1)!!)
         }
-        statsViewModel = ViewModelProviders.of(activity!!)[StatsViewModel::class.java]
-        statsViewModel.setUserStats(accountStats)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,30 +60,20 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         toggleButtonLayout.onToggledListener = { toggle, _ ->
             statsViewModel.updateStatFragments(toggle.position)
         }
-        pagerStats.adapter = statsPagerAdapter
-        tabs.setupWithViewPager(pagerStats)
         pagerStats.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 app_bar.setExpanded(true, true)
             }
         })
-        getUserStats()
-        if (savedInstanceState == null) {
-            val ref: Ref<StatsMainFragment> = this.asReference()
-            async(UI) {
-                ref().loadPager()
+        pagerStats.post {
+            if (fragRef.get() != null) {
+                if (fragRef.get()!!.pagerStats != null && fragRef.get()!!.tabs != null) {
+                    fragRef.get()!!.pagerStats.adapter = StatsMainPagerAdapter(childFragmentManager)
+                    fragRef.get()!!.tabs.setupWithViewPager(pagerStats)
+                }
             }
         }
-    }
-
-    private fun loadPager() {
-        pagerStats.adapter = statsPagerAdapter
-        tabs.setupWithViewPager(pagerStats)
-        pagerStats.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                app_bar.setExpanded(true, true)
-            }
-        })
+        getUserStats()
     }
 
     private fun getUserStats() {
@@ -96,9 +81,6 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
             if (it != null) {
                 toolbar.title = it.epicUserHandle
                 toolbar.navigationIcon = ContextCompat.getDrawable(context!!, consoleImages[it.platformId]!!)
-                Handler().postDelayed({
-                    statsViewModel.updateStatFragments(0)
-                }, 2000)
             }
         })
     }
@@ -117,7 +99,7 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener {
         if (context is OnAccountListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException(context.toString() + " must implement OnAccountListener")
         }
     }
 

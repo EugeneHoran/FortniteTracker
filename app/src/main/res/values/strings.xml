@@ -6,7 +6,6 @@
 
     <string name="search">Search</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="epic_username">Epic Username</string>
+    <string name="search_player_stats">Search Player Stats</string>
 </resources>

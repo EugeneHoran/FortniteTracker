@@ -19,16 +19,14 @@ data class AccountStats(
 ) : Parcelable {
 
     fun getUserAccount(): UserAccount? {
-        return if (error != null)
-            UserAccount(
-                accountId!!,
-                epicUserHandle!!,
-                platformId!!,
-                platformName!!,
-                platformNameLong!!,
-                Date().time
-            )
-        else null
+        return UserAccount(
+            accountId!!,
+            epicUserHandle!!,
+            platformId!!,
+            platformName!!,
+            platformNameLong!!,
+            Date().time
+        )
     }
 
     constructor(parcel: Parcel) : this(

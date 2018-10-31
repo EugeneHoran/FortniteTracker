@@ -16,7 +16,6 @@ import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class EpicLoginFragment : Fragment() {
-
     companion object {
         @JvmStatic
         fun newInstance() = EpicLoginFragment()
@@ -42,15 +41,44 @@ class EpicLoginFragment : Fragment() {
     }
 
     private fun observeUserData() {
+        epicLoginViewModel.userAccountList.observe(this, Observer {
+            if (it != null) {
+                Toast.makeText(context!!, it.size.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
         epicLoginViewModel.userStats.observe(this, Observer {
             if (it != null) {
-                listener!!.onUserSignedIn(it)
+                if (it.error == null) {
+                    listener!!.onUserSignedIn(it)
+                } else {
+                    dismissLoading(it.error)
+                }
+            } else {
+                dismissLoading("Error getting data")
             }
         })
         epicLoginViewModel.error.observeSingleEvent(activity!!, Observer {
             Toast.makeText(context!!, it!!, Toast.LENGTH_SHORT).show()
+            dismissLoading(it)
         })
     }
+
+    private fun showLoading() {
+        linearLayoutHide.visibility = View.GONE
+        pbLoading.visibility = View.VISIBLE
+    }
+
+    private fun dismissLoading(error: String?) {
+        linearLayoutHide.visibility = View.VISIBLE
+        pbLoading.visibility = View.GONE
+        if (error != null) {
+            Toast.makeText(context!!, error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * View Helpers
+     */
 
     private fun searchAccount() {
         editTextEpicUserName.hideKeyboard()
@@ -58,7 +86,13 @@ class EpicLoginFragment : Fragment() {
             Toast.makeText(context, "Enter Epic Username", Toast.LENGTH_SHORT).show()
             return
         }
+        showLoading()
         epicLoginViewModel.getUserStats(getPlatform()!!, getEpicName()!!)
+    }
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun getEpicName(): String? {
@@ -72,14 +106,6 @@ class EpicLoginFragment : Fragment() {
             Constants.PLATFORM_PC -> "pc"
             else -> null
         }
-    }
-
-    /**
-     * Handlers
-     */
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     override fun onAttach(context: Context) {

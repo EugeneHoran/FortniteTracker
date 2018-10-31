@@ -62,7 +62,6 @@ dependencies {
 
     /** Libs **/
     implementation project(':togglebuttonlayout')
-    implementation "org.jetbrains.anko:anko-coroutines:0.10.7"
 
     // Testing
     testImplementation 'junit:junit:4.12'

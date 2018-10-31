@@ -25,13 +25,13 @@ import androidx.room.Update
  * URL https://gist.github.com/florina-muntenescu/1c78858f286d196d545c038a71a3e864#file-basedao-kt
  */
 interface BaseDao<T> {
-    /**
-     * Insert an object in the database.
-     *
-     * @param obj the object to be inserted.
-     */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(obj: T)
+//    /**
+//     * Insert an object in the database.
+//     *
+//     * @param obj the object to be inserted.
+//     */
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    fun insert(obj: T)
 
     /**
      * Insert an array of objects in the database.

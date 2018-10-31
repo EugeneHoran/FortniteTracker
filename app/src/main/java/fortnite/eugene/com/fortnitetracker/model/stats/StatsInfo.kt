@@ -19,8 +19,7 @@ data class StatsInfo(
     @SerializedName("winRatio") val winRatio: WinRatio?,
     @SerializedName("matches") val matches: Matches?,
     @SerializedName("kills") val kills: Kills?,
-    @SerializedName("kpg") val kpg: Kpg?,
-    @SerializedName("scorePerMatch") val scorePerMatch: ScorePerMatch?
+    @SerializedName("kpg") val kpg: Kpg?
 ) : Parcelable {
     fun getDisplayStats(): List<DisplayStatsItem> {
         val statsItemList = mutableListOf<DisplayStatsItem>()
@@ -72,8 +71,7 @@ data class StatsInfo(
         parcel.readParcelable(WinRatio::class.java.classLoader),
         parcel.readParcelable(Matches::class.java.classLoader),
         parcel.readParcelable(Kills::class.java.classLoader),
-        parcel.readParcelable(Kpg::class.java.classLoader),
-        parcel.readParcelable(ScorePerMatch::class.java.classLoader)
+        parcel.readParcelable(Kpg::class.java.classLoader)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -91,7 +89,6 @@ data class StatsInfo(
         parcel.writeParcelable(matches, flags)
         parcel.writeParcelable(kills, flags)
         parcel.writeParcelable(kpg, flags)
-        parcel.writeParcelable(scorePerMatch, flags)
     }
 
     override fun describeContents(): Int {

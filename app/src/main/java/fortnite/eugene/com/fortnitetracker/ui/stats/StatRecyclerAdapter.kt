@@ -48,10 +48,10 @@ class StatRecyclerAdapter(val context: Context) : RecyclerView.Adapter<StatRecyc
     override fun getItemCount() = displayStatsItemList.size
 
     class StatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title = view.title
-        val displayText = view.displayText
-        val itemPercentile = view.itemPercentile
-        val percentileProgress = view.percentileProgress
-        val itemRank = view.itemRank
+        val title = view.title!!
+        val displayText = view.displayText!!
+        val itemPercentile = view.itemPercentile!!
+        val percentileProgress = view.percentileProgress!!
+        val itemRank = view.itemRank!!
     }
 }

@@ -10,6 +10,7 @@ import fortnite.eugene.com.fortnitetracker.data.dao.UserAccountDao
 
 @Module(includes = [ContextModule::class])
 class FortniteDatabaseModule {
+
     @Provides
     @AppScope
     fun database(context: Context): FortniteDatabase {

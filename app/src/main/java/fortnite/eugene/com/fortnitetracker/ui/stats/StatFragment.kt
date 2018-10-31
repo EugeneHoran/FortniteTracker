@@ -37,7 +37,7 @@ class StatFragment : Fragment() {
         arguments?.let {
             paramTab = it.getInt(ARG_TAB)
         }
-        statsViewModel = ViewModelProviders.of(parentFragment!!.activity!!)[StatsViewModel::class.java]
+        statsViewModel = ViewModelProviders.of(parentFragment!!)[StatsViewModel::class.java]
         statRecyclerAdapter = StatRecyclerAdapter(context!!)
     }
 
@@ -47,18 +47,7 @@ class StatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val layoutManager = GridLayoutManager(context, 2)
-
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                // 5 is the sum of items in one repeated section
-                return when (position) {
-                    0 -> 2
-                    else -> 1
-                }
-            }
-        }
-        statRecycler.layoutManager = layoutManager
+        statRecycler.layoutManager = GridLayoutManager(context, 2)
         statRecycler.addItemDecoration(DividerItemDecoration(context!!, LinearLayoutManager.VERTICAL))
         statRecycler.adapter = statRecyclerAdapter
         observeStatData()

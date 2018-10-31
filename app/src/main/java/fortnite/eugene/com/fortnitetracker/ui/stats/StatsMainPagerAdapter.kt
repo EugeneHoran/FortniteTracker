@@ -2,10 +2,10 @@ package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 
-class StatsMainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class StatsMainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private val tabTitles = arrayOf("Solo", "Duo", "Squads")
     private var fragments: Array<StatFragment?>? = null
 

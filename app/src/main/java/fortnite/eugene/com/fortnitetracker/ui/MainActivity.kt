@@ -14,9 +14,8 @@ class MainActivity : AppCompatActivity(), OnAccountListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         App.graph.inject(this)
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
             supportFragmentManager.beginTransaction().replace(R.id.container, EpicLoginFragment.newInstance()).commit()
-        }
     }
 
     override fun onUserSignedIn(accountStats: AccountStats) {
