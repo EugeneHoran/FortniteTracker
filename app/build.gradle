@@ -47,6 +47,7 @@ dependencies {
     // Retro
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     // LiveData Retrofit Adapter
@@ -59,6 +60,10 @@ dependencies {
     // Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:2.2.3"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
     /** Libs **/
     implementation project(':togglebuttonlayout')

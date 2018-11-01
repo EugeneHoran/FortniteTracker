@@ -1,19 +1,17 @@
-package fortnite.eugene.com.fortnitetracker.dagger.module
+package fortnite.eugene.com.fortnitetracker.inject.module
 
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import fortnite.eugene.com.fortnitetracker.BuildConfig
-import fortnite.eugene.com.fortnitetracker.dagger.AppScope
 import okhttp3.logging.HttpLoggingInterceptor
 
-/**
- * Logging Interceptor to display data in logcat
- */
-@Module(includes = [ContextModule::class])
-class HttpLoggingInterceptorModule {
+@Module
+object HttpLoggingModule {
     @Provides
-    @AppScope
-    fun httpLoggingInterceptor(): HttpLoggingInterceptor {
+    @Reusable
+    @JvmStatic
+    internal fun httpLogger(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(
             if (BuildConfig.DEBUG)
                 HttpLoggingInterceptor.Level.BODY else

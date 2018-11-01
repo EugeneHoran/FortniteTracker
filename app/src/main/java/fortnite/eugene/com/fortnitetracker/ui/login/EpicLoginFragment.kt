@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
+import fortnite.eugene.com.fortnitetracker.inject.ViewModelFactory
 import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -26,11 +28,13 @@ class EpicLoginFragment : Fragment(), EpicAccountRecyclerAdapter.EpicAccountClic
     }
 
     private var listener: OnAccountListener? = null
-    private lateinit var epicLoginViewModel: EpicLoginViewModel
+    private lateinit var loginViewModel: LoginViewModel
+
     private lateinit var epicAccountRecyclerAdapter: EpicAccountRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        epicLoginViewModel = ViewModelProviders.of(this)[EpicLoginViewModel::class.java]
+        loginViewModel = ViewModelProviders.of(this, ViewModelFactory(activity!! as AppCompatActivity))
+            .get(LoginViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,67 +47,10 @@ class EpicLoginFragment : Fragment(), EpicAccountRecyclerAdapter.EpicAccountClic
         btnSearch.setOnClickListener {
             searchAccount()
         }
-        epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(context!!, this)
+        epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
         recyclerAccount.adapter = epicAccountRecyclerAdapter
         observeUserData()
     }
-
-    override fun onAccountClicked(userAccount: UserAccount) {
-        showLoading()
-        epicLoginViewModel.getUserStats(userAccount.platformName, userAccount.epicUserHandle)
-    }
-
-    private fun observeUserData() {
-        epicLoginViewModel.userAccountList.observe(this, Observer {
-            if (it != null) {
-                if (it.isNotEmpty()) toolbar.inflateMenu(R.menu.menu_accounts) else toolbar.menu.clear()
-                epicAccountRecyclerAdapter.setItems(it)
-            }
-        })
-        epicLoginViewModel.userStats.observe(this, Observer {
-            if (it != null) {
-                if (it.error == null) {
-                    listener!!.onUserSignedIn(it)
-                } else {
-                    dismissLoading(it.error)
-                }
-            } else {
-                dismissLoading("Error getting data")
-            }
-        })
-        epicLoginViewModel.error.observeSingleEvent(activity!!, Observer {
-            Toast.makeText(context!!, it!!, Toast.LENGTH_SHORT).show()
-            dismissLoading(it)
-        })
-    }
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            R.id.menu_clear -> {
-                epicLoginViewModel.clearSearchHistory()
-            }
-        }
-        return true
-    }
-
-    private fun showLoading() {
-        linearLayoutHide.visibility = View.GONE
-        pbLoading.visibility = View.VISIBLE
-        recyclerAccount.visibility = View.GONE
-    }
-
-    private fun dismissLoading(error: String?) {
-        linearLayoutHide.visibility = View.VISIBLE
-        pbLoading.visibility = View.GONE
-        recyclerAccount.visibility = View.VISIBLE
-        if (error != null) {
-            Toast.makeText(context!!, error, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    /**
-     * View Helpers
-     */
 
     private fun searchAccount() {
         editTextEpicUserName.hideKeyboard()
@@ -111,8 +58,64 @@ class EpicLoginFragment : Fragment(), EpicAccountRecyclerAdapter.EpicAccountClic
             Toast.makeText(context, "Enter Epic Username", Toast.LENGTH_SHORT).show()
             return
         }
-        showLoading()
-        epicLoginViewModel.getUserStats(getPlatform()!!, getEpicName()!!)
+        loginViewModel.getUserStats(getPlatform()!!, getEpicName()!!)
+    }
+
+    override fun onAccountClicked(userAccount: UserAccount) {
+        loginViewModel.getUserStats(userAccount.platformName, userAccount.epicUserHandle)
+    }
+
+    private fun observeUserData() {
+        loginViewModel.userAccountList.observe(this, Observer {
+            if (it != null) {
+                if (it.isNotEmpty()) toolbar.inflateMenu(R.menu.menu_accounts) else toolbar.menu.clear()
+                epicAccountRecyclerAdapter.setItems(it)
+            }
+        })
+        loginViewModel.userStats.observe(this, Observer {
+            if (it.error == null) {
+                listener!!.onUserSignedIn(it)
+            }
+        })
+        loginViewModel.error.observeSingleEvent(activity!!, Observer {
+            if (it != null) {
+                Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
+            }
+            dismissLoading()
+        })
+        loginViewModel.showLoading.observeSingleEvent(this, Observer {
+            if (it != null) {
+                if (it == true) {
+                    showLoading()
+                } else {
+
+                }
+            }
+        })
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.menu_clear -> {
+                loginViewModel.clearSearchHistory()
+            }
+        }
+        return true
+    }
+
+    /**
+     * View Helpers
+     */
+    private fun showLoading() {
+        linearLayoutHide.visibility = View.GONE
+        pbLoading.visibility = View.VISIBLE
+        recyclerAccount.visibility = View.GONE
+    }
+
+    private fun dismissLoading() {
+        linearLayoutHide.visibility = View.VISIBLE
+        pbLoading.visibility = View.GONE
+        recyclerAccount.visibility = View.VISIBLE
     }
 
     private fun View.hideKeyboard() {
@@ -133,6 +136,9 @@ class EpicLoginFragment : Fragment(), EpicAccountRecyclerAdapter.EpicAccountClic
         }
     }
 
+    /**
+     * Interface imp
+     */
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnAccountListener) {

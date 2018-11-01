@@ -303,6 +303,7 @@ class ToggleButtonLayout : androidx.cardview.widget.CardView {
         private val imageView: ImageView?
 
         init {
+
             id = toggle.id
             if (layoutRes != null) {
                 View.inflate(context, layoutRes, this)

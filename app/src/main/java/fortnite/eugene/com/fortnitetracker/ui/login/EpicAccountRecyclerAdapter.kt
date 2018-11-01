@@ -1,6 +1,5 @@
 package fortnite.eugene.com.fortnitetracker.ui.login
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
 import kotlinx.android.synthetic.main.recycler_account_item.view.*
 
 class EpicAccountRecyclerAdapter(
-    val context: Context,
     private val epicAccountClickListener: EpicAccountClickListener
 ) : RecyclerView.Adapter<EpicAccountRecyclerAdapter.AccountViewHolder>() {
 
@@ -30,7 +28,7 @@ class EpicAccountRecyclerAdapter(
 
     override fun onBindViewHolder(holder: EpicAccountRecyclerAdapter.AccountViewHolder, position: Int) {
         val item = userAccountList[position]
-        holder.image.setImageDrawable(ContextCompat.getDrawable(context, consoleImages[item.platformId]!!))
+        holder.image.setImageDrawable(ContextCompat.getDrawable(holder.image.context, consoleImages[item.platformId]!!))
         holder.user.text = item.epicUserHandle
         holder.itemView.setOnClickListener {
             epicAccountClickListener.onAccountClicked(item)
@@ -39,7 +37,7 @@ class EpicAccountRecyclerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpicAccountRecyclerAdapter.AccountViewHolder {
         return EpicAccountRecyclerAdapter.AccountViewHolder(
-            LayoutInflater.from(context).inflate(
+            LayoutInflater.from(parent.context).inflate(
                 R.layout.recycler_account_item, parent, false
             )
         )

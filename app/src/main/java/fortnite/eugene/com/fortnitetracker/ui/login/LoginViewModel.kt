@@ -2,47 +2,44 @@ package fortnite.eugene.com.fortnitetracker.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import fortnite.eugene.com.fortnitetracker.App
+import fortnite.eugene.com.fortnitetracker.base.BaseViewModel
 import fortnite.eugene.com.fortnitetracker.data.dao.UserAccountDao
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
-import fortnite.eugene.com.fortnitetracker.data.service.StatsService
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
+import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.fortnitetracker.utils.SingleLiveEvent
 import fortnite.eugene.com.fortnitetracker.utils.ioThread
 import javax.inject.Inject
 
-class EpicLoginViewModel : ViewModel() {
-    @Inject
-    lateinit var statsService: StatsService
+class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
 
     @Inject
-    lateinit var userAccountDao: UserAccountDao
+    lateinit var fortniteTrackerApi: FortniteTrackerApi
 
-    init {
-        App.graph.inject(this)
-    }
-
-    var userAccountList: LiveData<List<UserAccount>> = userAccountDao.getUserList()
+    var userAccountList: LiveData<List<UserAccount>> = userDao.getUserList()
     var seasonToggle: Int = Constants.SEASON_LIFETIME
     var userStats: MediatorLiveData<AccountStats> = MediatorLiveData()
     var error: SingleLiveEvent<String> = SingleLiveEvent()
+    var showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun getUserStats(platform: String, epicUser: String) {
+        showLoading.value = true
         seasonToggle = Constants.SEASON_LIFETIME
-        userStats.addSource(statsService.getUserStats(platform, epicUser)) {
+        userStats.addSource(fortniteTrackerApi.getUserStats(platform, epicUser)) {
             if (it != null) {
                 if (it.error != null) {
                     error.value = it.error!!.message
+                    showLoading.value = false
                 } else {
                     if (it.resource!!.error == null) {
                         ioThread {
-                            userAccountDao.insert(it.resource!!.getUserAccount()!!)
+                            userDao.insert(it.resource!!.getUserAccount()!!)
                         }
                         userStats.value = it.resource
                     } else {
                         error.value = it.resource!!.error
+                        showLoading.value = false
                     }
                 }
             }
@@ -51,7 +48,7 @@ class EpicLoginViewModel : ViewModel() {
 
     fun clearSearchHistory() {
         ioThread {
-            userAccountDao.deleteAccounts(userAccountList.value!!)
+            userDao.deleteAccounts(userAccountList.value!!)
         }
     }
 }

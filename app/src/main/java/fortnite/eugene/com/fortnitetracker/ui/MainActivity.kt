@@ -2,7 +2,6 @@ package fortnite.eugene.com.fortnitetracker.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import fortnite.eugene.com.fortnitetracker.App
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginFragment
@@ -13,7 +12,6 @@ class MainActivity : AppCompatActivity(), OnAccountListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        App.graph.inject(this)
         if (savedInstanceState == null)
             supportFragmentManager.beginTransaction().replace(R.id.container, EpicLoginFragment.newInstance()).commit()
     }

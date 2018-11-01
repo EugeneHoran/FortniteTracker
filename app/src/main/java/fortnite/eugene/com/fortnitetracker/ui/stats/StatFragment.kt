@@ -38,7 +38,7 @@ class StatFragment : Fragment() {
             paramTab = it.getInt(ARG_TAB)
         }
         statsViewModel = ViewModelProviders.of(parentFragment!!)[StatsViewModel::class.java]
-        statRecyclerAdapter = StatRecyclerAdapter(context!!)
+        statRecyclerAdapter = StatRecyclerAdapter()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

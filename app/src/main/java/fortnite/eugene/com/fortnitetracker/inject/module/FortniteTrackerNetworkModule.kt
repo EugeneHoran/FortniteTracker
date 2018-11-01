@@ -1,24 +1,30 @@
-package fortnite.eugene.com.fortnitetracker.dagger.module
+package fortnite.eugene.com.fortnitetracker.inject.module
 
 import com.github.leonardoxh.livedatacalladapter.LiveDataCallAdapterFactory
 import com.github.leonardoxh.livedatacalladapter.LiveDataResponseBodyConverterFactory
 import dagger.Module
 import dagger.Provides
-import fortnite.eugene.com.fortnitetracker.dagger.AppScope
-import fortnite.eugene.com.fortnitetracker.data.service.StatsService
+import dagger.Reusable
+import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
 
-@Module(includes = [HttpLoggingInterceptorModule::class])
-class ApiStatsModule {
+@Module(includes = [HttpLoggingModule::class])
+object FortniteTrackerNetworkModule {
 
     @Provides
-    @AppScope
-    @Named("StatsClient")
-    fun okHttpStatsClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    @Reusable
+    @JvmStatic
+    internal fun provideFortniteTrackerApi(retrofit: Retrofit): FortniteTrackerApi {
+        return retrofit.create(FortniteTrackerApi::class.java)
+    }
+
+    @Provides
+    @Reusable
+    @JvmStatic
+    internal fun provideOkHttpClient(httpLogger: HttpLoggingInterceptor): OkHttpClient {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor { chain ->
             val original = chain.request()
@@ -31,26 +37,20 @@ class ApiStatsModule {
             val request = requestBuilder.build()
             chain.proceed(request)
         }
-        builder.addInterceptor(httpLoggingInterceptor)
+        builder.addInterceptor(httpLogger)
         return builder.build()
     }
 
     @Provides
-    @AppScope
-    @Named("RetrofitStats")
-    fun retrofitStats(@Named("StatsClient") okHttpStatsClient: OkHttpClient): Retrofit {
+    @Reusable
+    @JvmStatic
+    internal fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.fortnitetracker.com/")
             .addCallAdapterFactory(LiveDataCallAdapterFactory.create())
             .addConverterFactory(LiveDataResponseBodyConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpStatsClient)
+            .client(okHttpClient)
             .build()
-    }
-
-    @Provides
-    @AppScope
-    fun statsService(@Named("RetrofitStats") retrofitStats: Retrofit): StatsService {
-        return retrofitStats.create(StatsService::class.java)
     }
 }

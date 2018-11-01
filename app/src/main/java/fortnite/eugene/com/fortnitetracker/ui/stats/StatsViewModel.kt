@@ -2,7 +2,6 @@ package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import fortnite.eugene.com.fortnitetracker.App
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.model.stats.StatsInfo
 import fortnite.eugene.com.fortnitetracker.utils.Constants
@@ -13,10 +12,6 @@ class StatsViewModel : ViewModel() {
     var soloStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var duoStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var squadStats: MutableLiveData<StatsInfo> = MutableLiveData()
-
-    init {
-        App.graph.inject(this)
-    }
 
     fun setUserStats(accountStats: AccountStats) {
         userStats.value = accountStats

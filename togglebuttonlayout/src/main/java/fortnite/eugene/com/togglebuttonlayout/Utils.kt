@@ -3,8 +3,8 @@ package fortnite.eugene.com.togglebuttonlayout
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import androidx.annotation.AttrRes
 import android.util.DisplayMetrics
+import androidx.annotation.AttrRes
 
 internal object Utils {
 

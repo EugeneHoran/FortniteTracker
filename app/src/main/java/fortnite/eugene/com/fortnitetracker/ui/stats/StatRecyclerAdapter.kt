@@ -1,7 +1,6 @@
 package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.DisplayStatsItem
 import kotlinx.android.synthetic.main.recycler_stat_item.view.*
 
-class StatRecyclerAdapter(val context: Context) : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHolder>() {
+class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHolder>() {
 
     private var displayStatsItemList = mutableListOf<DisplayStatsItem>()
 
@@ -21,7 +20,7 @@ class StatRecyclerAdapter(val context: Context) : RecyclerView.Adapter<StatRecyc
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatViewHolder {
-        return StatViewHolder(LayoutInflater.from(context).inflate(R.layout.recycler_stat_item, parent, false))
+        return StatViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_stat_item, parent, false))
     }
 
     @SuppressLint("SetTextI18n")
