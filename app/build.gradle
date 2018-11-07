@@ -61,12 +61,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    // RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.2.3"
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-
     /** Libs **/
     implementation project(':togglebuttonlayout')
+    implementation 'com.polyak:icon-switch:1.0.0'
 
     // Testing
     testImplementation 'junit:junit:4.12'

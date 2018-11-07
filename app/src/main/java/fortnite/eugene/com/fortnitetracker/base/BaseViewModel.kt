@@ -5,6 +5,7 @@ import fortnite.eugene.com.fortnitetracker.inject.component.DaggerViewModelInjec
 import fortnite.eugene.com.fortnitetracker.inject.component.ViewModelInjector
 import fortnite.eugene.com.fortnitetracker.inject.module.FortniteTrackerNetworkModule
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
+import fortnite.eugene.com.fortnitetracker.ui.stats.match.MatchHistoryViewModel
 
 abstract class BaseViewModel : ViewModel() {
     private val injector: ViewModelInjector = DaggerViewModelInjector
@@ -12,15 +13,8 @@ abstract class BaseViewModel : ViewModel() {
         .networkModule(FortniteTrackerNetworkModule)
         .build()
 
-//    private val subscription: Disposable? = null
-
     init {
         inject()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-//        subscription?.dispose()
     }
 
     /**
@@ -29,6 +23,7 @@ abstract class BaseViewModel : ViewModel() {
     private fun inject() {
         when (this) {
             is LoginViewModel -> injector.inject(this)
+            is MatchHistoryViewModel -> injector.inject(this)
         }
     }
 }

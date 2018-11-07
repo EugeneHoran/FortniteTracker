@@ -24,15 +24,15 @@ data class StatsInfo(
     fun getDisplayStats(): List<DisplayStatsItem> {
         val statsItemList = mutableListOf<DisplayStatsItem>()
         statsItemList.add(matches!!)
-        statsItemList.add(kd!!)
-        statsItemList.add(kills!!)
-        statsItemList.add(kpg!!)
         statsItemList.add(top1!!)
+        statsItemList.add(kd!!)
         if (winRatio != null) {
             statsItemList.add(winRatio)
         } else {
             statsItemList.add(WinRatio())
         }
+        statsItemList.add(kills!!)
+        statsItemList.add(kpg!!)
         if (!top3!!.getDisplayText().equals("0", true)) {
             statsItemList.add(top3)
         }

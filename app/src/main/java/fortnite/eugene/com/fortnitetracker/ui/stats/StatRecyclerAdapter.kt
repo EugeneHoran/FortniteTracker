@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.DisplayStatsItem
+import fortnite.eugene.com.fortnitetracker.utils.StatsDiffUtil
 import kotlinx.android.synthetic.main.recycler_stat_item.view.*
 
 class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHolder>() {
@@ -14,9 +16,17 @@ class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHol
     private var displayStatsItemList = mutableListOf<DisplayStatsItem>()
 
     fun setItems(statsItemList: List<DisplayStatsItem>) {
-        this.displayStatsItemList.clear()
-        this.displayStatsItemList.addAll(statsItemList)
-        notifyDataSetChanged()
+        if (displayStatsItemList.isEmpty()) {
+            this.displayStatsItemList.clear()
+            this.displayStatsItemList.addAll(statsItemList)
+            notifyDataSetChanged()
+        } else {
+            val diffCallback = StatsDiffUtil(this.displayStatsItemList, statsItemList)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            this.displayStatsItemList.clear()
+            this.displayStatsItemList.addAll(statsItemList)
+            diffResult.dispatchUpdatesTo(this)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatViewHolder {

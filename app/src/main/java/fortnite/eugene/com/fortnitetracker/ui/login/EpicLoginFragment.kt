@@ -20,20 +20,19 @@ import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class EpicLoginFragment : Fragment(), EpicAccountRecyclerAdapter.EpicAccountClickListener,
+class EpicLoginFragment : Fragment(),
+    EpicAccountRecyclerAdapter.EpicAccountClickListener,
     Toolbar.OnMenuItemClickListener {
-    companion object {
-        @JvmStatic
-        fun newInstance() = EpicLoginFragment()
-    }
 
     private var listener: OnAccountListener? = null
+
+    private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
+
     private lateinit var loginViewModel: LoginViewModel
 
-    private lateinit var epicAccountRecyclerAdapter: EpicAccountRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProviders.of(this, ViewModelFactory(activity!! as AppCompatActivity))
+        loginViewModel = ViewModelProviders.of(activity!!, ViewModelFactory(activity!! as AppCompatActivity))
             .get(LoginViewModel::class.java)
     }
 
@@ -66,24 +65,26 @@ class EpicLoginFragment : Fragment(), EpicAccountRecyclerAdapter.EpicAccountClic
     }
 
     private fun observeUserData() {
-        loginViewModel.userAccountList.observe(this, Observer {
+        loginViewModel.userAccountList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isNotEmpty()) toolbar.inflateMenu(R.menu.menu_accounts) else toolbar.menu.clear()
                 epicAccountRecyclerAdapter.setItems(it)
             }
         })
-        loginViewModel.userStats.observe(this, Observer {
-            if (it.error == null) {
-                listener!!.onUserSignedIn(it)
+        loginViewModel.userStats.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                if (it.error == null) {
+                    listener!!.onUserSignedIn(it)
+                }
             }
         })
-        loginViewModel.error.observeSingleEvent(activity!!, Observer {
+        loginViewModel.error.observeSingleEvent(viewLifecycleOwner, Observer {
             if (it != null) {
                 Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
             }
             dismissLoading()
         })
-        loginViewModel.showLoading.observeSingleEvent(this, Observer {
+        loginViewModel.showLoading.observeSingleEvent(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it == true) {
                     showLoading()
