@@ -1,6 +1,8 @@
 package fortnite.eugene.com.fortnitetracker.model.matches
 
 import com.google.gson.annotations.SerializedName
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,15 +42,27 @@ data class MatchHistory(
         null
     }
 
-    fun getDateDisplay(): String? = try {
-        SimpleDateFormat("yyyy-MM-dd", Locale.US).format(dateCollected!!.split("T")[0])
-    } catch (exception: Exception) {
-        null
-    }
-
     fun getDate(): Date? = try {
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).parse(dateCollected)
     } catch (exception: Exception) {
         null
+    }
+
+
+    fun getKd(): String {
+        val kd = kills!!.toFloat().div(matches!! - top1!!)
+        val df = DecimalFormat("0.00").apply {
+            roundingMode = RoundingMode.CEILING
+        }
+        return df.format(kd)
+    }
+
+    fun getDisplayPlaylist(): String {
+        return when (playlist) {
+            "p9" -> "Squads"
+            "p10" -> "Duos"
+            "p2" -> "Solo"
+            else -> ""
+        }
     }
 }

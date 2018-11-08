@@ -1,6 +1,7 @@
 package fortnite.eugene.com.fortnitetracker.ui.stats.match
 
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import fortnite.eugene.com.fortnitetracker.base.BaseViewModel
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistory
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryHeader
@@ -9,12 +10,18 @@ import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
 import javax.inject.Inject
 
 
-class MatchHistoryViewModel : BaseViewModel() {
+class MatchHistoryViewModel(private val accountId: String) : BaseViewModel() {
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi
     var matchHistory: MediatorLiveData<List<MatchHistoryItem>> = MediatorLiveData()
+    var showLoading: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getMatchHistory(accountId: String) {
+    init {
+        refreshData()
+    }
+
+    fun refreshData() {
+        showLoading.value = true
         matchHistory.addSource(fortniteTrackerApi.getUserMatches(accountId)) {
             if (it != null) {
                 if (it.error != null) {
@@ -24,6 +31,7 @@ class MatchHistoryViewModel : BaseViewModel() {
                     })
                 }
             }
+            showLoading.value = false
         }
     }
 

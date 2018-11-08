@@ -3,10 +3,8 @@ package fortnite.eugene.com.fortnitetracker.ui.stats
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,13 +16,14 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.ui.stats.match.MatchFragment
+import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_stats.*
 import java.lang.ref.WeakReference
 
 
 private const val ARG_STATS = "param_stats"
 
-class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitch.CheckedChangeListener {
+class StatsMainFragment : Fragment(), IconSwitch.CheckedChangeListener {
 
     companion object {
         @JvmStatic
@@ -39,7 +38,6 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitc
     private val fragRef: WeakReference<StatsMainFragment> = WeakReference(this)
     private var listener: OnAccountListener? = null
     private lateinit var statsViewModel: StatsViewModel
-    private val consoleImages = mapOf(1 to R.drawable.ic_xbox, 2 to R.drawable.ic_playstation, 3 to R.drawable.ic_pc)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +53,11 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        toolbar.navigationIcon = ContextCompat.getDrawable(context!!, R.drawable.ic_search_24dp)
+        toolbar.setNavigationOnClickListener {
+            listener!!.onSearchClicked()
+        }
         toolbar.inflateMenu(R.menu.menu_stats)
-        toolbar.setOnMenuItemClickListener(this)
         val alertMenuItem = toolbar.menu.findItem(R.id.menu_toggle)
         val iconSwitch = alertMenuItem.actionView as IconSwitch
         iconSwitch.setCheckedChangeListener(this)
@@ -67,9 +68,9 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitc
 
     override fun onCheckChanged(current: IconSwitch.Checked?) {
         if (current == IconSwitch.Checked.LEFT) {
-            handleViews(0)
+            handleViews(Constants.TOGGLE_STATS)
         } else {
-            handleViews(1)
+            handleViews(Constants.TOGGLE_MATCH_HISTORY)
         }
     }
 
@@ -86,7 +87,7 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitc
     }
 
     private fun initStats() {
-        toolbar.subtitle = "Stats"
+        toolbar.title = "Stats"
         containerMatches.visibility = View.GONE
         tabs.visibility = View.VISIBLE
         toggleButtonLayout.visibility = View.VISIBLE
@@ -117,7 +118,7 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitc
     }
 
     private fun initHistory() {
-        toolbar.subtitle = "Match History"
+        toolbar.title = "Match History"
         containerMatches.visibility = View.VISIBLE
         tabs.visibility = View.GONE
         toggleButtonLayout.visibility = View.GONE
@@ -125,36 +126,26 @@ class StatsMainFragment : Fragment(), Toolbar.OnMenuItemClickListener, IconSwitc
         childFragmentManager.beginTransaction().apply {
             replace(
                 R.id.containerMatches,
-                MatchFragment.newInstance(statsViewModel.userStats.value!!.accountId!!),
-                "Testing"
+                MatchFragment.newInstance(statsViewModel.userStats.value!!.accountId!!)
             )
             commit()
         }
         setScrollingEnabled(false)
     }
 
-    private fun setScrollingEnabled(isEnabled: Boolean) {
-        val params = toolbar.layoutParams as AppBarLayout.LayoutParams
-        params.scrollFlags =
-                if (isEnabled) AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS else 0
-    }
-
     private fun observeUserStats() {
         statsViewModel.userStats.observe(this, Observer {
             if (it != null) {
-                toolbar.title = it.epicUserHandle
-                toolbar.navigationIcon = ContextCompat.getDrawable(context!!, consoleImages[it.platformId]!!)
+                toolbar.subtitle = it.epicUserHandle
             }
         })
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            R.id.menu_search -> {
-                listener!!.onSearchClicked()
-            }
-        }
-        return true
+    private fun setScrollingEnabled(isEnabled: Boolean) {
+        val params = toolbar.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags =
+                if (isEnabled) AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS else 0
+
     }
 
     override fun onAttach(context: Context) {

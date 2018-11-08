@@ -18,7 +18,8 @@
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
+                android:layout_height="wrap_content"
+                android:minHeight="?android:attr/actionBarSize"
                 app:layout_scrollFlags="enterAlways|scroll"/>
 
         <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
@@ -33,7 +34,6 @@
                 app:cardBackgroundColor="@color/colorPrimaryLight"
                 app:customLayout="@layout/view_toggle_button"
                 app:menu="@menu/toggle_season"/>
-
 
         <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"

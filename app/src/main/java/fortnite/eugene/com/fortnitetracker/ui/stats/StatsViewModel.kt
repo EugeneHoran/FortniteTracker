@@ -6,15 +6,15 @@ import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.model.stats.StatsInfo
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 
+
 class StatsViewModel : ViewModel() {
-    var toggleStatsMatch: Int = 0
+    var toggleStatsMatch: Int = Constants.TOGGLE_STATS
 
     var userStats: MutableLiveData<AccountStats> = MutableLiveData()
     var seasonToggle: Int = Constants.SEASON_LIFETIME
     var soloStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var duoStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var squadStats: MutableLiveData<StatsInfo> = MutableLiveData()
-
 
     fun setUserStats(accountStats: AccountStats) {
         userStats.value = accountStats

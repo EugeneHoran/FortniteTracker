@@ -12,5 +12,9 @@ class Constants {
         const val TAB_SOLO = 0
         const val TAB_DUO = 1
         const val TAB_SQUADS = 2
+
+
+        const val TOGGLE_STATS = 0
+        const val TOGGLE_MATCH_HISTORY = 1
     }
 }

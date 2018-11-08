@@ -14,28 +14,62 @@ import kotlinx.android.synthetic.main.recycler_match_item.view.*
 
 private const val HEADER = 0
 private const val ITEM = 1
+private const val LOADING = 2
+
+private const val PROGRESS_LOADING = 1
+private const val PROGRESS_NOT_LOADING = 0
 
 class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaders {
 
-
+    private var isLoadingCount: Int = 0
     private val itemList = mutableListOf<MatchHistoryItem>()
 
+    init {
+        isLoadingCount = PROGRESS_LOADING
+        notifyDataSetChanged()
+    }
+
+    fun setLoading() {
+        if (isLoadingCount != PROGRESS_LOADING) {
+            isLoadingCount = PROGRESS_LOADING
+            itemList.clear()
+            notifyDataSetChanged()
+        }
+    }
+
     fun setItemList(items: List<MatchHistoryItem>) {
+        isLoadingCount = PROGRESS_NOT_LOADING
         itemList.clear()
         itemList.addAll(items)
         notifyDataSetChanged()
     }
 
-    override fun isStickyHeader(position: Int): Boolean = itemList[position] is MatchHistoryHeader
-    override fun getItemViewType(position: Int): Int = if (itemList[position] is MatchHistoryHeader) HEADER else ITEM
-    override fun getItemCount(): Int = itemList.size
+    override fun isStickyHeader(position: Int): Boolean {
+        return when {
+            isLoadingCount == 1 -> false
+            itemList[position] is MatchHistoryHeader -> true
+            itemList[position] is MatchHistory -> false
+            else -> false
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when {
+            isLoadingCount == 1 -> LOADING
+            itemList[position] is MatchHistoryHeader -> HEADER
+            itemList[position] is MatchHistory -> ITEM
+            else -> -1
+        }
+    }
+
+    override fun getItemCount(): Int = itemList.size + isLoadingCount
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return if (viewType == HEADER) {
-            HeaderViewHolder(inflater.inflate(R.layout.recycler_match_header, parent, false))
-        } else {
-            MatchHistoryViewHolder(inflater.inflate(R.layout.recycler_match_item, parent, false))
+        return when (viewType) {
+            HEADER -> HeaderViewHolder(inflater.inflate(R.layout.recycler_match_header, parent, false))
+            ITEM -> MatchHistoryViewHolder(inflater.inflate(R.layout.recycler_match_item, parent, false))
+            else -> LoadingViewHolder(inflater.inflate(R.layout.view_progressbar, parent, false))
         }
     }
 
@@ -59,7 +93,13 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class MatchHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: MatchHistory) {
-            itemView.matchTitle.text = item.kills!!.toString()
+            itemView.matchMatches.text = item.matches!!.toString()
+            itemView.matchWins.text = item.top1!!.toString()
+            itemView.matchKills.text = item.kills!!.toString()
+            itemView.matchKd.text = item.getKd()
+            itemView.matchMode.text = item.getDisplayPlaylist()
         }
     }
+
+    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

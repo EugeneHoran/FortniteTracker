@@ -24,9 +24,7 @@ class StatsMainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm)
         return fragments!![position]!!
     }
 
-    override fun getCount(): Int {
-        return 3
-    }
+    override fun getCount(): Int = 3
 
     override fun getPageTitle(position: Int): CharSequence? = tabTitles[position]
 }

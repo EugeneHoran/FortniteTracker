@@ -16,4 +16,5 @@
     <string name="wins">Wins</string>
     <string name="kills">Kills</string>
     <string name="k_d">K/D</string>
+    <string name="mode">Mode</string>
 </resources>

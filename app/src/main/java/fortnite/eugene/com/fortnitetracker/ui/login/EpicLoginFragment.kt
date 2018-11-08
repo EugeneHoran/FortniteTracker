@@ -15,7 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
-import fortnite.eugene.com.fortnitetracker.inject.ViewModelFactory
+import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -32,8 +32,9 @@ class EpicLoginFragment : Fragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProviders.of(activity!!, ViewModelFactory(activity!! as AppCompatActivity))
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProviders.of(
+            activity!!, AppFactory(activity!! as AppCompatActivity)
+        ).get(LoginViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

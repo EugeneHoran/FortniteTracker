@@ -7,7 +7,6 @@ import fortnite.eugene.com.fortnitetracker.data.dao.UserAccountDao
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
-import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.fortnitetracker.utils.SingleLiveEvent
 import fortnite.eugene.com.fortnitetracker.utils.ioThread
 import javax.inject.Inject
@@ -18,14 +17,12 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
     lateinit var fortniteTrackerApi: FortniteTrackerApi
 
     var userAccountList: LiveData<List<UserAccount>> = userDao.getUserList()
-    var seasonToggle: Int = Constants.SEASON_LIFETIME
     var userStats: MediatorLiveData<AccountStats> = MediatorLiveData()
     var error: SingleLiveEvent<String> = SingleLiveEvent()
     var showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun getUserStats(platform: String, epicUser: String) {
         showLoading.value = true
-        seasonToggle = Constants.SEASON_LIFETIME
         userStats.addSource(fortniteTrackerApi.getUserStats(platform, epicUser)) {
             if (it != null) {
                 if (it.error != null) {

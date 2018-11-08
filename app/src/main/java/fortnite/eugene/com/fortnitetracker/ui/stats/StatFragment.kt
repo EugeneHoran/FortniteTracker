@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.utils.Constants
-import kotlinx.android.synthetic.main.fragment_stat.*
+import kotlinx.android.synthetic.main.layout_recycler.*
 
 private const val ARG_TAB = "param_tab"
 
@@ -42,14 +42,15 @@ class StatFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_stat, container, false)
+        return inflater.inflate(R.layout.layout_recycler, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        statRecycler.layoutManager = GridLayoutManager(context, 2)
-        statRecycler.addItemDecoration(DividerItemDecoration(context!!, LinearLayoutManager.VERTICAL))
-        statRecycler.adapter = statRecyclerAdapter
+        swipe_container.isEnabled = false
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.addItemDecoration(DividerItemDecoration(context!!, LinearLayoutManager.VERTICAL))
+        recyclerView.adapter = statRecyclerAdapter
         observeStatData()
     }
 
