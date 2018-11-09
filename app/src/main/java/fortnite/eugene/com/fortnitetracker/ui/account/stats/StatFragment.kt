@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.stats
+package fortnite.eugene.com.fortnitetracker.ui.account.stats
 
 
 import android.os.Bundle

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="fortnite.eugene.com.fortnitetracker">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="fortnite.eugene.com.fortnitetracker"
+          tools:ignore="GoogleAppIndexingWarning">
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:name="fortnite.eugene.com.fortnitetracker.App"
             android:allowBackup="true"
@@ -9,7 +13,8 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:hardwareAccelerated="true">
         <activity
                 android:name=".ui.MainActivity"
                 android:label="@string/app_name"

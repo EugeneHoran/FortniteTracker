@@ -1,9 +1,10 @@
 package fortnite.eugene.com.fortnitetracker.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
@@ -19,8 +20,14 @@ class MainActivity : AppCompatActivity(), OnAccountListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        }
         loginViewModel = ViewModelProviders.of(this, AppFactory(this)).get(LoginViewModel::class.java)
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemReselectedListener { }
+        navigation.setOnNavigationItemSelectedListener {
+            return@setOnNavigationItemSelectedListener navigationController.bottomNavController(it)
+        }
         navigationController = NavigationController(savedInstanceState, supportFragmentManager, loginViewModel)
     }
 
@@ -31,9 +38,5 @@ class MainActivity : AppCompatActivity(), OnAccountListener {
     override fun onSearchClicked() {
         loginViewModel.userStats.value = null
         navigationController.navLoginFragment()
-    }
-
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener {
-        return@OnNavigationItemSelectedListener navigationController.bottomNavController(it)
     }
 }

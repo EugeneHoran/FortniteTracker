@@ -21,6 +21,7 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
     var error: SingleLiveEvent<String> = SingleLiveEvent()
     var showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
+
     fun getUserStats(platform: String, epicUser: String) {
         showLoading.value = true
         userStats.addSource(fortniteTrackerApi.getUserStats(platform, epicUser)) {

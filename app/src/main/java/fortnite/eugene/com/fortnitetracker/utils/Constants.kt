@@ -6,8 +6,9 @@ class Constants {
         const val PLATFORM_PS4 = 1
         const val PLATFORM_PC = 2
 
-        const val SEASON_LIFETIME = 0
-        const val SEASON_CURRENT = 1
+        const val SEASON_COMBINED = 0
+        const val SEASON_LIFETIME = 1
+        const val SEASON_CURRENT = 2
 
         const val TAB_SOLO = 0
         const val TAB_DUO = 1

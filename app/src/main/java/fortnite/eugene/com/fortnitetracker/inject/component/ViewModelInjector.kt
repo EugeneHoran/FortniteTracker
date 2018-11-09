@@ -4,7 +4,8 @@ import dagger.Component
 import fortnite.eugene.com.fortnitetracker.inject.module.FortniteTrackerNetworkModule
 import fortnite.eugene.com.fortnitetracker.inject.module.HttpLoggingModule
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
-import fortnite.eugene.com.fortnitetracker.ui.stats.match.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.account.match_history.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesViewModel
 import javax.inject.Singleton
 
 @Singleton
@@ -17,6 +18,7 @@ import javax.inject.Singleton
 interface ViewModelInjector {
     fun inject(loginViewModel: LoginViewModel)
     fun inject(matchHistoryViewModel: MatchHistoryViewModel)
+    fun inject(challengesViewModel: ChallengesViewModel)
     @Component.Builder
     interface Builder {
         fun build(): ViewModelInjector

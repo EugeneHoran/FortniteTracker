@@ -6,13 +6,14 @@
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.stats.StatsMainFragment">
+        tools:context=".ui.account.AccountFragment">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
+            android:animateLayoutChanges="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -20,11 +21,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?android:attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_search_24dp"
                 app:layout_scrollFlags="enterAlways|scroll"/>
 
         <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
                 app:layout_scrollFlags="enterAlways|scroll"
-                android:id="@+id/toggleButtonLayout"
+                android:id="@+id/toggleButtonSeasons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:selectedColor="?attr/colorPrimaryDark"
@@ -33,14 +35,16 @@
                 app:cardCornerRadius="3dp"
                 app:cardBackgroundColor="@color/colorPrimaryLight"
                 app:customLayout="@layout/view_toggle_button"
-                app:menu="@menu/toggle_season"/>
+                app:menu="@menu/toggle_season"
+                android:visibility="gone"/>
 
         <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@color/colorPrimary"
-                app:tabIndicatorColor="@color/colorAccent"/>
+                app:tabIndicatorColor="@color/colorAccent"
+                android:visibility="gone"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -48,6 +52,14 @@
             android:id="@+id/pagerStats"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCombined"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <FrameLayout

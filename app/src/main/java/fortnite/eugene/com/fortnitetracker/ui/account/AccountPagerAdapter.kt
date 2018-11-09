@@ -1,11 +1,12 @@
-package fortnite.eugene.com.fortnitetracker.ui.stats
+package fortnite.eugene.com.fortnitetracker.ui.account
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 
-class StatsMainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class AccountPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private val tabTitles = arrayOf("Solo", "Duo", "Squads")
     private var fragments: Array<StatFragment?>? = null
 
@@ -17,9 +18,12 @@ class StatsMainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm)
             fragments = arrayOfNulls(count)
         }
         when (position) {
-            Constants.TAB_SOLO -> fragments!![Constants.TAB_SOLO] = StatFragment.newInstance(position)
-            Constants.TAB_DUO -> fragments!![Constants.TAB_DUO] = StatFragment.newInstance(position)
-            Constants.TAB_SQUADS -> fragments!![Constants.TAB_SQUADS] = StatFragment.newInstance(position)
+            Constants.TAB_SOLO -> fragments!![Constants.TAB_SOLO] =
+                    StatFragment.newInstance(position)
+            Constants.TAB_DUO -> fragments!![Constants.TAB_DUO] =
+                    StatFragment.newInstance(position)
+            Constants.TAB_SQUADS -> fragments!![Constants.TAB_SQUADS] =
+                    StatFragment.newInstance(position)
         }
         return fragments!![position]!!
     }

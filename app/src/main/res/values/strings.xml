@@ -17,4 +17,11 @@
     <string name="kills">Kills</string>
     <string name="k_d">K/D</string>
     <string name="mode">Mode</string>
+    <string name="enter_epic_username">Enter Epic Username</string>
+    <string name="xbl">xbl</string>
+    <string name="psn">psn</string>
+    <string name="pc">pc</string>
+    <string name="challenges">Challenges</string>
+    <string name="account">Account</string>
+    <string name="store">Store</string>
 </resources>

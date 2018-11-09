@@ -8,14 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
-import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -25,16 +23,12 @@ class EpicLoginFragment : Fragment(),
     Toolbar.OnMenuItemClickListener {
 
     private var listener: OnAccountListener? = null
-
-    private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
-
     private lateinit var loginViewModel: LoginViewModel
+    private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProviders.of(
-            activity!!, AppFactory(activity!! as AppCompatActivity)
-        ).get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,7 +41,6 @@ class EpicLoginFragment : Fragment(),
         btnSearch.setOnClickListener {
             searchAccount()
         }
-        epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
         recyclerAccount.adapter = epicAccountRecyclerAdapter
         observeUserData()
     }
@@ -55,7 +48,7 @@ class EpicLoginFragment : Fragment(),
     private fun searchAccount() {
         editTextEpicUserName.hideKeyboard()
         if (getEpicName().isNullOrBlank()) {
-            Toast.makeText(context, "Enter Epic Username", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.enter_epic_username), Toast.LENGTH_SHORT).show()
             return
         }
         loginViewModel.getUserStats(getPlatform()!!, getEpicName()!!)
@@ -74,24 +67,16 @@ class EpicLoginFragment : Fragment(),
         })
         loginViewModel.userStats.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.error == null) {
-                    listener!!.onUserSignedIn(it)
-                }
+                if (it.error == null) listener!!.onUserSignedIn(it)
             }
         })
         loginViewModel.error.observeSingleEvent(viewLifecycleOwner, Observer {
-            if (it != null) {
-                Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
-            }
+            if (it != null) Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
             dismissLoading()
         })
         loginViewModel.showLoading.observeSingleEvent(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it == true) {
-                    showLoading()
-                } else {
-
-                }
+                if (it == true) showLoading()
             }
         })
     }
@@ -131,9 +116,9 @@ class EpicLoginFragment : Fragment(),
 
     private fun getPlatform(): String? {
         return when (toggleButtonPlatform.getSelectedTogglePosition()) {
-            Constants.PLATFORM_XBOX -> "xbl"
-            Constants.PLATFORM_PS4 -> "psn"
-            Constants.PLATFORM_PC -> "pc"
+            Constants.PLATFORM_XBOX -> getString(R.string.xbl)
+            Constants.PLATFORM_PS4 -> getString(R.string.psn)
+            Constants.PLATFORM_PC -> getString(R.string.pc)
             else -> null
         }
     }

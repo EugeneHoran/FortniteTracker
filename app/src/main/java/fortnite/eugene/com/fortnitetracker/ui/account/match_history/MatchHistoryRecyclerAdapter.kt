@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.stats.match
+package fortnite.eugene.com.fortnitetracker.ui.account.match_history
 
 import android.view.LayoutInflater
 import android.view.View
@@ -67,9 +67,15 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            HEADER -> HeaderViewHolder(inflater.inflate(R.layout.recycler_match_header, parent, false))
-            ITEM -> MatchHistoryViewHolder(inflater.inflate(R.layout.recycler_match_item, parent, false))
-            else -> LoadingViewHolder(inflater.inflate(R.layout.view_progressbar, parent, false))
+            HEADER -> HeaderViewHolder(
+                inflater.inflate(R.layout.recycler_match_header, parent, false)
+            )
+            ITEM -> MatchHistoryViewHolder(
+                inflater.inflate(R.layout.recycler_match_item, parent, false)
+            )
+            else -> LoadingViewHolder(
+                inflater.inflate(R.layout.view_progressbar, parent, false)
+            )
         }
     }
 

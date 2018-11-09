@@ -5,13 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import fortnite.eugene.com.fortnitetracker.data.FortniteDatabase
+import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
+import fortnite.eugene.com.fortnitetracker.ui.account.match_history.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
-import fortnite.eugene.com.fortnitetracker.ui.stats.match.MatchHistoryViewModel
 
 
 class AppFactory : ViewModelProvider.NewInstanceFactory {
     private lateinit var activity: AppCompatActivity
     private lateinit var key: String
+    private lateinit var accountStats: AccountStats
 
     constructor(activity: AppCompatActivity) {
         this.activity = activity
@@ -19,6 +22,10 @@ class AppFactory : ViewModelProvider.NewInstanceFactory {
 
     constructor(key: String) {
         this.key = key
+    }
+
+    constructor(accountStats: AccountStats) {
+        this.accountStats = accountStats
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -30,6 +37,8 @@ class AppFactory : ViewModelProvider.NewInstanceFactory {
             return LoginViewModel(db.getUserAccountDao()) as T
         } else if (modelClass.isAssignableFrom(MatchHistoryViewModel::class.java)) {
             return MatchHistoryViewModel(key) as T
+        } else if (modelClass.isAssignableFrom(StatsViewModel::class.java)) {
+            return StatsViewModel(accountStats) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

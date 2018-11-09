@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.stats
+package fortnite.eugene.com.fortnitetracker.ui.account.stats
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -30,7 +30,11 @@ class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHol
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatViewHolder {
-        return StatViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_stat_item, parent, false))
+        return StatViewHolder(
+            LayoutInflater.from(
+                parent.context
+            ).inflate(R.layout.recycler_stat_item, parent, false)
+        )
     }
 
     @SuppressLint("SetTextI18n")

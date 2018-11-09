@@ -14,8 +14,7 @@ data class AccountStats(
     @SerializedName("platformName") val platformName: String?,
     @SerializedName("platformNameLong") val platformNameLong: String?,
     @SerializedName("stats") val stats: Stats?,
-    @SerializedName("lifeTimeStats") val lifeTimeStats: List<LifeTimeStat?>?,
-    @SerializedName("recentMatches") val recentMatches: List<RecentMatche?>?
+    @SerializedName("lifeTimeStats") val lifeTimeStats: List<LifeTimeStat?>?
 ) : Parcelable {
 
     fun getUserAccount(): UserAccount? {
@@ -37,8 +36,7 @@ data class AccountStats(
         parcel.readString(),
         parcel.readString(),
         parcel.readParcelable(Stats::class.java.classLoader),
-        parcel.createTypedArrayList(LifeTimeStat),
-        parcel.createTypedArrayList(RecentMatche)
+        parcel.createTypedArrayList(LifeTimeStat)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -50,7 +48,6 @@ data class AccountStats(
         parcel.writeString(platformNameLong)
         parcel.writeParcelable(stats, flags)
         parcel.writeTypedList(lifeTimeStats)
-        parcel.writeTypedList(recentMatches)
     }
 
     override fun describeContents(): Int {

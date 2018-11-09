@@ -5,10 +5,10 @@ import android.view.MenuItem
 import androidx.fragment.app.FragmentManager
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
+import fortnite.eugene.com.fortnitetracker.ui.account.AccountFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
-import fortnite.eugene.com.fortnitetracker.ui.news.NewsFragment
-import fortnite.eugene.com.fortnitetracker.ui.stats.StatsMainFragment
+import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesFragment
 
 
 private const val FRAG_LOGIN = "frag_login"
@@ -55,14 +55,14 @@ class NavigationController(savedInstanceState: Bundle?, var fm: FragmentManager,
 
     fun navStatsFragment(accountStats: AccountStats) {
         fm.beginTransaction().apply {
-            replace(container, StatsMainFragment.newInstance(accountStats), FRAG_STATS_MAIN)
+            replace(container, AccountFragment.newInstance(accountStats), FRAG_STATS_MAIN)
             commit()
         }
     }
 
     fun navNewsFragment() {
         fm.beginTransaction().apply {
-            replace(container, NewsFragment.newInstance(), FRAG_NEWS)
+            replace(container, ChallengesFragment.newInstance(), FRAG_NEWS)
             commit()
         }
     }
