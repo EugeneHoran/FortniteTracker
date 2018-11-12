@@ -2,113 +2,129 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:padding="16dp">
+              android:orientation="vertical"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:paddingBottom="16dp"
+              android:paddingTop="8dp">
 
-
-    <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="@string/matches"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/colorPrimaryTextLight"
-                android:fontFamily="sans-serif-medium"/>
-
-        <TextView
-                android:id="@+id/matchMatches"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:fontFamily="sans-serif-medium"/>
-    </LinearLayout>
-    <Space android:layout_width="8dp" android:layout_height="1dp"/>
+    <TextView
+            android:id="@+id/textMatchTimeAgo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryLight"/>
 
     <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-                android:text="@string/mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/colorPrimaryTextLight"
-                android:fontFamily="sans-serif-medium"/>
-        <TextView
-                android:id="@+id/matchMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"/>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/matches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryTextLight"
+                    android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                    android:id="@+id/matchMatches"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
+        <Space android:layout_width="8dp" android:layout_height="1dp"/>
+
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryTextLight"
+                    android:fontFamily="sans-serif-medium"/>
+            <TextView
+                    android:id="@+id/matchMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
+        <Space android:layout_width="8dp" android:layout_height="1dp"/>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/wins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryTextLight"
+                    android:fontFamily="sans-serif-medium"/>
+            <TextView
+                    android:id="@+id/matchWins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:text="@string/kills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryTextLight"
+                    android:fontFamily="sans-serif-medium"/>
+            <TextView
+                    android:id="@+id/matchKills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/k_d"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorPrimaryTextLight"
+                    android:fontFamily="sans-serif-medium"/>
+            <TextView
+                    android:id="@+id/matchKd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium"/>
+        </LinearLayout>
     </LinearLayout>
-    <Space android:layout_width="8dp" android:layout_height="1dp"/>
-    <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="@string/wins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/colorPrimaryTextLight"
-                android:fontFamily="sans-serif-medium"/>
-        <TextView
-                android:id="@+id/matchWins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"/>
-    </LinearLayout>
-    <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <TextView
-                android:text="@string/kills"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/colorPrimaryTextLight"
-                android:fontFamily="sans-serif-medium"/>
-        <TextView
-                android:id="@+id/matchKills"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"/>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:text="@string/k_d"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/colorPrimaryTextLight"
-                android:fontFamily="sans-serif-medium"/>
-        <TextView
-                android:id="@+id/matchKd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium"/>
-    </LinearLayout>
-
 </LinearLayout>

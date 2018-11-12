@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.shared
+package fortnite.eugene.com.fortnitetracker.ui
 
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 

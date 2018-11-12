@@ -13,7 +13,8 @@ data class Item(
             data["name"],
             data["questsCompleted"],
             data["questsTotal"],
-            data["rewardPictureUrl"]
+            data["rewardPictureUrl"],
+            data["rewardName"]
         )
     }
 
@@ -24,7 +25,8 @@ data class Item(
                 "name",
                 "questsCompleted",
                 "questsTotal",
-                "rewardPictureUrl"
+                "rewardPictureUrl",
+                "rewardName"
                 -> mapping[it.key!!] = it.value!!
             }
         }

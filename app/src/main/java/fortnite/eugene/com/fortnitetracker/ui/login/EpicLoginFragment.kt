@@ -14,13 +14,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
-import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
+import fortnite.eugene.com.fortnitetracker.ui.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class EpicLoginFragment : Fragment(),
     EpicAccountRecyclerAdapter.EpicAccountClickListener,
     Toolbar.OnMenuItemClickListener {
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = EpicLoginFragment()
+    }
 
     private var listener: OnAccountListener? = null
     private lateinit var loginViewModel: LoginViewModel

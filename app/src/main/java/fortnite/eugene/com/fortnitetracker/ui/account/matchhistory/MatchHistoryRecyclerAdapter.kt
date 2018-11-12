@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.match_history
+package fortnite.eugene.com.fortnitetracker.ui.account.matchhistory
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistory
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryHeader
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryItem
+import fortnite.eugene.com.fortnitetracker.utils.TimeHelper
 import fortnite.eugene.com.fortnitetracker.utils.sticky_headers.StickyHeaders
 import kotlinx.android.synthetic.main.recycler_match_header.view.*
 import kotlinx.android.synthetic.main.recycler_match_item.view.*
@@ -23,6 +24,7 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private var isLoadingCount: Int = 0
     private val itemList = mutableListOf<MatchHistoryItem>()
+    private val timeHelper = TimeHelper()
 
     init {
         isLoadingCount = PROGRESS_LOADING
@@ -83,7 +85,7 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder is HeaderViewHolder) {
             holder.bind(itemList[position] as MatchHistoryHeader)
         } else if (holder is MatchHistoryViewHolder) {
-            holder.bind(itemList[position] as MatchHistory)
+            holder.bind(itemList[position] as MatchHistory, timeHelper)
         }
     }
 
@@ -98,7 +100,8 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     class MatchHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchHistory) {
+        fun bind(item: MatchHistory, timeHelper: TimeHelper) {
+            itemView.textMatchTimeAgo.text = timeHelper.getTimeAgo(item.getDate()!!)
             itemView.matchMatches.text = item.matches!!.toString()
             itemView.matchWins.text = item.top1!!.toString()
             itemView.matchKills.text = item.kills!!.toString()

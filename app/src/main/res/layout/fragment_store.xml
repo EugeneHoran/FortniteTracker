@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.challenges.ChallengesFragment">
+        tools:context=".ui.store.StoreFragment">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -20,22 +20,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 app:layout_scrollFlags="enterAlways|scroll"
-                app:title="Weekly Challenges"
-                app:navigationIcon="@drawable/ic_trophy"/>
+                app:title="Item Shop"
+                app:navigationIcon="@drawable/ic_store"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerChallenges"
+            android:id="@+id/recyclerStore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+
     <ProgressBar
-            android:id="@+id/pbLoading"
+            android:id="@+id/pbLoadingStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

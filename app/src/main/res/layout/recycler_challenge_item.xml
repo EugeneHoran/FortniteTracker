@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="16dp"
+              android:background="?android:attr/selectableItemBackground"
+              android:clickable="true"
+              android:focusable="true">
+    <CheckBox
+            android:id="@+id/checkboxCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        <TextView
+                android:id="@+id/textChallengeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="14sp"/>
+
+        <TextView
+                android:id="@+id/textChallengeTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/colorPrimaryTextLight"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/textChallengeReward"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="18sp"/>
+    <ImageView
+            android:id="@+id/imageReward"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"/>
+</LinearLayout>

@@ -9,7 +9,6 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
-import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), OnAccountListener {

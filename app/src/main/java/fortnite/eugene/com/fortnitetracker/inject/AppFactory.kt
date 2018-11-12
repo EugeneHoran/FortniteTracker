@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import fortnite.eugene.com.fortnitetracker.data.FortniteDatabase
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
-import fortnite.eugene.com.fortnitetracker.ui.account.match_history.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.account.matchhistory.MatchHistoryViewModel
 import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 
@@ -30,16 +30,16 @@ class AppFactory : ViewModelProvider.NewInstanceFactory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            val db = Room.databaseBuilder(
-                activity.applicationContext, FortniteDatabase::class.java, "fortnite.tracker.db"
-            ).build()
-            return LoginViewModel(db.getUserAccountDao()) as T
-        } else if (modelClass.isAssignableFrom(MatchHistoryViewModel::class.java)) {
-            return MatchHistoryViewModel(key) as T
-        } else if (modelClass.isAssignableFrom(StatsViewModel::class.java)) {
-            return StatsViewModel(accountStats) as T
+        return when {
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                val db = Room.databaseBuilder(
+                    activity.applicationContext, FortniteDatabase::class.java, "fortnite.tracker.db"
+                ).build()
+                LoginViewModel(db.getUserAccountDao()) as T
+            }
+            modelClass.isAssignableFrom(MatchHistoryViewModel::class.java) -> MatchHistoryViewModel(key) as T
+            modelClass.isAssignableFrom(StatsViewModel::class.java) -> StatsViewModel(accountStats) as T
+            else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

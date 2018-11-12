@@ -6,16 +6,22 @@ import androidx.fragment.app.FragmentManager
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.account.AccountFragment
+import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
-import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesFragment
+import fortnite.eugene.com.fortnitetracker.ui.store.StoreFragment
 
 
 private const val FRAG_LOGIN = "frag_login"
 private const val FRAG_STATS_MAIN = "frag_stats_main"
 private const val FRAG_NEWS = "frag_news"
+private const val FRAG_STORE = "frag_store"
 
-class NavigationController(savedInstanceState: Bundle?, var fm: FragmentManager, var loginViewModel: LoginViewModel) {
+class NavigationController(
+    savedInstanceState: Bundle?,
+    private var fm: FragmentManager,
+    var loginViewModel: LoginViewModel
+) {
     private var container: Int = R.id.container
 
     init {
@@ -35,11 +41,11 @@ class NavigationController(savedInstanceState: Bundle?, var fm: FragmentManager,
                 return true
             }
             R.id.navigation_news -> {
-                navNewsFragment()
+                navChallengesFragment()
                 return true
             }
             R.id.navigation_store -> {
-                // TODO
+                navStoreFragment()
                 return true
             }
         }
@@ -48,7 +54,7 @@ class NavigationController(savedInstanceState: Bundle?, var fm: FragmentManager,
 
     fun navLoginFragment() {
         fm.beginTransaction().apply {
-            replace(container, EpicLoginFragment(), FRAG_LOGIN)
+            replace(container, EpicLoginFragment.newInstance(), FRAG_LOGIN)
             commit()
         }
     }
@@ -60,10 +66,16 @@ class NavigationController(savedInstanceState: Bundle?, var fm: FragmentManager,
         }
     }
 
-    fun navNewsFragment() {
+    fun navChallengesFragment() {
         fm.beginTransaction().apply {
             replace(container, ChallengesFragment.newInstance(), FRAG_NEWS)
             commit()
         }
+    }
+
+    fun navStoreFragment() {
+        fm.beginTransaction().apply {
+            replace(container, StoreFragment.newInstance(), FRAG_STORE)
+        }.commit()
     }
 }

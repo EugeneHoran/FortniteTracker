@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cardStoreHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        tools:ignore="RtlHardcoded,RtlSymmetry">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            tools:ignore="RtlHardcoded,RtlSymmetry">
+
+        <ImageView
+                android:id="@+id/imageViewStoreItem"
+                android:layout_width="48dp"
+                android:layout_height="48dp"/>
+
+        <TextView
+                android:id="@+id/textStoreTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imageViewStoreItem"
+                android:paddingLeft="12dp"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-condensed"
+                tools:text="Testing"
+                android:textStyle="bold"/>
+
+        <TextView
+                android:id="@+id/textStoreCost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imageViewStoreItem"
+                android:layout_below="@+id/textStoreTitle"
+                android:paddingLeft="12dp"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif-condensed"
+                tools:text="Testing"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

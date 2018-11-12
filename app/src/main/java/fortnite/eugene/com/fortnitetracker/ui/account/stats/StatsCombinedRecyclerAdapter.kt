@@ -8,14 +8,8 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.LifeTimeStat
 import kotlinx.android.synthetic.main.recycler_stat_item.view.*
 
-class StatsCombinedRecyclerAdapter : RecyclerView.Adapter<StatsCombinedRecyclerAdapter.CombinedViewHolder>() {
-
-    private var combinedStatsItemList = mutableListOf<LifeTimeStat?>()
-    fun setItems(combinedStatsItemList: List<LifeTimeStat?>) {
-        this.combinedStatsItemList.clear()
-        this.combinedStatsItemList.addAll(combinedStatsItemList)
-        notifyDataSetChanged()
-    }
+class StatsCombinedRecyclerAdapter(private var combinedStatsItemList: List<LifeTimeStat?>) :
+    RecyclerView.Adapter<StatsCombinedRecyclerAdapter.CombinedViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): CombinedViewHolder {
         return CombinedViewHolder(

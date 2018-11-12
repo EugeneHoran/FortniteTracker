@@ -37,13 +37,13 @@ data class MatchHistory(
     val trnRating: Double?
 ) : MatchHistoryItem() {
     fun getDateClean(): Date? = try {
-        SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateCollected!!.split("T")[0])
+        SimpleDateFormat("yyyy-MM-dd").parse(dateCollected!!.split("T")[0])
     } catch (exception: Exception) {
         null
     }
 
     fun getDate(): Date? = try {
-        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).parse(dateCollected)
+        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(dateCollected)
     } catch (exception: Exception) {
         null
     }

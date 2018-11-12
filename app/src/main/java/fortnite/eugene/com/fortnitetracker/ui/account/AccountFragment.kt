@@ -18,16 +18,18 @@ import com.polyak.iconswitch.IconSwitch
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
-import fortnite.eugene.com.fortnitetracker.ui.account.match_history.MatchHistoryFragment
+import fortnite.eugene.com.fortnitetracker.ui.account.matchhistory.MatchHistoryFragment
 import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsCombinedRecyclerAdapter
 import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsViewModel
-import fortnite.eugene.com.fortnitetracker.ui.shared.OnAccountListener
+import fortnite.eugene.com.fortnitetracker.ui.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.fragment_account.*
 
 
 private const val ARG_STATS = "param_stats"
+
 private const val FRAG_MATCH_HISTORY = "frag_match_history"
+
 private const val TOOLBAR_TITLE_STATS = "Stats"
 private const val TOOLBAR_TITLE_MATCH_HISTORY = "Match History"
 
@@ -42,18 +44,12 @@ class AccountFragment : Fragment() {
             }
     }
 
-    /**
-     * Delaying some views
-     */
-    private val initViewsLiveData = MutableLiveData<Boolean>()
-    private var viewHandler = Handler()
-    private val initViewsRunnable = Runnable {
-        initViewsLiveData.value = true
-    }
-
     private var listener: OnAccountListener? = null
     private lateinit var statsViewModel: StatsViewModel
-    private val statsCombinedRecyclerAdapter = StatsCombinedRecyclerAdapter()
+    private var initViewsLiveData = MutableLiveData<Boolean>()
+
+    private var viewHandler = Handler()
+    private val initViewsRunnable = Runnable { initViewsLiveData.value = true }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,30 +65,31 @@ class AccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setNavigationOnClickListener {
-            listener!!.onSearchClicked()
-        }
-        toolbar.inflateMenu(R.menu.menu_stats)
         toolbar.subtitle = statsViewModel.accountStats.epicUserHandle
-        val iconSwitch = toolbar.menu.findItem(R.id.menu_toggle).actionView as IconSwitch
-        iconSwitch.setCheckedChangeListener {
+        toolbar.inflateMenu(R.menu.menu_stats)
+        toolbar.setNavigationOnClickListener { listener!!.onSearchClicked() }
+        (toolbar.menu.findItem(R.id.menu_toggle).actionView as IconSwitch).setCheckedChangeListener {
             when (it!!) {
                 IconSwitch.Checked.LEFT -> handleViews(Constants.TOGGLE_STATS)
                 IconSwitch.Checked.RIGHT -> handleViews(Constants.TOGGLE_MATCH_HISTORY)
             }
         }
-        recyclerCombined.adapter = statsCombinedRecyclerAdapter
+        recyclerCombined.adapter = StatsCombinedRecyclerAdapter(statsViewModel.accountStats.lifeTimeStats!!.reversed())
         recyclerCombined.addItemDecoration(DividerItemDecoration(context!!, LinearLayoutManager.VERTICAL))
+
         toggleButtonSeasons.setToggled(toggleButtonSeasons.toggles[statsViewModel.seasonToggle].id, true)
         toggleButtonSeasons.onToggledListener = { toggle, _ ->
             statsViewModel.updateStatFragments(toggle.position)
             handleViews(Constants.TOGGLE_STATS)
         }
-        statsCombinedRecyclerAdapter.setItems(statsViewModel.accountStats.lifeTimeStats!!.reversed())
+
+        /**
+         * Observe the Handler delay to handle any UI issues
+         */
+        viewHandler.post(initViewsRunnable)
         initViewsLiveData.observe(this, Observer {
             handleViews(statsViewModel.toggleStatsMatch)
         })
-        viewHandler.post(initViewsRunnable)
     }
 
     private fun handleViews(position: Int) {
@@ -113,7 +110,12 @@ class AccountFragment : Fragment() {
                         toggleButtonSeasons.visibility = View.VISIBLE
                         pagerStats.visibility = View.GONE
                         recyclerCombined.visibility = View.VISIBLE
-                        setScrollingEnabled(false)
+                        scrollingFlagsControl(
+                            mutableMapOf(
+                                toolbar to true,
+                                tabs to false
+                            )
+                        )
                     }
                     Constants.SEASON_LIFETIME, Constants.SEASON_CURRENT -> {
                         containerMatches.visibility = View.GONE
@@ -130,7 +132,12 @@ class AccountFragment : Fragment() {
                             pagerStats.adapter = AccountPagerAdapter(childFragmentManager)
                             tabs.setupWithViewPager(pagerStats)
                         }
-                        setScrollingEnabled(true)
+                        scrollingFlagsControl(
+                            mutableMapOf(
+                                toolbar to true,
+                                tabs to false
+                            )
+                        )
                     }
                 }
             }
@@ -149,16 +156,30 @@ class AccountFragment : Fragment() {
                     )
                     commit()
                 }
-                setScrollingEnabled(false)
+                scrollingFlagsControl(
+                    mutableMapOf(
+                        toolbar to true,
+                        tabs to false
+                    )
+                )
             }
         }
     }
 
-    private fun setScrollingEnabled(isEnabled: Boolean) {
-        val params = toolbar.layoutParams as AppBarLayout.LayoutParams
-        params.scrollFlags =
-                if (isEnabled) AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS else 0
-
+    private fun scrollingFlagsControl(viewsEnable: MutableMap<View, Boolean>) {
+        app_bar.setExpanded(true, true)
+        val it = viewsEnable.iterator()
+        while (it.hasNext()) {
+            val pair = it.next() as Map.Entry<View, Boolean>
+            val viewParams = pair.key.layoutParams as AppBarLayout.LayoutParams
+            if (pair.value) {
+                viewParams.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or
+                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+            } else {
+                viewParams.scrollFlags = 0
+            }
+            it.remove()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -173,6 +194,7 @@ class AccountFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        initViewsLiveData.removeObservers(this)
         viewHandler.removeCallbacks(initViewsRunnable)
     }
 }
