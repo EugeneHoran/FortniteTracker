@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import fortnite.eugene.com.fortnitetracker.data.FortniteDatabase
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
-import fortnite.eugene.com.fortnitetracker.ui.account.matchhistory.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
 import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 
@@ -37,7 +37,9 @@ class AppFactory : ViewModelProvider.NewInstanceFactory {
                 ).build()
                 LoginViewModel(db.getUserAccountDao()) as T
             }
-            modelClass.isAssignableFrom(MatchHistoryViewModel::class.java) -> MatchHistoryViewModel(key) as T
+            modelClass.isAssignableFrom(MatchHistoryViewModel::class.java) -> MatchHistoryViewModel(
+                key
+            ) as T
             modelClass.isAssignableFrom(StatsViewModel::class.java) -> StatsViewModel(accountStats) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

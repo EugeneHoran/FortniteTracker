@@ -3,7 +3,7 @@ package fortnite.eugene.com.fortnitetracker.inject.component
 import dagger.Component
 import fortnite.eugene.com.fortnitetracker.inject.module.FortniteTrackerNetworkModule
 import fortnite.eugene.com.fortnitetracker.inject.module.HttpLoggingModule
-import fortnite.eugene.com.fortnitetracker.ui.account.matchhistory.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
 import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 import fortnite.eugene.com.fortnitetracker.ui.store.StoreViewModel

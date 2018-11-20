@@ -9,5 +9,4 @@
     <item
             android:id="@+id/toggle_season"
             android:title="Season 6"/>
-
 </menu>

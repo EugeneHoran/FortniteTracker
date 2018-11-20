@@ -1,15 +1,13 @@
 package fortnite.eugene.com.fortnitetracker.ui.account.stats
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import fortnite.eugene.com.fortnitetracker.base.BaseViewModel
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.model.stats.StatsInfo
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 
 
-class StatsViewModel(val accountStats: AccountStats) : ViewModel() {
-    var toggleStatsMatch: Int = Constants.TOGGLE_STATS
-
+class StatsViewModel(private val accountStats: AccountStats) : BaseViewModel() {
     var seasonToggle: Int = Constants.SEASON_COMBINED
     var soloStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var duoStats: MutableLiveData<StatsInfo> = MutableLiveData()

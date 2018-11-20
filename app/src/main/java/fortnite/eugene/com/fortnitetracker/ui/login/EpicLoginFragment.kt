@@ -2,52 +2,54 @@ package fortnite.eugene.com.fortnitetracker.ui.login
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
+import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
-import fortnite.eugene.com.fortnitetracker.ui.OnAccountListener
 import fortnite.eugene.com.fortnitetracker.utils.Constants
+import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class EpicLoginFragment : Fragment(),
+class EpicLoginFragment : BaseFragment<LoginViewModel>(),
     EpicAccountRecyclerAdapter.EpicAccountClickListener,
     Toolbar.OnMenuItemClickListener {
 
     companion object {
+        val TAG: String = EpicLoginFragment::class.java.simpleName
         @JvmStatic
         fun newInstance() = EpicLoginFragment()
     }
 
-    private var listener: OnAccountListener? = null
     private lateinit var loginViewModel: LoginViewModel
     private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
+    override val layoutId: Int = R.layout.fragment_login
+    override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
+    override fun getViewModel(): LoginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
+
+    override fun activityCreated(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
+        this.loginViewModel = viewModel
+        initToolbar(getString(R.string.search_player_stats), null, null)
+        observeUserData()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
+    override fun onDetached() {
+        getBaseActivity().onFragmentDetached(TAG)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setOnMenuItemClickListener(this)
+        getBaseActivity().toolbar.setOnMenuItemClickListener(this)
         btnSearch.setOnClickListener {
             searchAccount()
         }
         recyclerAccount.adapter = epicAccountRecyclerAdapter
-        observeUserData()
     }
 
     private fun searchAccount() {
@@ -66,13 +68,13 @@ class EpicLoginFragment : Fragment(),
     private fun observeUserData() {
         loginViewModel.userAccountList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.isNotEmpty()) toolbar.inflateMenu(R.menu.menu_accounts) else toolbar.menu.clear()
+                if (it.isNotEmpty()) getBaseActivity().toolbar.inflateMenu(R.menu.menu_accounts) else toolbar.menu.clear()
                 epicAccountRecyclerAdapter.setItems(it)
             }
         })
         loginViewModel.userStats.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.error == null) listener!!.onUserSignedIn(it)
+                if (it.error == null) getBaseActivity().onUserSignedIn(it)
             }
         })
         loginViewModel.error.observeSingleEvent(viewLifecycleOwner, Observer {
@@ -127,22 +129,4 @@ class EpicLoginFragment : Fragment(),
             else -> null
         }
     }
-
-    /**
-     * Interface imp
-     */
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnAccountListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
 }

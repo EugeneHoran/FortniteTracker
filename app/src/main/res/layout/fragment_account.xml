@@ -1,70 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.viewpager.widget.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/coordinator"
+        android:id="@+id/pagerStats"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.account.AccountFragment">
-
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:animateLayoutChanges="true"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?android:attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_search_24dp"
-                app:layout_scrollFlags="enterAlways|scroll"/>
-
-        <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
-                android:id="@+id/toggleButtonSeasons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:selectedColor="?attr/colorPrimaryDark"
-                android:layout_margin="12dp"
-                app:allowDeselection="false"
-                app:cardCornerRadius="3dp"
-                app:cardBackgroundColor="@color/colorPrimaryLight"
-                app:customLayout="@layout/view_toggle_button"
-                app:menu="@menu/toggle_season"
-                android:visibility="gone"/>
-
-        <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="@color/colorPrimary"
-                app:tabIndicatorColor="@color/colorAccent"
-                android:visibility="gone"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager.widget.ViewPager
-            android:id="@+id/pagerStats"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerCombined"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    <FrameLayout
-            android:id="@+id/containerMatches"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".ui.account.AccountFragment"/>

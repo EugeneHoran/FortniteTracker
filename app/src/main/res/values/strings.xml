@@ -24,4 +24,7 @@
     <string name="challenges">Challenges</string>
     <string name="account">Account</string>
     <string name="store">Store</string>
+    <string name="history">History</string>
+    <string name="stats">Stats</string>
+    <string name="item_shop">Item Shop</string>
 </resources>

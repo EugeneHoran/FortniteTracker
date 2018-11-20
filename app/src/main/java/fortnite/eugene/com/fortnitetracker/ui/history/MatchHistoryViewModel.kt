@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.matchhistory
+package fortnite.eugene.com.fortnitetracker.ui.history
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData

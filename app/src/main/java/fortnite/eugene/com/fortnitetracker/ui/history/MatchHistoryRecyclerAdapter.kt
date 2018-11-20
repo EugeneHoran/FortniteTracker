@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.matchhistory
+package fortnite.eugene.com.fortnitetracker.ui.history
 
 import android.view.LayoutInflater
 import android.view.View

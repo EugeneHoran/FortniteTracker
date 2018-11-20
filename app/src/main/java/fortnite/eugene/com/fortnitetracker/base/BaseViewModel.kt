@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import fortnite.eugene.com.fortnitetracker.inject.component.DaggerViewModelInjector
 import fortnite.eugene.com.fortnitetracker.inject.component.ViewModelInjector
 import fortnite.eugene.com.fortnitetracker.inject.module.FortniteTrackerNetworkModule
-import fortnite.eugene.com.fortnitetracker.ui.account.matchhistory.MatchHistoryViewModel
+import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
 import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 import fortnite.eugene.com.fortnitetracker.ui.store.StoreViewModel

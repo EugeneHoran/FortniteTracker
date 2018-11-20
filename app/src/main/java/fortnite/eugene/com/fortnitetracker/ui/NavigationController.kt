@@ -7,21 +7,17 @@ import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.account.AccountFragment
 import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesFragment
+import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 import fortnite.eugene.com.fortnitetracker.ui.store.StoreFragment
-
-
-private const val FRAG_LOGIN = "frag_login"
-private const val FRAG_STATS_MAIN = "frag_stats_main"
-private const val FRAG_NEWS = "frag_news"
-private const val FRAG_STORE = "frag_store"
 
 class NavigationController(
     savedInstanceState: Bundle?,
     private var fm: FragmentManager,
     var loginViewModel: LoginViewModel
 ) {
+
     private var container: Int = R.id.container
 
     init {
@@ -32,7 +28,7 @@ class NavigationController(
 
     fun bottomNavController(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.navigation_account -> {
+            R.id.navigation_stats -> {
                 if (loginViewModel.userStats.value == null) {
                     navLoginFragment()
                 } else {
@@ -40,12 +36,28 @@ class NavigationController(
                 }
                 return true
             }
-            R.id.navigation_news -> {
-                navChallengesFragment()
+            R.id.navigation_history -> {
+                if (loginViewModel.userStats.value == null) {
+                    navLoginFragment()
+                } else {
+                    navHistoryFragment(
+                        loginViewModel.userStats.value!!.accountId!!,
+                        loginViewModel.userStats.value!!.epicUserHandle!!
+                    )
+                }
                 return true
             }
-            R.id.navigation_store -> {
-                navStoreFragment()
+            R.id.navigation_challenges -> {
+                fm.beginTransaction().apply {
+                    replace(container, ChallengesFragment.newInstance(), ChallengesFragment.TAG)
+                    commit()
+                }
+                return true
+            }
+            R.id.navigation_item_shop -> {
+                fm.beginTransaction().apply {
+                    replace(container, StoreFragment.newInstance(), StoreFragment.TAG)
+                }.commit()
                 return true
             }
         }
@@ -54,28 +66,22 @@ class NavigationController(
 
     fun navLoginFragment() {
         fm.beginTransaction().apply {
-            replace(container, EpicLoginFragment.newInstance(), FRAG_LOGIN)
+            replace(container, EpicLoginFragment.newInstance(), EpicLoginFragment.TAG)
             commit()
         }
     }
 
     fun navStatsFragment(accountStats: AccountStats) {
         fm.beginTransaction().apply {
-            replace(container, AccountFragment.newInstance(accountStats), FRAG_STATS_MAIN)
+            replace(container, AccountFragment.newInstance(accountStats), AccountFragment.TAG)
             commit()
         }
     }
 
-    fun navChallengesFragment() {
+    fun navHistoryFragment(accountId: String, displayName: String) {
         fm.beginTransaction().apply {
-            replace(container, ChallengesFragment.newInstance(), FRAG_NEWS)
+            replace(container, MatchHistoryFragment.newInstance(accountId, displayName), MatchHistoryFragment.TAG)
             commit()
         }
-    }
-
-    fun navStoreFragment() {
-        fm.beginTransaction().apply {
-            replace(container, StoreFragment.newInstance(), FRAG_STORE)
-        }.commit()
     }
 }

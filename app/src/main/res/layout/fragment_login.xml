@@ -8,66 +8,44 @@
         android:layout_height="match_parent"
         tools:context=".ui.login.EpicLoginFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
+    <LinearLayout
+            android:id="@+id/linearLayoutHide"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:animateLayoutChanges="true">
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+        <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
+                android:id="@+id/toggleButtonPlatform"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                app:title="@string/search_player_stats"/>
+                android:layout_height="wrap_content"
+                app:selectedColor="?attr/colorPrimaryDark"
+                android:layout_margin="12dp"
+                app:allowDeselection="false"
+                app:cardCornerRadius="3dp"
+                app:cardBackgroundColor="@color/colorPrimaryLight"
+                app:customLayout="@layout/view_toggle_button"
+                app:menu="@menu/toggle_console"
+                app:toggleMode="even"/>
 
-        <LinearLayout
-                android:id="@+id/linearLayoutHide"
-                android:orientation="vertical"
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEpicUserName"
+                android:hint="@string/epic_username"
+                android:layout_margin="12dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"/>
 
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorPrimaryLight"
-                    android:layout_marginBottom="12dp"
-                    android:focusableInTouchMode="true"/>
-
-            <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
-                    android:id="@+id/toggleButtonPlatform"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:selectedColor="?attr/colorPrimaryDark"
-                    android:layout_margin="12dp"
-                    app:allowDeselection="false"
-                    app:cardCornerRadius="3dp"
-                    app:cardBackgroundColor="@color/colorPrimaryLight"
-                    app:customLayout="@layout/view_toggle_button"
-                    app:menu="@menu/toggle_console"
-                    app:toggleMode="even"/>
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextEpicUserName"
-                    android:hint="@string/epic_username"
-                    android:layout_margin="12dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSearch"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    app:icon="@drawable/ic_search_24dp"
-                    app:iconTint="@android:color/black"
-                    app:iconGravity="textStart"
-                    android:text="@string/search"
-                    android:textColor="@android:color/black"/>
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSearch"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:icon="@drawable/ic_search_24dp"
+                app:iconTint="@android:color/black"
+                app:iconGravity="textStart"
+                android:text="@string/search"
+                android:textColor="@android:color/black"/>
+    </LinearLayout>
 
     <RelativeLayout
             android:layout_width="match_parent"

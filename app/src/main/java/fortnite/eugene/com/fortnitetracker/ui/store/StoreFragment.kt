@@ -1,35 +1,33 @@
 package fortnite.eugene.com.fortnitetracker.ui.store
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import fortnite.eugene.com.fortnitetracker.R
-import kotlinx.android.synthetic.main.fragment_store.*
+import fortnite.eugene.com.fortnitetracker.base.BaseFragment
+import fortnite.eugene.com.fortnitetracker.utils.Constants
+import kotlinx.android.synthetic.main.view_recycler_progress.*
 
 
-class StoreFragment : Fragment() {
-
+class StoreFragment : BaseFragment<StoreViewModel>() {
     companion object {
+        val TAG: String = StoreFragment::class.java.simpleName
         @JvmStatic
         fun newInstance() = StoreFragment()
     }
 
-    private lateinit var storeViewModel: StoreViewModel
     private val storeAdapter = StoreRecyclerAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        storeViewModel = ViewModelProviders.of(this).get(StoreViewModel::class.java)
-    }
+    override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
+    override val layoutId: Int = R.layout.view_recycler_progress
+    override fun getViewModel(): StoreViewModel = ViewModelProviders.of(this).get(StoreViewModel::class.java)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_store, container, false)
+    override fun activityCreated(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
+        initToolbar("Item Shop", null, R.drawable.ic_store)
+        observeData(viewModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,9 +42,8 @@ class StoreFragment : Fragment() {
                 }
             }
         }
-        recyclerStore.layoutManager = glm
-        recyclerStore.adapter = storeAdapter
-        observeData(storeViewModel)
+        recyclerView.layoutManager = glm
+        recyclerView.adapter = storeAdapter
     }
 
     private fun observeData(storeViewModel: StoreViewModel) {
@@ -63,14 +60,17 @@ class StoreFragment : Fragment() {
         })
     }
 
-
     private fun dismissLoading() {
-        pbLoadingStore.visibility = View.INVISIBLE
-        recyclerStore.visibility = View.VISIBLE
+        pbLoadingView.visibility = View.INVISIBLE
+        recyclerView.visibility = View.VISIBLE
     }
 
     private fun showLoading() {
-        pbLoadingStore.visibility = View.VISIBLE
-        recyclerStore.visibility = View.INVISIBLE
+        pbLoadingView.visibility = View.VISIBLE
+        recyclerView.visibility = View.INVISIBLE
+    }
+
+    override fun onDetached() {
+        getBaseActivity().onFragmentDetached(TAG)
     }
 }

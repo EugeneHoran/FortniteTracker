@@ -1,51 +1,72 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.matchhistory
+package fortnite.eugene.com.fortnitetracker.ui.history
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import fortnite.eugene.com.fortnitetracker.R
+import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
+import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.fortnitetracker.utils.sticky_headers.StickyHeadersLinearLayoutManager
 import kotlinx.android.synthetic.main.layout_recycler.*
 
 
-private const val ARG_PARAM1 = "param1"
+private const val ARG_ACCOUNT_ID = "param_account_id"
+private const val ARG_DISPLAY_NAME = "param_display_name"
 
-class MatchHistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefreshLayout.OnRefreshListener {
     companion object {
+        val TAG: String = MatchHistoryFragment::class.java.simpleName
         @JvmStatic
-        fun newInstance(param1: String) = MatchHistoryFragment().apply {
+        fun newInstance(accountId: String, displayName: String) = MatchHistoryFragment().apply {
             arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
+                putString(ARG_ACCOUNT_ID, accountId)
+                putString(ARG_DISPLAY_NAME, displayName)
             }
         }
     }
 
-    private var param1: String? = null
+    private var accountId: String? = null
+    private var displayName: String? = null
     private lateinit var matchHistoryViewModel: MatchHistoryViewModel
 
+
+    override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
+    override val layoutId: Int = R.layout.layout_recycler
+
+    override fun getViewModel(): MatchHistoryViewModel =
+        ViewModelProviders.of(this, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
+
+    override fun activityCreated(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
+        this.matchHistoryViewModel = viewModel
+        observeMatchHistory(viewModel)
+    }
+
+    override fun onDetached() {
+        getBaseActivity().onFragmentDetached(TAG)
+    }
+
     private var matchHistoryAdapter = MatchHistoryRecyclerAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            accountId = it.getString(ARG_ACCOUNT_ID)
+            displayName = it.getString(ARG_DISPLAY_NAME)
         }
-        matchHistoryViewModel = ViewModelProviders.of(this, AppFactory(param1!!)).get(MatchHistoryViewModel::class.java)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_recycler, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initToolbar(
+            "Match History",
+            displayName,
+            R.drawable.ic_search_24dp
+        )!!.setNavigationOnClickListener { getBaseActivity().onSearchClicked() }
         val mLinearLayoutManager = StickyHeadersLinearLayoutManager<MatchHistoryRecyclerAdapter>(
             activity!!,
             RecyclerView.VERTICAL,
@@ -56,7 +77,6 @@ class MatchHistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         recyclerView.addItemDecoration(DividerItemDecoration(context!!, RecyclerView.VERTICAL))
         recyclerView.adapter = matchHistoryAdapter
         swipe_container.setOnRefreshListener(this)
-        observeMatchHistory()
     }
 
     override fun onRefresh() {
@@ -64,7 +84,7 @@ class MatchHistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         matchHistoryViewModel.refreshData()
     }
 
-    private fun observeMatchHistory() {
+    private fun observeMatchHistory(matchHistoryViewModel: MatchHistoryViewModel) {
         matchHistoryViewModel.matchHistory.observe(this, Observer {
             matchHistoryAdapter.setItemList(it!!)
         })
@@ -79,4 +99,5 @@ class MatchHistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         })
     }
+
 }
