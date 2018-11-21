@@ -3,12 +3,11 @@ package fortnite.eugene.com.fortnitetracker.ui.account
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 
-class AccountPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class StatsPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     private val tabTitles = arrayOf("Solo", "Duo", "Squads")
-    private var fragments: Array<StatFragment?>? = null
+    private var fragments: Array<StatChildFragment?>? = null
 
     override fun getItem(position: Int): Fragment {
         if (fragments != null && fragments!!.size > position && fragments!![position] != null) {
@@ -19,11 +18,11 @@ class AccountPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         }
         when (position) {
             Constants.TAB_SOLO -> fragments!![Constants.TAB_SOLO] =
-                    StatFragment.newInstance(position)
+                    StatChildFragment.newInstance(position)
             Constants.TAB_DUO -> fragments!![Constants.TAB_DUO] =
-                    StatFragment.newInstance(position)
+                    StatChildFragment.newInstance(position)
             Constants.TAB_SQUADS -> fragments!![Constants.TAB_SQUADS] =
-                    StatFragment.newInstance(position)
+                    StatChildFragment.newInstance(position)
         }
         return fragments!![position]!!
     }

@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.stats
+package fortnite.eugene.com.fortnitetracker.ui.account
 
 
 import android.os.Bundle
@@ -15,12 +15,12 @@ import kotlinx.android.synthetic.main.layout_recycler.*
 
 private const val ARG_TAB = "param_tab"
 
-class StatFragment : BaseFragment<StatsViewModel>() {
+class StatChildFragment : BaseFragment<StatsViewModel>() {
     companion object {
-        val TAG: String = StatFragment::class.java.simpleName
+        val TAG: String = StatChildFragment::class.java.simpleName
         @JvmStatic
         fun newInstance(tab: Int) =
-            StatFragment().apply {
+            StatChildFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_TAB, tab)
                 }

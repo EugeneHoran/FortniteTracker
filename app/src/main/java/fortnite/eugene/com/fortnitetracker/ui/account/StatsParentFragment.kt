@@ -3,14 +3,11 @@ package fortnite.eugene.com.fortnitetracker.ui.account
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
-import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsSummaryRecyclerAdapter
-import fortnite.eugene.com.fortnitetracker.ui.account.stats.StatsViewModel
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -18,12 +15,12 @@ import kotlinx.android.synthetic.main.fragment_account.*
 
 private const val ARG_STATS = "param_stats"
 
-class AccountFragment : BaseFragment<StatsViewModel>() {
+class StatsParentFragment : BaseFragment<StatsViewModel>() {
     companion object {
-        val TAG: String = AccountFragment::class.java.simpleName
+        val TAG: String = StatsParentFragment::class.java.simpleName
         @JvmStatic
         fun newInstance(param_stats: AccountStats) =
-            AccountFragment().apply {
+            StatsParentFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_STATS, param_stats)
                 }
@@ -32,8 +29,8 @@ class AccountFragment : BaseFragment<StatsViewModel>() {
 
     private lateinit var accountStats: AccountStats
     private lateinit var statsViewModel: StatsViewModel
-    private lateinit var accountPagerAdapter: AccountPagerAdapter
-    private lateinit var summaryRecyclerViewPager: StatsSummaryRecyclerViewPager
+    private lateinit var statsPagerAdapter: StatsPagerAdapter
+    private lateinit var summaryRecyclerViewPager: StatsSummaryPagerAdapter
 
     private var toggleButtonSeasons: ToggleButtonLayout? = null
     private var tabs: TabLayout? = null
@@ -57,12 +54,11 @@ class AccountFragment : BaseFragment<StatsViewModel>() {
         initToolbar(
             getString(R.string.stats),
             accountStats.epicUserHandle,
-            R.drawable.ic_search_24dp
-        )!!.setNavigationOnClickListener { getBaseActivity().onSearchClicked() }
-        summaryRecyclerViewPager = StatsSummaryRecyclerViewPager(
-            context!!,
-            StatsSummaryRecyclerAdapter(accountStats.lifeTimeStats!!.reversed())
+            accountStats.getLogoInt()
         )
+
+        getBaseActivity().inflateMenu(R.menu.menu_search)
+        summaryRecyclerViewPager = StatsSummaryPagerAdapter(context!!, accountStats.lifeTimeStats!!.reversed())
         toggleButtonSeasons!!.visibility = View.VISIBLE
     }
 
@@ -73,7 +69,7 @@ class AccountFragment : BaseFragment<StatsViewModel>() {
             statsViewModel.updateStatFragments(toggle.position)
             handleViews()
         }
-        accountPagerAdapter = AccountPagerAdapter(childFragmentManager)
+        statsPagerAdapter = StatsPagerAdapter(childFragmentManager)
         handleViews()
     }
 
@@ -84,17 +80,13 @@ class AccountFragment : BaseFragment<StatsViewModel>() {
                 tabs!!.visibility = View.GONE
                 tabs!!.setupWithViewPager(null)
                 pagerStats.adapter = summaryRecyclerViewPager
+                getBaseActivity().inflateMenu(R.menu.menu_search)
             }
             Constants.SEASON_LIFETIME, Constants.SEASON_CURRENT -> {
                 getBaseActivity().updateScrollFlags(Constants.SCROLL_FLAG_TOGGLE_TABS)
                 tabs!!.visibility = View.VISIBLE
-                if (pagerStats.adapter != accountPagerAdapter) {
-                    pagerStats.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-                        override fun onPageSelected(position: Int) {
-
-                        }
-                    })
-                    pagerStats.adapter = accountPagerAdapter
+                if (pagerStats.adapter != statsPagerAdapter) {
+                    pagerStats.adapter = statsPagerAdapter
                     tabs!!.setupWithViewPager(pagerStats)
                 }
             }

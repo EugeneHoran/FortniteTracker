@@ -1,24 +1,18 @@
 package fortnite.eugene.com.fortnitetracker.ui.login
 
-import android.content.Context
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
 import fortnite.eugene.com.fortnitetracker.utils.Constants
-import kotlinx.android.synthetic.main.activity_main2.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class EpicLoginFragment : BaseFragment<LoginViewModel>(),
-    EpicAccountRecyclerAdapter.EpicAccountClickListener,
-    Toolbar.OnMenuItemClickListener {
+    EpicAccountRecyclerAdapter.EpicAccountClickListener {
 
     companion object {
         val TAG: String = EpicLoginFragment::class.java.simpleName
@@ -45,7 +39,6 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getBaseActivity().toolbar.setOnMenuItemClickListener(this)
         btnSearch.setOnClickListener {
             searchAccount()
         }
@@ -53,7 +46,7 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
     }
 
     private fun searchAccount() {
-        editTextEpicUserName.hideKeyboard()
+        getBaseActivity().hideKeyboard()
         if (getEpicName().isNullOrBlank()) {
             Toast.makeText(context, getString(R.string.enter_epic_username), Toast.LENGTH_SHORT).show()
             return
@@ -68,7 +61,9 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
     private fun observeUserData() {
         loginViewModel.userAccountList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.isNotEmpty()) getBaseActivity().toolbar.inflateMenu(R.menu.menu_accounts) else toolbar.menu.clear()
+                if (it.isNotEmpty()) {
+                    getBaseActivity().inflateMenu(R.menu.menu_accounts)
+                }
                 epicAccountRecyclerAdapter.setItems(it)
             }
         })
@@ -88,15 +83,6 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         })
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            R.id.menu_clear -> {
-                loginViewModel.clearSearchHistory()
-            }
-        }
-        return true
-    }
-
     /**
      * View Helpers
      */
@@ -110,11 +96,6 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         linearLayoutHide.visibility = View.VISIBLE
         pbLoading.visibility = View.GONE
         recyclerAccount.visibility = View.VISIBLE
-    }
-
-    private fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun getEpicName(): String? {

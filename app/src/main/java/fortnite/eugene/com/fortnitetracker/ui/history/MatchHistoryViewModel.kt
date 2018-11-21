@@ -26,8 +26,8 @@ class MatchHistoryViewModel(private val accountId: String) : BaseViewModel() {
             if (it != null) {
                 if (it.error != null) {
                 } else {
-                    matchHistory.value = getMatchHistoryDisplayData(it.resource!!.sortedByDescending { match ->
-                        match.getDate()
+                    matchHistory.value = getMatchHistoryDisplayData(it.resource!!.sortedByDescending { matchHistory ->
+                        matchHistory.dateCollected
                     })
                 }
             }
@@ -40,7 +40,7 @@ class MatchHistoryViewModel(private val accountId: String) : BaseViewModel() {
         if (matchHistoryList.isEmpty()) {
             return matchGroupList
         }
-        val groupHistoryByDate = matchHistoryList.groupBy { it.getDateClean() }
+        val groupHistoryByDate = matchHistoryList.groupBy { it.getFilteredDateFormat() }
         groupHistoryByDate.forEach {
             val matchHistoryHeader = MatchHistoryHeader(it.key.toString(), it.key!!)
             it.value.forEach { match ->

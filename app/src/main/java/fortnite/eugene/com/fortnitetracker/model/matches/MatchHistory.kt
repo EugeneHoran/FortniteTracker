@@ -1,5 +1,6 @@
 package fortnite.eugene.com.fortnitetracker.model.matches
 
+import android.annotation.SuppressLint
 import com.google.gson.annotations.SerializedName
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -36,18 +37,13 @@ data class MatchHistory(
     @SerializedName("trnRating")
     val trnRating: Double?
 ) : MatchHistoryItem() {
-    fun getDateClean(): Date? = try {
+
+    @SuppressLint("SimpleDateFormat")
+    fun getFilteredDateFormat(): Date? = try {
         SimpleDateFormat("yyyy-MM-dd").parse(dateCollected!!.split("T")[0])
     } catch (exception: Exception) {
         null
     }
-
-    fun getDate(): Date? = try {
-        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse(dateCollected)
-    } catch (exception: Exception) {
-        null
-    }
-
 
     fun getKd(): String {
         val kd = kills!!.toFloat().div(matches!! - top1!!)

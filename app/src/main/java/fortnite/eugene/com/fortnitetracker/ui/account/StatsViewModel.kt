@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.stats
+package fortnite.eugene.com.fortnitetracker.ui.account
 
 import androidx.lifecycle.MutableLiveData
 import fortnite.eugene.com.fortnitetracker.base.BaseViewModel

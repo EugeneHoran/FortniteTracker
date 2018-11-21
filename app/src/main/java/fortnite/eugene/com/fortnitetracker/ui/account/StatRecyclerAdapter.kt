@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account.stats
+package fortnite.eugene.com.fortnitetracker.ui.account
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

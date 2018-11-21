@@ -19,7 +19,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?android:attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_search_24dp"
                 app:layout_scrollFlags="enterAlways|scroll"/>
 
@@ -60,7 +59,9 @@
             android:visibility="visible"
             app:elevation="8dp"
             android:background="@color/colorPrimary"
-            app:menu="@menu/navigation"
+            app:menu="@menu/navigation_logged_out"
+            app:itemIconTint="@drawable/bottom_nav_colors"
+            app:itemTextColor="@drawable/bottom_nav_colors"
             app:labelVisibilityMode="labeled"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

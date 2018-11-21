@@ -1,10 +1,15 @@
 package fortnite.eugene.com.fortnitetracker.base
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
+import fortnite.eugene.com.fortnitetracker.R
 
 
 abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
@@ -23,6 +28,9 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+        }
         viewModel = getViewModel()
     }
 
@@ -45,6 +53,17 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
                 viewParams.scrollFlags = 0
             }
             it.remove()
+        }
+    }
+
+
+    fun hideKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(
+                view.windowToken,
+                0
+            )
         }
     }
 }

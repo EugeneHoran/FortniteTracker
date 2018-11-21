@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="fortnite.eugene.com.fortnitetracker"
-          tools:ignore="GoogleAppIndexingWarning">
+          package="fortnite.eugene.com.fortnitetracker">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-            android:name="fortnite.eugene.com.fortnitetracker.App"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"

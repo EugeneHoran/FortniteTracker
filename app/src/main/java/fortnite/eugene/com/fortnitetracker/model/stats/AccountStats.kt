@@ -3,6 +3,7 @@ package fortnite.eugene.com.fortnitetracker.model.stats
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
 import java.util.*
 
@@ -26,6 +27,10 @@ data class AccountStats(
             platformNameLong!!,
             Date().time
         )
+    }
+
+    fun getLogoInt(): Int {
+        return mapOf(1 to R.drawable.ic_xbox, 2 to R.drawable.ic_playstation, 3 to R.drawable.ic_pc)[platformId]!!
     }
 
     constructor(parcel: Parcel) : this(

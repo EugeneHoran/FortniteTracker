@@ -17,21 +17,24 @@ import kotlinx.android.synthetic.main.layout_recycler.*
 
 private const val ARG_ACCOUNT_ID = "param_account_id"
 private const val ARG_DISPLAY_NAME = "param_display_name"
+private const val ARG_DISPLAY_LOGO = "param_display_logo"
 
 class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefreshLayout.OnRefreshListener {
     companion object {
         val TAG: String = MatchHistoryFragment::class.java.simpleName
         @JvmStatic
-        fun newInstance(accountId: String, displayName: String) = MatchHistoryFragment().apply {
+        fun newInstance(accountId: String, displayName: String, displayLogo: Int) = MatchHistoryFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_ACCOUNT_ID, accountId)
                 putString(ARG_DISPLAY_NAME, displayName)
+                putInt(ARG_DISPLAY_LOGO, displayLogo)
             }
         }
     }
 
     private var accountId: String? = null
     private var displayName: String? = null
+    private var logoInt: Int? = null
     private lateinit var matchHistoryViewModel: MatchHistoryViewModel
 
 
@@ -57,16 +60,18 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
         arguments?.let {
             accountId = it.getString(ARG_ACCOUNT_ID)
             displayName = it.getString(ARG_DISPLAY_NAME)
+            logoInt = it.getInt(ARG_DISPLAY_LOGO)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getBaseActivity().inflateMenu(R.menu.menu_search)
         initToolbar(
             "Match History",
             displayName,
-            R.drawable.ic_search_24dp
-        )!!.setNavigationOnClickListener { getBaseActivity().onSearchClicked() }
+            logoInt
+        )
         val mLinearLayoutManager = StickyHeadersLinearLayoutManager<MatchHistoryRecyclerAdapter>(
             activity!!,
             RecyclerView.VERTICAL,

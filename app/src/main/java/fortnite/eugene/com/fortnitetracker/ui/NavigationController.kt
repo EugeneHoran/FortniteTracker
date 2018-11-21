@@ -2,10 +2,13 @@ package fortnite.eugene.com.fortnitetracker.ui
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
-import fortnite.eugene.com.fortnitetracker.ui.account.AccountFragment
+import fortnite.eugene.com.fortnitetracker.ui.account.StatsParentFragment
 import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesFragment
 import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginFragment
@@ -15,7 +18,8 @@ import fortnite.eugene.com.fortnitetracker.ui.store.StoreFragment
 class NavigationController(
     savedInstanceState: Bundle?,
     private var fm: FragmentManager,
-    var loginViewModel: LoginViewModel
+    var loginViewModel: LoginViewModel,
+    var lifecycleOwner: LifecycleOwner
 ) {
 
     private var container: Int = R.id.container
@@ -23,41 +27,41 @@ class NavigationController(
     init {
         if (savedInstanceState == null) {
             navLoginFragment()
+            loginViewModel.userAccount.observe(lifecycleOwner, Observer {
+                if (it != null) {
+                    loginViewModel.getUserStats(it.platformName, it.epicUserHandle)
+                } else {
+                    navLoginFragment()
+                }
+                loginViewModel.userAccount.removeObservers(lifecycleOwner)
+            })
         }
     }
 
     fun bottomNavController(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.navigation_search_player -> {
+                navLoginFragment()
+                return true
+            }
             R.id.navigation_stats -> {
-                if (loginViewModel.userStats.value == null) {
-                    navLoginFragment()
-                } else {
-                    navStatsFragment(loginViewModel.userStats.value!!)
-                }
+                navStatsFragment(loginViewModel.userStats.value!!)
                 return true
             }
             R.id.navigation_history -> {
-                if (loginViewModel.userStats.value == null) {
-                    navLoginFragment()
-                } else {
-                    navHistoryFragment(
-                        loginViewModel.userStats.value!!.accountId!!,
-                        loginViewModel.userStats.value!!.epicUserHandle!!
-                    )
-                }
+                MatchHistoryFragment.newInstance(
+                    loginViewModel.userStats.value!!.accountId!!,
+                    loginViewModel.userStats.value!!.epicUserHandle!!,
+                    loginViewModel.userStats.value!!.getLogoInt()
+                ).replaceFragment(MatchHistoryFragment.TAG)
                 return true
             }
             R.id.navigation_challenges -> {
-                fm.beginTransaction().apply {
-                    replace(container, ChallengesFragment.newInstance(), ChallengesFragment.TAG)
-                    commit()
-                }
+                ChallengesFragment.newInstance().replaceFragment(ChallengesFragment.TAG)
                 return true
             }
             R.id.navigation_item_shop -> {
-                fm.beginTransaction().apply {
-                    replace(container, StoreFragment.newInstance(), StoreFragment.TAG)
-                }.commit()
+                StoreFragment.newInstance().replaceFragment(StoreFragment.TAG)
                 return true
             }
         }
@@ -65,22 +69,17 @@ class NavigationController(
     }
 
     fun navLoginFragment() {
-        fm.beginTransaction().apply {
-            replace(container, EpicLoginFragment.newInstance(), EpicLoginFragment.TAG)
-            commit()
-        }
+        EpicLoginFragment.newInstance().replaceFragment(EpicLoginFragment.TAG)
     }
 
     fun navStatsFragment(accountStats: AccountStats) {
-        fm.beginTransaction().apply {
-            replace(container, AccountFragment.newInstance(accountStats), AccountFragment.TAG)
-            commit()
-        }
+        StatsParentFragment.newInstance(accountStats).replaceFragment(StatsParentFragment.TAG)
     }
 
-    fun navHistoryFragment(accountId: String, displayName: String) {
+    private fun Fragment.replaceFragment(tag: String?) {
+        val frag = this
         fm.beginTransaction().apply {
-            replace(container, MatchHistoryFragment.newInstance(accountId, displayName), MatchHistoryFragment.TAG)
+            replace(container, frag, tag)
             commit()
         }
     }

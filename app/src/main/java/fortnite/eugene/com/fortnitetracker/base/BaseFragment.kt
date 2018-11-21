@@ -22,6 +22,7 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
 
         fun onUserSignedIn(accountStats: AccountStats)
         fun onSearchClicked()
+        fun inflateMenu(menuId: Int?)
     }
 
     private var baseActivity: BaseActivity<*>? = null
@@ -48,7 +49,6 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
             val toolbar = baseActivity!!.findViewById<Toolbar>(R.id.toolbar)
             if (toolbar != null) {
                 toolbar.setNavigationOnClickListener(null)
-                toolbar.setOnMenuItemClickListener(null)
                 toolbar.menu.clear()
             }
         }
@@ -69,12 +69,11 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
         return inflater.inflate(layoutId, container, false)
     }
 
-
     fun initToolbar(
         title: String? = null,
         subTitle: String? = null,
         navIcon: Int? = null
-    ): Toolbar? {
+    ) {
         if (baseActivity != null) {
             val toolbar = baseActivity!!.findViewById<Toolbar>(R.id.toolbar)
             if (toolbar != null) {
@@ -86,8 +85,6 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
                     toolbar.navigationIcon = ContextCompat.getDrawable(context!!, navIcon)
                 }
             }
-            return toolbar
         }
-        return null
     }
 }
