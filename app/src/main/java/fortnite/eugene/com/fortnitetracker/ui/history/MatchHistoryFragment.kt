@@ -44,13 +44,9 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
     override fun getViewModel(): MatchHistoryViewModel =
         ViewModelProviders.of(this, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
 
-    override fun activityCreated(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
+    override fun initViewModel(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
         this.matchHistoryViewModel = viewModel
         observeMatchHistory(viewModel)
-    }
-
-    override fun onDetached() {
-        getBaseActivity().onFragmentDetached(TAG)
     }
 
     private var matchHistoryAdapter = MatchHistoryRecyclerAdapter()
@@ -66,7 +62,7 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getBaseActivity().inflateMenu(R.menu.menu_search)
+        getBaseActivity().onInflateMenu(R.menu.menu_search)
         initToolbar(
             "Match History",
             displayName,

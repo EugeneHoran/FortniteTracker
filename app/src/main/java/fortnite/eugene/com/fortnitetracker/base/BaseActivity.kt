@@ -15,8 +15,12 @@ import fortnite.eugene.com.fortnitetracker.R
 abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     BaseFragment.Callback {
 
+    /**
+     * @return layout resource id
+     */
     @get:LayoutRes
     abstract val layoutId: Int
+
     private lateinit var viewModel: V
     /**
      * Override for set view model

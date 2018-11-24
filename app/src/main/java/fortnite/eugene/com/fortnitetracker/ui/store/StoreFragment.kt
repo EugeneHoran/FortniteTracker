@@ -19,14 +19,14 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
         fun newInstance() = StoreFragment()
     }
 
+    override val layoutId: Int = R.layout.view_recycler_progress
+    override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
+    override fun getViewModel() = ViewModelProviders.of(this).get(StoreViewModel::class.java)
+
     private val storeAdapter = StoreRecyclerAdapter()
 
-    override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
-    override val layoutId: Int = R.layout.view_recycler_progress
-    override fun getViewModel(): StoreViewModel = ViewModelProviders.of(this).get(StoreViewModel::class.java)
-
-    override fun activityCreated(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
-        initToolbar("Item Shop", null, R.drawable.ic_store)
+    override fun initViewModel(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
+        initToolbar(getString(R.string.item_shop), null, R.drawable.ic_store)
         observeData(viewModel)
     }
 
@@ -68,9 +68,5 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
     private fun showLoading() {
         pbLoadingView.visibility = View.VISIBLE
         recyclerView.visibility = View.INVISIBLE
-    }
-
-    override fun onDetached() {
-        getBaseActivity().onFragmentDetached(TAG)
     }
 }

@@ -25,16 +25,16 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
 
     override val layoutId: Int = R.layout.fragment_login
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
-    override fun getViewModel(): LoginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
 
-    override fun activityCreated(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
-        this.loginViewModel = viewModel
-        initToolbar(getString(R.string.search_player_stats), null, null)
-        observeUserData()
+
+    override fun getViewModel(): LoginViewModel {
+        loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
+        return loginViewModel
     }
 
-    override fun onDetached() {
-        getBaseActivity().onFragmentDetached(TAG)
+    override fun initViewModel(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
+        initToolbar(getString(R.string.search_player_stats), null, null)
+        observeUserData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,14 +62,14 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         loginViewModel.userAccountList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isNotEmpty()) {
-                    getBaseActivity().inflateMenu(R.menu.menu_accounts)
+                    getBaseActivity().onInflateMenu(R.menu.menu_accounts)
                 }
                 epicAccountRecyclerAdapter.setItems(it)
             }
         })
         loginViewModel.userStats.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.error == null) getBaseActivity().onUserSignedIn(it)
+                if (it.error == null) getBaseActivity().onLogin(it)
             }
         })
         loginViewModel.error.observeSingleEvent(viewLifecycleOwner, Observer {

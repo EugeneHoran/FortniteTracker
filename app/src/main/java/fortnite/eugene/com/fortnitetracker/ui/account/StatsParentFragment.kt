@@ -37,6 +37,7 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
 
     override val layoutId: Int = R.layout.fragment_account
     override val scrollFlags: Int? = null
+
     override fun getViewModel(): StatsViewModel = ViewModelProviders.of(this, AppFactory(accountStats))
         .get(StatsViewModel::class.java)
 
@@ -57,12 +58,12 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
             accountStats.getLogoInt()
         )
 
-        getBaseActivity().inflateMenu(R.menu.menu_search)
+        getBaseActivity().onInflateMenu(R.menu.menu_search)
         summaryRecyclerViewPager = StatsSummaryPagerAdapter(context!!, accountStats.lifeTimeStats!!.reversed())
         toggleButtonSeasons!!.visibility = View.VISIBLE
     }
 
-    override fun activityCreated(savedInstanceState: Bundle?, viewModel: StatsViewModel) {
+    override fun initViewModel(savedInstanceState: Bundle?, viewModel: StatsViewModel) {
         statsViewModel = viewModel
         toggleButtonSeasons!!.setToggled(toggleButtonSeasons!!.toggles[statsViewModel.seasonToggle].id, true)
         toggleButtonSeasons!!.onToggledListener = { toggle, _ ->
@@ -76,14 +77,14 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
     private fun handleViews() {
         when (statsViewModel.seasonToggle) {
             Constants.SEASON_COMBINED -> {
-                getBaseActivity().updateScrollFlags(Constants.SCROLL_FLAG_TOGGLE)
+                getBaseActivity().onUpdateScrollFlags(Constants.SCROLL_FLAG_TOGGLE)
                 tabs!!.visibility = View.GONE
                 tabs!!.setupWithViewPager(null)
                 pagerStats.adapter = summaryRecyclerViewPager
-                getBaseActivity().inflateMenu(R.menu.menu_search)
+                getBaseActivity().onInflateMenu(R.menu.menu_search)
             }
             Constants.SEASON_LIFETIME, Constants.SEASON_CURRENT -> {
-                getBaseActivity().updateScrollFlags(Constants.SCROLL_FLAG_TOGGLE_TABS)
+                getBaseActivity().onUpdateScrollFlags(Constants.SCROLL_FLAG_TOGGLE_TABS)
                 tabs!!.visibility = View.VISIBLE
                 if (pagerStats.adapter != statsPagerAdapter) {
                     pagerStats.adapter = statsPagerAdapter
@@ -93,12 +94,12 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
         }
     }
 
-    override fun onDetached() {
+    override fun onDetach() {
         toggleButtonSeasons!!.onToggledListener = null
         toggleButtonSeasons!!.visibility = View.GONE
         tabs!!.visibility = View.GONE
         toggleButtonSeasons = null
         tabs = null
-        getBaseActivity().onFragmentDetached(TAG)
+        super.onDetach()
     }
 }

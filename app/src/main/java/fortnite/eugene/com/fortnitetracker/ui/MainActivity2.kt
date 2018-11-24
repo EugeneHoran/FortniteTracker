@@ -51,23 +51,22 @@ class MainActivity2 : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickLis
         })
     }
 
-    override fun onUserSignedIn(accountStats: AccountStats) {
-        navigationController.navStatsFragment(accountStats)
+    override fun onLogin(parameters: Any?) {
+        navigationController.navStatsFragment(parameters as AccountStats)
     }
 
-    override fun onSearchClicked() {
+    override fun onLogout() {
         loginViewModel.loginStatus.value = false
         loginViewModel.userStats.value = null
         navigationController.navLoginFragment()
     }
 
-    override fun inflateMenu(menuId: Int?) {
+    override fun onInflateMenu(menuId: Int?) {
         toolbar.menu.clear()
         if (menuId == null) {
             return
         }
         toolbar.inflateMenu(menuId)
-        toolbar.invalidate()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -76,13 +75,13 @@ class MainActivity2 : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickLis
                 loginViewModel.clearSearchHistory()
             }
             R.id.menu_search -> {
-                onSearchClicked()
+                onLogout()
             }
         }
         return true
     }
 
-    override fun updateScrollFlags(scrollFlags: Int?) {
+    override fun onUpdateScrollFlags(scrollFlags: Int?) {
         when (scrollFlags) {
             null -> return
             Constants.SCROLL_FLAG_DEFAULT ->

@@ -23,7 +23,7 @@
                 app:allowDeselection="false"
                 app:cardCornerRadius="3dp"
                 app:cardBackgroundColor="@color/colorPrimaryLight"
-                app:customLayout="@layout/view_toggle_button"
+                app:customLayout="@layout/view_custom_toggle_button"
                 app:menu="@menu/toggle_console"
                 app:toggleMode="even"/>
 

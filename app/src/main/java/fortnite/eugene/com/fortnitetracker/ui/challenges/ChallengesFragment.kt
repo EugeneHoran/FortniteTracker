@@ -36,7 +36,7 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
         recyclerView.adapter = adapter
     }
 
-    override fun activityCreated(savedInstanceState: Bundle?, viewModel: ChallengesViewModel) {
+    override fun initViewModel(savedInstanceState: Bundle?, viewModel: ChallengesViewModel) {
         initToolbar("Weekly Challenges", null, R.drawable.ic_trophy)
         observeChallenges(viewModel)
     }
@@ -62,9 +62,5 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
     private fun showLoading() {
         pbLoadingView.visibility = View.VISIBLE
         recyclerView.visibility = View.INVISIBLE
-    }
-
-    override fun onDetached() {
-        getBaseActivity().onFragmentDetached(TAG)
     }
 }

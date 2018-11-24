@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import fortnite.eugene.com.fortnitetracker.inject.component.DaggerViewModelInjector
 import fortnite.eugene.com.fortnitetracker.inject.component.ViewModelInjector
 import fortnite.eugene.com.fortnitetracker.inject.module.FortniteTrackerNetworkModule
-import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
 import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesViewModel
+import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 import fortnite.eugene.com.fortnitetracker.ui.store.StoreViewModel
+import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseViewModel : ViewModel() {
+    private val compositeDisposable = CompositeDisposable()
+
     private val injector: ViewModelInjector = DaggerViewModelInjector
         .builder()
         .networkModule(FortniteTrackerNetworkModule)
@@ -19,6 +22,7 @@ abstract class BaseViewModel : ViewModel() {
         inject()
     }
 
+    fun getCompositeDisposable(): CompositeDisposable = compositeDisposable
     /**
      * Injects the required dependencies
      */
@@ -29,5 +33,10 @@ abstract class BaseViewModel : ViewModel() {
             is ChallengesViewModel -> injector.inject(this)
             is StoreViewModel -> injector.inject(this)
         }
+    }
+
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
     }
 }

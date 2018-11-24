@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import fortnite.eugene.com.fortnitetracker.R
-import fortnite.eugene.com.fortnitetracker.base.BaseFragment
+import fortnite.eugene.com.fortnitetracker.base.BaseChildFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.layout_recycler.*
 
 private const val ARG_TAB = "param_tab"
 
-class StatChildFragment : BaseFragment<StatsViewModel>() {
+class StatChildFragment : BaseChildFragment<StatsViewModel>() {
     companion object {
         val TAG: String = StatChildFragment::class.java.simpleName
         @JvmStatic
@@ -31,7 +31,6 @@ class StatChildFragment : BaseFragment<StatsViewModel>() {
     private var statRecyclerAdapter = StatRecyclerAdapter()
 
     override val layoutId: Int = R.layout.layout_recycler
-    override val scrollFlags: Int? = null
 
     override fun getViewModel(): StatsViewModel = ViewModelProviders.of(parentFragment!!)[StatsViewModel::class.java]
 
@@ -78,8 +77,5 @@ class StatChildFragment : BaseFragment<StatsViewModel>() {
                 })
             }
         }
-    }
-
-    override fun onDetached() {
     }
 }

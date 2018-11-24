@@ -9,28 +9,30 @@ import fortnite.eugene.com.fortnitetracker.model.store.StoreHeaderItem
 import fortnite.eugene.com.fortnitetracker.model.store.StoreItem
 import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
 import fortnite.eugene.com.fortnitetracker.utils.SingleLiveEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+
 class StoreViewModel : BaseViewModel() {
+
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi
 
     var storeItems = MediatorLiveData<List<StoreDisplayItem>>()
     var error: SingleLiveEvent<String> = SingleLiveEvent()
-    var showLoading: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     init {
-        showLoading.value = true
-        storeItems.addSource(fortniteTrackerApi.getStoreItemList()) {
-            if (it != null) {
-                if (it.error != null) {
-                    error.value = it.error!!.message
-                } else {
-                    sortData(it.resource!!)
+        getCompositeDisposable().add(fortniteTrackerApi.getStore()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                if (it.isSuccessful) {
+                    sortData(it.body()!!)
+                } else if (it.message() != null) {
+
                 }
-            }
-            showLoading.value = false
-        }
+            })
     }
 
     @SuppressLint("StaticFieldLeak")

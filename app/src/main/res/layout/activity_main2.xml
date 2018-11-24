@@ -31,7 +31,7 @@
                 app:allowDeselection="false"
                 app:cardCornerRadius="3dp"
                 app:cardBackgroundColor="@color/colorPrimaryLight"
-                app:customLayout="@layout/view_toggle_button"
+                app:customLayout="@layout/view_custom_toggle_button"
                 app:menu="@menu/toggle_season"
                 android:visibility="gone"/>
 
@@ -60,8 +60,8 @@
             app:elevation="8dp"
             android:background="@color/colorPrimary"
             app:menu="@menu/navigation_logged_out"
-            app:itemIconTint="@drawable/bottom_nav_colors"
-            app:itemTextColor="@drawable/bottom_nav_colors"
+            app:itemIconTint="@color/bottom_nav_colors"
+            app:itemTextColor="@color/bottom_nav_colors"
             app:labelVisibilityMode="labeled"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,11 +1,15 @@
 package fortnite.eugene.com.fortnitetracker.ui
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.transition.Fade
+import androidx.transition.Slide
+import androidx.transition.TransitionSet
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.account.StatsParentFragment
@@ -79,6 +83,10 @@ class NavigationController(
     private fun Fragment.replaceFragment(tag: String?) {
         val frag = this
         fm.beginTransaction().apply {
+            enterTransition = TransitionSet().addTransition(Fade(Fade.IN).setInterpolator {
+                (it - 0.5f) * 2
+            }).addTransition(Slide(Gravity.BOTTOM))
+            exitTransition = Fade(Fade.OUT)
             replace(container, frag, tag)
             commit()
         }
