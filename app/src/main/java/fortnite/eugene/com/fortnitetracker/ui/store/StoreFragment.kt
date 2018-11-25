@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
-import kotlinx.android.synthetic.main.view_recycler_progress.*
-
+import kotlinx.android.synthetic.main.layout_recycler.*
 
 class StoreFragment : BaseFragment<StoreViewModel>() {
     companion object {
@@ -19,25 +18,27 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
         fun newInstance() = StoreFragment()
     }
 
-    override val layoutId: Int = R.layout.view_recycler_progress
+    override val layoutId: Int = R.layout.layout_recycler
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
     override fun getViewModel() = ViewModelProviders.of(this).get(StoreViewModel::class.java)
 
     private val storeAdapter = StoreRecyclerAdapter()
 
-    override fun initViewModel(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
+    override fun initData(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
         initToolbar(getString(R.string.item_shop), null, R.drawable.ic_store)
         observeData(viewModel)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipe_container.isEnabled = false
         val glm = GridLayoutManager(context, 2)
         glm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return when (storeAdapter.getItemViewType(position)) {
                     StoreRecyclerAdapter.ITEM -> 1
                     StoreRecyclerAdapter.HEADER -> 2
+                    StoreRecyclerAdapter.LOADING -> 2
                     else -> 0
                 }
             }
@@ -47,26 +48,13 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
     }
 
     private fun observeData(storeViewModel: StoreViewModel) {
-        showLoading()
         storeViewModel.storeItems.observe(this, Observer {
             if (it != null && it.isNotEmpty()) {
-                dismissLoading()
                 storeAdapter.setItemList(it)
             }
         })
         storeViewModel.error.observeSingleEvent(this, Observer {
             if (it.isNotBlank()) Toast.makeText(context!!, it!!, Toast.LENGTH_SHORT).show()
-            dismissLoading()
         })
-    }
-
-    private fun dismissLoading() {
-        pbLoadingView.visibility = View.INVISIBLE
-        recyclerView.visibility = View.VISIBLE
-    }
-
-    private fun showLoading() {
-        pbLoadingView.visibility = View.VISIBLE
-        recyclerView.visibility = View.INVISIBLE
     }
 }

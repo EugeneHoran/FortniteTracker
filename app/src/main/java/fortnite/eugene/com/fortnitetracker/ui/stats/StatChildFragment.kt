@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account
+package fortnite.eugene.com.fortnitetracker.ui.stats
 
 
 import android.os.Bundle
@@ -29,7 +29,6 @@ class StatChildFragment : BaseChildFragment<StatsViewModel>() {
 
     private var paramTab: Int? = null
     private var statRecyclerAdapter = StatRecyclerAdapter()
-
     override val layoutId: Int = R.layout.layout_recycler
 
     override fun getViewModel(): StatsViewModel = ViewModelProviders.of(parentFragment!!)[StatsViewModel::class.java]

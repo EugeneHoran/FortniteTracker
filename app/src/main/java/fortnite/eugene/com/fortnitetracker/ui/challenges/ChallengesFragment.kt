@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
-import kotlinx.android.synthetic.main.view_recycler_progress.*
+import kotlinx.android.synthetic.main.layout_recycler.*
 
 class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
     companion object {
@@ -19,10 +19,8 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
         fun newInstance() = ChallengesFragment()
     }
 
-    override val layoutId: Int = R.layout.view_recycler_progress
-
+    override val layoutId: Int = R.layout.layout_recycler
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
-
     override fun getViewModel(): ChallengesViewModel {
         return ViewModelProviders.of(this).get(ChallengesViewModel::class.java)
     }
@@ -31,36 +29,25 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipe_container.isEnabled = false
         recyclerView.layoutManager = LinearLayoutManager(context!!)
         recyclerView.addItemDecoration(DividerItemDecoration(context!!, LinearLayoutManager.VERTICAL))
         recyclerView.adapter = adapter
     }
 
-    override fun initViewModel(savedInstanceState: Bundle?, viewModel: ChallengesViewModel) {
+    override fun initData(savedInstanceState: Bundle?, viewModel: ChallengesViewModel) {
         initToolbar("Weekly Challenges", null, R.drawable.ic_trophy)
         observeChallenges(viewModel)
     }
 
     private fun observeChallenges(challengesViewModel: ChallengesViewModel) {
-        showLoading()
         challengesViewModel.challenges.observe(this, Observer {
             if (it != null) {
-                dismissLoading()
-                adapter.setItems(it)
+                adapter.setItemList(it)
             }
         })
         challengesViewModel.error.observeSingleEvent(this, Observer {
             if (it != null) Toast.makeText(context!!, it, Toast.LENGTH_SHORT).show()
         })
-    }
-
-    private fun dismissLoading() {
-        pbLoadingView.visibility = View.INVISIBLE
-        recyclerView.visibility = View.VISIBLE
-    }
-
-    private fun showLoading() {
-        pbLoadingView.visibility = View.VISIBLE
-        recyclerView.visibility = View.INVISIBLE
     }
 }

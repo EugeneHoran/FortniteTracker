@@ -7,7 +7,7 @@ import androidx.room.Room
 import fortnite.eugene.com.fortnitetracker.data.FortniteDatabase
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
-import fortnite.eugene.com.fortnitetracker.ui.account.StatsViewModel
+import fortnite.eugene.com.fortnitetracker.ui.stats.StatsViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 
 

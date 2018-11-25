@@ -12,7 +12,7 @@ import androidx.transition.Slide
 import androidx.transition.TransitionSet
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
-import fortnite.eugene.com.fortnitetracker.ui.account.StatsParentFragment
+import fortnite.eugene.com.fortnitetracker.ui.stats.StatsParentFragment
 import fortnite.eugene.com.fortnitetracker.ui.challenges.ChallengesFragment
 import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryFragment
 import fortnite.eugene.com.fortnitetracker.ui.login.EpicLoginFragment

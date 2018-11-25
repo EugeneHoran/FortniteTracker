@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account
+package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account
+package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import android.os.Bundle
 import android.view.View
@@ -63,7 +63,7 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
         toggleButtonSeasons!!.visibility = View.VISIBLE
     }
 
-    override fun initViewModel(savedInstanceState: Bundle?, viewModel: StatsViewModel) {
+    override fun initData(savedInstanceState: Bundle?, viewModel: StatsViewModel) {
         statsViewModel = viewModel
         toggleButtonSeasons!!.setToggled(toggleButtonSeasons!!.toggles[statsViewModel.seasonToggle].id, true)
         toggleButtonSeasons!!.onToggledListener = { toggle, _ ->

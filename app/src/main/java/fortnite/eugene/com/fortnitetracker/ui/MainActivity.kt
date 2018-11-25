@@ -14,7 +14,7 @@ import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.activity_main2.*
 
 
-class MainActivity2 : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickListener {
+class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickListener {
     private lateinit var navigationController: NavigationController
     private lateinit var loginViewModel: LoginViewModel
 

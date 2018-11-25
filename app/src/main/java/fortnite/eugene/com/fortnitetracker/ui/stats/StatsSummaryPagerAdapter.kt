@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.ui.account
+package fortnite.eugene.com.fortnitetracker.ui.stats
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -24,8 +24,8 @@ class StatsSummaryPagerAdapter(val context: Context, private var combinedStatsIt
         val recycler = layout.findViewById<RecyclerView>(R.id.recyclerView)
         layout.findViewById<SwipeRefreshLayout>(R.id.swipe_container).isEnabled = false
         recycler.layoutManager = GridLayoutManager(context, 2)
-        recycler.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         recycler.adapter = StatsSummaryRecyclerAdapter(combinedStatsItemList)
+        recycler.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         container.addView(layout)
         return layout
     }

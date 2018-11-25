@@ -20,29 +20,26 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         fun newInstance() = EpicLoginFragment()
     }
 
-    private lateinit var loginViewModel: LoginViewModel
-    private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
-
     override val layoutId: Int = R.layout.fragment_login
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
 
+    private lateinit var loginViewModel: LoginViewModel
+    private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
 
     override fun getViewModel(): LoginViewModel {
         loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
         return loginViewModel
     }
 
-    override fun initViewModel(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
-        initToolbar(getString(R.string.search_player_stats), null, null)
-        observeUserData()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnSearch.setOnClickListener {
-            searchAccount()
-        }
+        btnSearch.setOnClickListener { searchAccount() }
         recyclerAccount.adapter = epicAccountRecyclerAdapter
+    }
+
+    override fun initData(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
+        initToolbar(getString(R.string.search_player_stats))
+        observeUserData()
     }
 
     private fun searchAccount() {

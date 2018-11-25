@@ -27,19 +27,24 @@
                 app:menu="@menu/toggle_console"
                 app:toggleMode="even"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextEpicUserName"
-                android:hint="@string/epic_username"
-                android:layout_margin="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSearch"
-                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
+                android:hint="@string/epic_username">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextEpicUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cornerRadius="48dp"
                 app:icon="@drawable/ic_search_24dp"
                 app:iconTint="@android:color/black"
                 app:iconGravity="textStart"

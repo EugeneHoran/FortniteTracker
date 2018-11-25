@@ -44,7 +44,7 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
     override fun getViewModel(): MatchHistoryViewModel =
         ViewModelProviders.of(this, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
 
-    override fun initViewModel(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
+    override fun initData(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
         this.matchHistoryViewModel = viewModel
         observeMatchHistory(viewModel)
     }

@@ -28,11 +28,9 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     @get:LayoutRes
     abstract val layoutId: Int
     abstract val scrollFlags: Int?
-
     fun getBaseActivity(): BaseActivity<*> = baseActivity!!
-
     abstract fun getViewModel(): V
-    abstract fun initViewModel(savedInstanceState: Bundle?, viewModel: V)
+    abstract fun initData(savedInstanceState: Bundle?, viewModel: V)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -42,6 +40,17 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(layoutId, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        baseActivity!!.onUpdateScrollFlags(scrollFlags)
+        viewModel = getViewModel()
+        initData(savedInstanceState, viewModel!!)
+    }
+
     override fun onDetach() {
         if (baseActivity != null) {
             val toolbar = baseActivity!!.findViewById<Toolbar>(R.id.toolbar)
@@ -49,17 +58,6 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
         }
         baseActivity = null
         super.onDetach()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        baseActivity!!.onUpdateScrollFlags(scrollFlags)
-        viewModel = getViewModel()
-        initViewModel(savedInstanceState, viewModel!!)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutId, container, false)
     }
 
     fun initToolbar(

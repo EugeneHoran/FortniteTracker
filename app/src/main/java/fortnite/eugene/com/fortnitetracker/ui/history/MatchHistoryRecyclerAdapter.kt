@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fortnite.eugene.com.fortnitetracker.R
+import fortnite.eugene.com.fortnitetracker.base.BaseRecyclerAdapter
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistory
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryHeader
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryItem
@@ -18,32 +19,11 @@ private const val HEADER = 0
 private const val ITEM = 1
 private const val LOADING = 2
 
-private const val PROGRESS_LOADING = 1
-private const val PROGRESS_NOT_LOADING = 0
 
-class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), StickyHeaders {
-
-    private var isLoadingCount: Int = 0
-    private val itemList = mutableListOf<MatchHistoryItem>()
+class MatchHistoryRecyclerAdapter : BaseRecyclerAdapter<MatchHistoryItem>(), StickyHeaders {
 
     init {
-        isLoadingCount = PROGRESS_LOADING
-        notifyDataSetChanged()
-    }
-
-    fun setLoading() {
-        if (isLoadingCount != PROGRESS_LOADING) {
-            isLoadingCount = PROGRESS_LOADING
-            itemList.clear()
-            notifyDataSetChanged()
-        }
-    }
-
-    fun setItemList(items: List<MatchHistoryItem>) {
-        isLoadingCount = PROGRESS_NOT_LOADING
-        itemList.clear()
-        itemList.addAll(items)
-        notifyDataSetChanged()
+        setLoading()
     }
 
     override fun isStickyHeader(position: Int): Boolean {
@@ -63,8 +43,6 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
             else -> -1
         }
     }
-
-    override fun getItemCount(): Int = itemList.size + isLoadingCount
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -110,5 +88,4 @@ class MatchHistoryRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
