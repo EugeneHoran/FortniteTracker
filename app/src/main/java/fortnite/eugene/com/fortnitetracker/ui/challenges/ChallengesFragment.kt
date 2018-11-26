@@ -22,7 +22,7 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
     override val layoutId: Int = R.layout.layout_recycler
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
     override fun getViewModel(): ChallengesViewModel {
-        return ViewModelProviders.of(this).get(ChallengesViewModel::class.java)
+        return ViewModelProviders.of(activity!!).get(ChallengesViewModel::class.java)
     }
 
     private val adapter = ChallengesRecyclerAdapter()

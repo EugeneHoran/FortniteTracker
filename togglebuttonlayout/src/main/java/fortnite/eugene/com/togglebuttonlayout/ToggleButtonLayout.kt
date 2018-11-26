@@ -259,6 +259,9 @@ class ToggleButtonLayout : androidx.cardview.widget.CardView {
                         }
                     }
                 }
+                if (onToggledListener != null) {
+                    onToggledListener?.invoke(toggle, toggle.isSelected)
+                }
                 break
             }
         }

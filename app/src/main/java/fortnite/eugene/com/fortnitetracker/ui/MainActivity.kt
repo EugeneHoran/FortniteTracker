@@ -81,6 +81,26 @@ class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickList
         return true
     }
 
+    override fun onBackPressed() {
+        if (loginViewModel.loginStatus.value == true) {
+            if (navigation.selectedItemId == R.id.navigation_stats) {
+                if (toggleButtonSeasons.getSelectedTogglePosition() != 0) {
+                    toggleButtonSeasons.setToggled(toggleButtonSeasons!!.toggles[Constants.SEASON_COMBINED].id, true)
+                    return
+                }
+            } else {
+                navigation.selectedItemId = R.id.navigation_stats
+                return
+            }
+        } else {
+            if (navigation.selectedItemId != R.id.navigation_search_player) {
+                navigation.selectedItemId = R.id.navigation_search_player
+                return
+            }
+        }
+        super.onBackPressed()
+    }
+
     override fun onUpdateScrollFlags(scrollFlags: Int?) {
         when (scrollFlags) {
             null -> return

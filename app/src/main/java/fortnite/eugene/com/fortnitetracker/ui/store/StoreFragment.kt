@@ -20,7 +20,7 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
 
     override val layoutId: Int = R.layout.layout_recycler
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
-    override fun getViewModel() = ViewModelProviders.of(this).get(StoreViewModel::class.java)
+    override fun getViewModel() = ViewModelProviders.of(activity!!).get(StoreViewModel::class.java)
 
     private val storeAdapter = StoreRecyclerAdapter()
 

@@ -63,24 +63,4 @@ class StoreViewModel : BaseViewModel() {
             }
         }.execute(items)
     }
-//
-//    private fun getSortedData(items: List<StoreItem>): List<StoreDisplayItem> {
-//        val storeDisplayList = mutableListOf<StoreDisplayItem>()
-//        val byCategory = items.groupBy { it.storeCategory }
-//        val dailyItems = byCategory["BRDailyStorefront"]
-//        val weeklyItems = byCategory["BRWeeklyStorefront"]
-//        if (!dailyItems.isNullOrEmpty()) {
-//            storeDisplayList.add(StoreHeaderItem("Daily Items"))
-//            storeDisplayList.addAll(dailyItems.sortedByDescending {
-//                it.vBucks
-//            })
-//        }
-//        if (!weeklyItems.isNullOrEmpty()) {
-//            storeDisplayList.add(StoreHeaderItem("Featured Items"))
-//            storeDisplayList.addAll(weeklyItems.sortedByDescending {
-//                it.vBucks
-//            })
-//        }
-//        return storeDisplayList
-//    }
 }

@@ -76,8 +76,6 @@ class StatsParentFragment : BaseFragment<StatsViewModel>(), StatsSummaryPagerAda
 
     override fun onChartItemSelected(position: Int) {
         toggleButtonSeasons!!.setToggled(toggleButtonSeasons!!.toggles[Constants.SEASON_LIFETIME].id, true)
-        statsViewModel.updateStatFragments(Constants.SEASON_LIFETIME)
-        handleViews()
         pagerStats.currentItem = position
     }
 
