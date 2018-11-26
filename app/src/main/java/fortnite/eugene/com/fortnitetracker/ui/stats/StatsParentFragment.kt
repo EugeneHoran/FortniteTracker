@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_account.*
 
 private const val ARG_STATS = "param_stats"
 
-class StatsParentFragment : BaseFragment<StatsViewModel>() {
+class StatsParentFragment : BaseFragment<StatsViewModel>(), StatsSummaryPagerAdapter.SummaryCallback {
     companion object {
         val TAG: String = StatsParentFragment::class.java.simpleName
         @JvmStatic
@@ -59,7 +59,7 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
         )
 
         getBaseActivity().onInflateMenu(R.menu.menu_search)
-        summaryRecyclerViewPager = StatsSummaryPagerAdapter(context!!, accountStats.lifeTimeStats!!.reversed())
+        summaryRecyclerViewPager = StatsSummaryPagerAdapter(context!!, accountStats.getSummaryData(), this)
         toggleButtonSeasons!!.visibility = View.VISIBLE
     }
 
@@ -72,6 +72,13 @@ class StatsParentFragment : BaseFragment<StatsViewModel>() {
         }
         statsPagerAdapter = StatsPagerAdapter(childFragmentManager)
         handleViews()
+    }
+
+    override fun onChartItemSelected(position: Int) {
+        toggleButtonSeasons!!.setToggled(toggleButtonSeasons!!.toggles[Constants.SEASON_LIFETIME].id, true)
+        statsViewModel.updateStatFragments(Constants.SEASON_LIFETIME)
+        handleViews()
+        pagerStats.currentItem = position
     }
 
     private fun handleViews() {

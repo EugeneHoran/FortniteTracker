@@ -13,6 +13,7 @@ data class Stats(
     @SerializedName("curr_p9") val seasonSquads: StatsInfo?
 ) : Parcelable {
 
+
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(StatsInfo::class.java.classLoader),
         parcel.readParcelable(StatsInfo::class.java.classLoader),

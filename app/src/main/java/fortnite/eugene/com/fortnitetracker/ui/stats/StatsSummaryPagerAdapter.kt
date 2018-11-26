@@ -1,9 +1,11 @@
 package fortnite.eugene.com.fortnitetracker.ui.stats
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,11 +13,29 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.PagerAdapter
 import fortnite.eugene.com.fortnitetracker.R
+import fortnite.eugene.com.fortnitetracker.model.stats.ChartDataItem
 import fortnite.eugene.com.fortnitetracker.model.stats.LifeTimeStat
+import kotlinx.android.synthetic.main.recycler_pie_chart_item.view.*
 import kotlinx.android.synthetic.main.recycler_stat_item.view.*
+import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener
+import lecho.lib.hellocharts.model.SliceValue
 
-class StatsSummaryPagerAdapter(val context: Context, private var combinedStatsItemList: List<LifeTimeStat?>) :
+class StatsSummaryPagerAdapter(
+    val context: Context,
+    private var combinedStatsItemList: List<Any>,
+    var summaryCallback: SummaryCallback
+) :
     PagerAdapter() {
+
+    interface SummaryCallback {
+        fun onChartItemSelected(position: Int)
+    }
+
+
+    companion object {
+        const val CHART_ITEM = 0
+        const val SUMMARY_ITEM = 1
+    }
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -23,8 +43,19 @@ class StatsSummaryPagerAdapter(val context: Context, private var combinedStatsIt
         val layout = inflater.inflate(R.layout.layout_recycler, container, false) as ViewGroup
         val recycler = layout.findViewById<RecyclerView>(R.id.recyclerView)
         layout.findViewById<SwipeRefreshLayout>(R.id.swipe_container).isEnabled = false
-        recycler.layoutManager = GridLayoutManager(context, 2)
-        recycler.adapter = StatsSummaryRecyclerAdapter(combinedStatsItemList)
+        val adapter = StatsSummaryRecyclerAdapter2(combinedStatsItemList, summaryCallback)
+        val glm = GridLayoutManager(context, 2)
+        glm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (adapter.getItemViewType(position)) {
+                    CHART_ITEM -> 2
+                    SUMMARY_ITEM -> 1
+                    else -> 0
+                }
+            }
+        }
+        recycler.layoutManager = glm
+        recycler.adapter = adapter
         recycler.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
         container.addView(layout)
         return layout
@@ -44,26 +75,68 @@ class StatsSummaryPagerAdapter(val context: Context, private var combinedStatsIt
         return null
     }
 
+    class StatsSummaryRecyclerAdapter2(private var itemList: List<Any?>, var summaryCallback: SummaryCallback) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    /**
-     * Recycler Adapter for stats summary
-     */
-    class StatsSummaryRecyclerAdapter(private var combinedStatsItemList: List<LifeTimeStat?>) :
-        RecyclerView.Adapter<StatsSummaryRecyclerAdapter.CombinedViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, position: Int): CombinedViewHolder {
-            return CombinedViewHolder(
-                LayoutInflater.from(
-                    parent.context
-                ).inflate(R.layout.recycler_stat_item, parent, false)
-            )
+        override fun getItemViewType(position: Int): Int {
+            return when {
+                itemList[position] is ChartDataItem -> CHART_ITEM
+                itemList[position] is LifeTimeStat -> SUMMARY_ITEM
+                else -> -1
+            }
         }
 
-        override fun onBindViewHolder(holder: CombinedViewHolder, position: Int) {
-            holder.bind(combinedStatsItemList[position]!!)
+        override fun getItemCount(): Int = itemList.size
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            return when (viewType) {
+                CHART_ITEM ->
+                    PieChartViewHolder(
+                        LayoutInflater.from(parent.context).inflate(R.layout.recycler_pie_chart_item, parent, false)
+                        , summaryCallback
+                    )
+                SUMMARY_ITEM ->
+                    CombinedViewHolder(
+                        LayoutInflater.from(parent.context).inflate(R.layout.recycler_stat_item, parent, false)
+                    )
+                else -> CombinedViewHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_stat_item, parent, false)
+                )
+
+            }
         }
 
-        override fun getItemCount(): Int = combinedStatsItemList.size
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            if (holder is PieChartViewHolder) {
+                holder.bind(itemList[position]!! as ChartDataItem)
+            } else if (holder is CombinedViewHolder) {
+                holder.bind(itemList[position]!! as LifeTimeStat)
+            }
+        }
+
+        class PieChartViewHolder(itemView: View, private var summaryCallback: SummaryCallback) :
+            RecyclerView.ViewHolder(itemView),
+            PieChartOnValueSelectListener {
+            lateinit var chartData: ChartDataItem
+            @SuppressLint("SetTextI18n")
+            fun bind(pieChartData: ChartDataItem) {
+                chartData = pieChartData
+                itemView.pieChartView.pieChartData = pieChartData.pieChartData
+                itemView.pieChartView.onValueTouchListener = this
+                itemView.txtSolo.text = chartData.soloMatched.toString() + " Solo matches"
+                itemView.txtDuo.text = chartData.duoMatches.toString() + " Duo matches"
+                itemView.txtSquads.text = chartData.squadMatches.toString() + " Squad matches"
+            }
+
+            override fun onValueSelected(p0: Int, p1: SliceValue?) {
+                summaryCallback.onChartItemSelected(p0)
+            }
+
+            override fun onValueDeselected() {
+
+            }
+        }
 
         class CombinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(lifeTimeStat: LifeTimeStat) {

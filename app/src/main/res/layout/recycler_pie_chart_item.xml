@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:weightSum="2"
+              android:padding="12dp">
+
+    <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/pieChartView"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="150dp"/>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/txtSolo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:drawableStart="@drawable/square_solo"
+                android:drawablePadding="8dp"/>
+
+
+        <TextView
+                android:id="@+id/txtDuo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:drawableStart="@drawable/square_duo"
+                android:drawablePadding="8dp"/>
+
+
+        <TextView
+                android:id="@+id/txtSquads"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:drawableStart="@drawable/square_squads"
+                android:drawablePadding="8dp"/>
+
+    </LinearLayout>
+</LinearLayout>
