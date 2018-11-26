@@ -42,7 +42,7 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
     override val layoutId: Int = R.layout.layout_recycler
 
     override fun getViewModel(): MatchHistoryViewModel =
-        ViewModelProviders.of(activity!!, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
+        ViewModelProviders.of(this, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
 
     override fun initData(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
         this.matchHistoryViewModel = viewModel
