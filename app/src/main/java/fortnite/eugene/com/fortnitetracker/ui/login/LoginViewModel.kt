@@ -58,4 +58,29 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
             userDao.deleteAccounts(userAccountList.value!!)
         }
     }
+
+    fun deleteAccount(userAccount: UserAccount) {
+        deletedAccount = UserAccount(
+            userAccount.accountId,
+            userAccount.epicUserHandle,
+            userAccount.platformId,
+            userAccount.platformName,
+            userAccount.platformNameLong,
+            userAccount.timestamp
+        )
+        ioThread {
+            userDao.deleteAccount(userAccount)
+        }
+    }
+
+    fun undoDeletedAccount() {
+        if (deletedAccount != null) {
+            ioThread {
+                userDao.insert(deletedAccount!!)
+                deletedAccount = null
+            }
+        }
+    }
+
+    var deletedAccount: UserAccount? = null
 }

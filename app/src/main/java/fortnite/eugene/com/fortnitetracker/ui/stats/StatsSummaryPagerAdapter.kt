@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,9 +53,10 @@ class StatsSummaryPagerAdapter(
                 }
             }
         }
+        recycler.setHasFixedSize(true)
         recycler.layoutManager = glm
-        recycler.adapter = adapter
         recycler.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        recycler.adapter = adapter
         container.addView(layout)
         return layout
     }
@@ -118,10 +118,11 @@ class StatsSummaryPagerAdapter(
         class PieChartViewHolder(itemView: View, private var summaryCallback: SummaryCallback) :
             RecyclerView.ViewHolder(itemView),
             PieChartOnValueSelectListener {
-            lateinit var chartData: ChartDataItem
+            private lateinit var chartData: ChartDataItem
             @SuppressLint("SetTextI18n")
             fun bind(pieChartData: ChartDataItem) {
                 chartData = pieChartData
+                itemView.pieChartView.isChartRotationEnabled = false
                 itemView.pieChartView.pieChartData = pieChartData.pieChartData
                 itemView.pieChartView.onValueTouchListener = this
                 itemView.txtSolo.text = chartData.soloMatched.toString() + " Solo matches"

@@ -37,6 +37,7 @@ class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickList
         observeLoginStatus()
     }
 
+
     private fun observeLoginStatus() {
         loginViewModel.loginStatus.observe(this, Observer {
             if (it != null) {
@@ -104,6 +105,11 @@ class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickList
     override fun onUpdateScrollFlags(scrollFlags: Int?) {
         when (scrollFlags) {
             null -> return
+            Constants.SCROLL_FLAG_NONE ->
+                scrollingFlagsControl(
+                    mutableMapOf(toolbar to false, toggleButtonSeasons to false, tabs to false),
+                    app_bar_main
+                )
             Constants.SCROLL_FLAG_DEFAULT ->
                 scrollingFlagsControl(
                     mutableMapOf(toolbar to true, toggleButtonSeasons to false, tabs to false),

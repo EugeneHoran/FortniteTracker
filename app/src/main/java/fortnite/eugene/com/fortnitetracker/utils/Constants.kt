@@ -15,8 +15,9 @@ class Constants {
         const val SEASON_LIFETIME = 1
         const val SEASON_CURRENT = 2
 
-        const val SCROLL_FLAG_DEFAULT = 0
-        const val SCROLL_FLAG_TOGGLE = 1
-        const val SCROLL_FLAG_TOGGLE_TABS = 2
+        const val SCROLL_FLAG_NONE = 0
+        const val SCROLL_FLAG_DEFAULT = 1
+        const val SCROLL_FLAG_TOGGLE = 2
+        const val SCROLL_FLAG_TOGGLE_TABS = 3
     }
 }

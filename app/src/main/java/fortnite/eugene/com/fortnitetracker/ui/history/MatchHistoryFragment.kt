@@ -64,8 +64,8 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
         super.onViewCreated(view, savedInstanceState)
         getBaseActivity().onInflateMenu(R.menu.menu_search)
         initToolbar(
-            "Match History",
             displayName,
+            "Match History",
             logoInt
         )
         val mLinearLayoutManager = StickyHeadersLinearLayoutManager<MatchHistoryRecyclerAdapter>(

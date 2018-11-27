@@ -3,6 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
@@ -22,14 +23,16 @@
                 app:navigationIcon="@drawable/ic_search_24dp"
                 app:layout_scrollFlags="enterAlways|scroll"/>
 
+
         <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
                 android:id="@+id/toggleButtonSeasons"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:selectedColor="?attr/colorPrimaryDark"
                 android:layout_margin="12dp"
                 app:allowDeselection="false"
                 app:cardCornerRadius="3dp"
+                app:toggleMode="even"
                 app:cardBackgroundColor="@color/colorPrimaryLight"
                 app:customLayout="@layout/view_custom_toggle_button"
                 app:menu="@menu/toggle_season"
@@ -58,11 +61,10 @@
             android:layout_height="@dimen/bottom_nav_height"
             android:layout_gravity="bottom"
             android:visibility="visible"
-            app:elevation="8dp"
             android:background="@color/colorPrimary"
             app:menu="@menu/navigation_logged_out"
             app:itemIconTint="@color/bottom_nav_colors"
             app:itemTextColor="@color/bottom_nav_colors"
-            app:labelVisibilityMode="labeled"/>
-
+            app:labelVisibilityMode="labeled"
+            app:layout_behavior="fortnite.eugene.com.fortnitetracker.utils.BottomNavigationBehavior"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

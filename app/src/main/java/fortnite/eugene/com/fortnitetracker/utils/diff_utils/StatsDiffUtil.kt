@@ -1,4 +1,4 @@
-package fortnite.eugene.com.fortnitetracker.utils
+package fortnite.eugene.com.fortnitetracker.utils.diff_utils
 
 import androidx.recyclerview.widget.DiffUtil
 import fortnite.eugene.com.fortnitetracker.model.stats.DisplayStatsItem

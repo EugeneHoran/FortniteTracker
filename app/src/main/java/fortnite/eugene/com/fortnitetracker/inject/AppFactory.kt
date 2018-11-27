@@ -7,8 +7,8 @@ import androidx.room.Room
 import fortnite.eugene.com.fortnitetracker.data.FortniteDatabase
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.history.MatchHistoryViewModel
-import fortnite.eugene.com.fortnitetracker.ui.stats.StatsViewModel
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
+import fortnite.eugene.com.fortnitetracker.ui.stats.StatsViewModel
 
 
 class AppFactory : ViewModelProvider.NewInstanceFactory {
@@ -33,7 +33,7 @@ class AppFactory : ViewModelProvider.NewInstanceFactory {
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 val db = Room.databaseBuilder(
-                    activity.applicationContext, FortniteDatabase::class.java, "fortnite.tracker.db"
+                    activity.applicationContext, FortniteDatabase::class.java, "fortnite.tracker.db.beta"
                 ).build()
                 LoginViewModel(db.getUserAccountDao()) as T
             }

@@ -9,8 +9,10 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.ravikoradiya.library.CenterTitle
 import fortnite.eugene.com.fortnitetracker.R
-
 
 abstract class BaseFragment<V : BaseViewModel> : Fragment() {
 
@@ -76,6 +78,15 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
                     toolbar.navigationIcon = ContextCompat.getDrawable(context!!, navIcon)
                 }
             }
+            CenterTitle.centerTitle(toolbar, true)
         }
+    }
+
+    fun snackbar(text: String): Snackbar {
+        return Snackbar.make(
+            getBaseActivity().findViewById<BottomNavigationView>(R.id.navigation),
+            text,
+            Snackbar.LENGTH_LONG
+        )
     }
 }

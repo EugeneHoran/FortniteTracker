@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.model.stats.DisplayStatsItem
-import fortnite.eugene.com.fortnitetracker.utils.StatsDiffUtil
+import fortnite.eugene.com.fortnitetracker.utils.diff_utils.StatsDiffUtil
 import kotlinx.android.synthetic.main.recycler_stat_item.view.*
 
 class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHolder>() {
@@ -21,7 +21,10 @@ class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHol
             this.displayStatsItemList.addAll(statsItemList)
             notifyDataSetChanged()
         } else {
-            val diffCallback = StatsDiffUtil(this.displayStatsItemList, statsItemList)
+            val diffCallback = StatsDiffUtil(
+                this.displayStatsItemList,
+                statsItemList
+            )
             val diffResult = DiffUtil.calculateDiff(diffCallback)
             this.displayStatsItemList.clear()
             this.displayStatsItemList.addAll(statsItemList)
