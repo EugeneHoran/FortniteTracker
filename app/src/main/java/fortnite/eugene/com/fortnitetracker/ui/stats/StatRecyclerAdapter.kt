@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import fortnite.eugene.com.fortnitetracker.R
@@ -54,6 +55,26 @@ class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHol
             holder.itemPercentile.visibility = View.GONE
         }
 
+        if (item.getProgress() != null) {
+            holder.progressImage.visibility = View.VISIBLE
+            holder.progressText.visibility = View.VISIBLE
+            holder.progressText.text = item.getDisplayProgress()
+            holder.progressText.setTextColor(
+                ContextCompat.getColor(
+                    holder.progressText.context!!,
+                    item.getTextColor()!!
+                )
+            )
+            holder.progressImage.setImageDrawable(
+                ContextCompat.getDrawable(
+                    holder.progressImage.context!!,
+                    item.getArror()!!
+                )
+            )
+        } else {
+            holder.progressText.visibility = View.GONE
+            holder.progressImage.visibility = View.GONE
+        }
         if (item.getItemRank() != null) {
             holder.itemRank.text = item.getItemRank()
         } else {
@@ -69,5 +90,7 @@ class StatRecyclerAdapter : RecyclerView.Adapter<StatRecyclerAdapter.StatViewHol
         val itemPercentile = view.itemPercentile!!
         val percentileProgress = view.percentileProgress!!
         val itemRank = view.itemRank!!
+        val progressText = view.progressText!!
+        val progressImage = view.progressImage!!
     }
 }

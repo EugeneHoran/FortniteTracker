@@ -14,8 +14,13 @@ data class Kd(
     @SerializedName("value") val value: String?,
     @SerializedName("rank") val rank: Int?,
     @SerializedName("percentile") val percentile: Double?,
-    @SerializedName("displayValue") val displayValue: String?
+    @SerializedName("displayValue") val displayValue: String?,
+    var progressComparison: Double? = null
 ) : DisplayStatsItem(), Parcelable {
+
+    override fun getProgress(): Double? {
+        return progressComparison
+    }
 
     override fun getTitle(): String? {
         return label

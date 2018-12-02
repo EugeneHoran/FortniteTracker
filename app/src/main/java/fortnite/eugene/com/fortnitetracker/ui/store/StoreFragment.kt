@@ -26,7 +26,7 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
 
     override fun initData(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
         initToolbar(getString(R.string.item_shop), null, R.drawable.ic_store)
-        observeData(viewModel)
+        observeData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,14 +47,17 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
         recyclerView.adapter = storeAdapter
     }
 
-    private fun observeData(storeViewModel: StoreViewModel) {
-        storeViewModel.storeItems.observe(this, Observer {
+    private fun observeData() {
+        getViewModel().storeItems.observe(this, Observer {
             if (it != null && it.isNotEmpty()) {
                 storeAdapter.setItemList(it)
             }
         })
-        storeViewModel.error.observeSingleEvent(this, Observer {
-            if (it.isNotBlank()) Toast.makeText(context!!, it!!, Toast.LENGTH_SHORT).show()
+        getViewModel().error.observeSingleEvent(this, Observer {
+            if (it.isNotBlank()) {
+                Toast.makeText(context!!, it!!, Toast.LENGTH_SHORT).show()
+                storeAdapter.clear()
+            }
         })
     }
 }

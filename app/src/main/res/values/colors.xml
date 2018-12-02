@@ -8,6 +8,8 @@
     <!--<color name="colorAccent">#F3EC60</color>-->
     <color name="colorAccent">#82B1FF</color>
 
+    <color name="colorPositive">#68DE8A</color>
+    <color name="colorNegative">#E12B42</color>
 
     <color name="white">#ffffff</color>
     <color name="progressBlue">#4583FA</color>

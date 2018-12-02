@@ -20,6 +20,8 @@ data class Kills(
         return label
     }
 
+    override fun getProgress(): Double? = null
+
     override fun getDisplayText(): String? {
         return displayValue
     }

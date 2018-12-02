@@ -16,7 +16,7 @@ data class Top(
     @SerializedName("percentile") val percentile: Double?,
     @SerializedName("displayValue") val displayValue: String?
 ) : DisplayStatsItem(), Parcelable {
-
+    override fun getProgress(): Double? = null
     override fun getTitle(): String? {
         return label
     }

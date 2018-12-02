@@ -99,6 +99,19 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         })
     }
 
+    private fun getEpicName(): String? {
+        return editTextEpicUserName.text!!.trim().toString()
+    }
+
+    private fun getPlatform(): String? {
+        return when (toggleButtonPlatform.getSelectedTogglePosition()) {
+            Constants.PLATFORM_XBOX -> getString(R.string.xbl)
+            Constants.PLATFORM_PS4 -> getString(R.string.psn)
+            Constants.PLATFORM_PC -> getString(R.string.pc)
+            else -> null
+        }
+    }
+
     /**
      * View Helpers
      */
@@ -118,18 +131,5 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
 
         pbLoading.visibility = View.GONE
         recyclerAccount.visibility = View.VISIBLE
-    }
-
-    private fun getEpicName(): String? {
-        return editTextEpicUserName.text!!.trim().toString()
-    }
-
-    private fun getPlatform(): String? {
-        return when (toggleButtonPlatform.getSelectedTogglePosition()) {
-            Constants.PLATFORM_XBOX -> getString(R.string.xbl)
-            Constants.PLATFORM_PS4 -> getString(R.string.psn)
-            Constants.PLATFORM_PC -> getString(R.string.pc)
-            else -> null
-        }
     }
 }

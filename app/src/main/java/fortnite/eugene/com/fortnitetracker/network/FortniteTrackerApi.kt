@@ -31,7 +31,7 @@ interface FortniteTrackerApi {
     fun getChallenge(): Observable<Response<Challenges>>
 
     @GET("v1/store")
-    fun getStore(): Observable<Response<List<StoreItem>>>
+    fun getStore(): Observable<List<StoreItem>>
 
 
     @GET("v1/profile/{platform}/{epic_nickname}")

@@ -14,6 +14,7 @@ class StatsViewModel(private val accountStats: AccountStats) : BaseViewModel() {
     var squadStats: MutableLiveData<StatsInfo> = MutableLiveData()
 
     init {
+        accountStats.stats!!.initData()
         updateStatFragments(seasonToggle)
     }
 

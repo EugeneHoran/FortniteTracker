@@ -19,20 +19,24 @@ data class StatsInfo(
     @SerializedName("winRatio") val winRatio: WinRatio?,
     @SerializedName("matches") val matches: Matches?,
     @SerializedName("kills") val kills: Kills?,
-    @SerializedName("kpg") val kpg: Kpg?
+    @SerializedName("kpg") val kpg: Kpg?,
+    @SerializedName("scorePerMatch") val scorePerMatch: ScorePerMatch?
 ) : Parcelable {
+
+
     fun getDisplayStats(): List<DisplayStatsItem> {
         val statsItemList = mutableListOf<DisplayStatsItem>()
         statsItemList.add(matches!!)
+        statsItemList.add(scorePerMatch!!)
         statsItemList.add(top1!!)
-        statsItemList.add(kd!!)
         if (winRatio != null) {
             statsItemList.add(winRatio)
         } else {
             statsItemList.add(WinRatio())
         }
-        statsItemList.add(kills!!)
+        statsItemList.add(kd!!)
         statsItemList.add(kpg!!)
+        statsItemList.add(kills!!)
         if (!top3!!.getDisplayText().equals("0", true)) {
             statsItemList.add(top3)
         }
@@ -54,9 +58,6 @@ data class StatsInfo(
         return statsItemList
     }
 
-    /**
-     * Parcel
-     */
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(TrnRating::class.java.classLoader),
         parcel.readParcelable(Score::class.java.classLoader),
@@ -71,8 +72,10 @@ data class StatsInfo(
         parcel.readParcelable(WinRatio::class.java.classLoader),
         parcel.readParcelable(Matches::class.java.classLoader),
         parcel.readParcelable(Kills::class.java.classLoader),
-        parcel.readParcelable(Kpg::class.java.classLoader)
+        parcel.readParcelable(Kpg::class.java.classLoader),
+        parcel.readParcelable(ScorePerMatch::class.java.classLoader)
     )
+
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(trnRating, flags)
@@ -89,6 +92,7 @@ data class StatsInfo(
         parcel.writeParcelable(matches, flags)
         parcel.writeParcelable(kills, flags)
         parcel.writeParcelable(kpg, flags)
+        parcel.writeParcelable(scorePerMatch, flags)
     }
 
     override fun describeContents(): Int {
@@ -104,4 +108,5 @@ data class StatsInfo(
             return arrayOfNulls(size)
         }
     }
+
 }

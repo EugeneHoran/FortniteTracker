@@ -31,15 +31,13 @@ dependencies {
     def lifecycle_version = "2.0.0"
     def room_version = "2.1.0-alpha02"
 
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
 
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Android X
-    implementation 'androidx.appcompat:appcompat:1.0.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
@@ -80,6 +78,7 @@ dependencies {
     implementation 'com.polyak:icon-switch:1.0.0'
     implementation 'com.github.lecho:hellocharts-android:v1.5.8'
     implementation 'com.github.RaviKoradiya:Toolbar-Center-Title:1.0.3'
+
     // Testing
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
