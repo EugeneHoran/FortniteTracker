@@ -33,7 +33,7 @@ abstract class DisplayStatsItem {
         return when {
             getProgress()!! > 0 -> R.drawable.ic_arrow_up
             getProgress()!! < 0 -> R.drawable.ic_arrow_down
-            else -> null
+            else -> R.drawable.ic_arrow_up
         }
     }
 
@@ -41,7 +41,7 @@ abstract class DisplayStatsItem {
         return when {
             getProgress()!! > 0 -> R.color.colorPositive
             getProgress()!! < 0 -> R.color.colorNegative
-            else -> null
+            else -> R.color.colorPositive
         }
     }
 

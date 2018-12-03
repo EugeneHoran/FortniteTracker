@@ -8,6 +8,7 @@ import fortnite.eugene.com.fortnitetracker.data.dao.UserAccountDao
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
+import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.fortnitetracker.utils.SingleLiveEvent
 import fortnite.eugene.com.fortnitetracker.utils.ioThread
 import javax.inject.Inject
@@ -30,7 +31,12 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
 
     fun getUserStats(platform: String, epicUser: String) {
         showLoading.value = true
-        userStats.addSource(fortniteTrackerApi.getUserStats(platform, epicUser)) {
+        userStats.addSource(
+            fortniteTrackerApi.getUserStats(
+                platform,
+                formatEpicUserByPlatform(platform, epicUser)
+            )
+        ) {
             if (it != null) {
                 if (it.error != null) {
                     error.value = it.error!!.message
@@ -39,7 +45,7 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
                 } else {
                     if (it.resource!!.error == null) {
                         ioThread {
-                            userDao.insert(it.resource!!.getUserAccount()!!)
+                            userDao.insert(it.resource!!.getUserAccount(epicUser)!!)
                         }
                         userStats.value = it.resource
                         loginStatus.value = true
@@ -50,6 +56,21 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    private fun formatEpicUserByPlatform(platform: String, epicUser: String): String {
+        return when (platform) {
+            Constants.PLATFORM_XBOX_STRING, "xbox" -> Constants.PLATFORM_XBOX_STRING + "(" + epicUser + ")"
+            Constants.PLATFORM_PS4_STRING -> Constants.PLATFORM_PS4_STRING + "(" + epicUser + ")"
+            else -> epicUser
+        }
+    }
+
+    private fun formatPlatform(platform: String): String {
+        return when (platform) {
+            "xbox" -> Constants.PLATFORM_XBOX_STRING
+            else -> platform
         }
     }
 
@@ -66,7 +87,8 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
             userAccount.platformId,
             userAccount.platformName,
             userAccount.platformNameLong,
-            userAccount.timestamp
+            userAccount.timestamp,
+            userAccount.displayName
         )
         ioThread {
             userDao.deleteAccount(userAccount)

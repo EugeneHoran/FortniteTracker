@@ -7,7 +7,6 @@
     <string name="search">Search</string>
     <string name="clear_history">Clear Search History</string>
 
-    <string name="epic_username">Epic Username</string>
     <string name="search_player_stats">Search Player Stats</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -18,13 +17,14 @@
     <string name="k_d">K/D</string>
     <string name="mode">Mode</string>
     <string name="enter_epic_username">Enter Epic Username</string>
-    <string name="xbl">xbl</string>
-    <string name="psn">psn</string>
-    <string name="pc">pc</string>
+
     <string name="challenges">Challenges</string>
     <string name="account">Account</string>
     <string name="store">Store</string>
     <string name="history">History</string>
     <string name="stats">Stats</string>
     <string name="item_shop">Item Shop</string>
+    <string name="xbox_gamertag">Xbox Gamertag</string>
+    <string name="psn_gamertag">PSN Gamertag</string>
+    <string name="epic_username">Epic Username</string>
 </resources>

@@ -53,7 +53,7 @@ class StatsParentFragment : BaseFragment<StatsViewModel>(), StatsSummaryPagerAda
         toggleButtonSeasons = getBaseActivity().findViewById(R.id.toggleButtonSeasons)
         tabs = getBaseActivity().findViewById(R.id.tabs)
         initToolbar(
-            accountStats.epicUserHandle,
+            accountStats.getDisplayNameFormatted(),
             getString(R.string.stats),
             accountStats.getLogoInt()
         )

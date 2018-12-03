@@ -2,9 +2,13 @@ package fortnite.eugene.com.fortnitetracker.utils
 
 class Constants {
     companion object {
-        const val PLATFORM_XBOX = 0
-        const val PLATFORM_PS4 = 1
-        const val PLATFORM_PC = 2
+        const val PLATFORM_XBOX_INT = 0
+        const val PLATFORM_PS4_INT = 1
+        const val PLATFORM_PC_INT = 2
+
+        const val PLATFORM_XBOX_STRING = "xbl"
+        const val PLATFORM_PS4_STRING = "psn"
+        const val PLATFORM_PC_STRING = "pc"
 
         const val TAB_SOLO = 0
         const val TAB_DUO = 1

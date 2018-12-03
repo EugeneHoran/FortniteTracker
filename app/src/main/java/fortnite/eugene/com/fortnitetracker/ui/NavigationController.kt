@@ -33,7 +33,7 @@ class NavigationController(
             navLoginFragment()
             loginViewModel.userAccount.observe(lifecycleOwner, Observer {
                 if (it != null) {
-                    loginViewModel.getUserStats(it.platformName, it.epicUserHandle)
+                    loginViewModel.getUserStats(it.platformName, it.displayName)
                 } else {
                     navLoginFragment()
                 }
@@ -55,7 +55,7 @@ class NavigationController(
             R.id.navigation_history -> {
                 MatchHistoryFragment.newInstance(
                     loginViewModel.userStats.value!!.accountId!!,
-                    loginViewModel.userStats.value!!.epicUserHandle!!,
+                    loginViewModel.userStats.value!!.getDisplayNameFormatted(),
                     loginViewModel.userStats.value!!.getLogoInt()
                 ).replaceFragment(MatchHistoryFragment.TAG)
                 return true

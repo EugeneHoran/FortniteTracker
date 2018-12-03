@@ -47,7 +47,7 @@ class EpicAccountRecyclerAdapter(
     override fun onBindViewHolder(holder: EpicAccountRecyclerAdapter.AccountViewHolder, position: Int) {
         val item = userAccountList[position]
         holder.image.setImageDrawable(ContextCompat.getDrawable(holder.image.context, consoleImages[item.platformId]!!))
-        holder.user.text = item.epicUserHandle
+        holder.user.text = item.displayName
         holder.itemView.setOnClickListener {
             epicAccountClickListener.onAccountClicked(item)
         }

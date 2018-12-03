@@ -33,7 +33,7 @@ class AppFactory : ViewModelProvider.NewInstanceFactory {
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 val db = Room.databaseBuilder(
-                    activity.applicationContext, FortniteDatabase::class.java, "fortnite.tracker.db.beta"
+                    activity.applicationContext, FortniteDatabase::class.java, "fortnite.tracker.db.beta_v1.0"
                 ).build()
                 LoginViewModel(db.getUserAccountDao()) as T
             }

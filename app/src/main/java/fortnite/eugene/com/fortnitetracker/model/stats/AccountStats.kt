@@ -23,6 +23,10 @@ data class AccountStats(
     @SerializedName("lifeTimeStats") val lifeTimeStats: List<LifeTimeStat?>?
 ) : Parcelable {
 
+    fun getDisplayNameFormatted(): String {
+        return epicUserHandle!!.replace("xbl(", "").replace(")", "")
+    }
+
     fun getSummaryData(): List<Any> {
         val summaryList = mutableListOf<Any>()
         summaryList.add(getMatchesPieChardData() as Any)
@@ -79,7 +83,6 @@ data class AccountStats(
         )
     }
 
-
     fun getUserAccount(): UserAccount? {
         return UserAccount(
             accountId!!,
@@ -87,7 +90,20 @@ data class AccountStats(
             platformId!!,
             platformName!!,
             platformNameLong!!,
-            Date().time
+            Date().time,
+            ""// TODO
+        )
+    }
+
+    fun getUserAccount(displayName: String): UserAccount? {
+        return UserAccount(
+            accountId!!,
+            epicUserHandle!!,
+            platformId!!,
+            platformName!!,
+            platformNameLong!!,
+            Date().time,
+            displayName
         )
     }
 

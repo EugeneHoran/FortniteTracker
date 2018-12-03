@@ -12,5 +12,6 @@ data class UserAccount(
     var platformId: Int,
     var platformName: String,
     var platformNameLong: String,
-    var timestamp: Long
+    var timestamp: Long,
+    var displayName: String
 )

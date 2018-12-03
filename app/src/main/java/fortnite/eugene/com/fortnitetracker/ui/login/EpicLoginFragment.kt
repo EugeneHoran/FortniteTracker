@@ -47,6 +47,13 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerAccount)
+        toggleButtonPlatform.onToggledListener = { toggle, _ ->
+            when (toggle.position) {
+                0 -> textInputUser.hint = getString(R.string.xbox_gamertag)
+                1 -> textInputUser.hint = getString(R.string.psn_gamertag)
+                2 -> textInputUser.hint = getString(R.string.epic_username)
+            }
+        }
     }
 
     override fun initData(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
@@ -64,7 +71,7 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
     }
 
     override fun onAccountClicked(userAccount: UserAccount) {
-        loginViewModel.getUserStats(userAccount.platformName, userAccount.epicUserHandle)
+        loginViewModel.getUserStats(userAccount.platformName, userAccount.displayName)
     }
 
     override fun onAccountDeleted(userAccount: UserAccount) {
@@ -105,9 +112,9 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
 
     private fun getPlatform(): String? {
         return when (toggleButtonPlatform.getSelectedTogglePosition()) {
-            Constants.PLATFORM_XBOX -> getString(R.string.xbl)
-            Constants.PLATFORM_PS4 -> getString(R.string.psn)
-            Constants.PLATFORM_PC -> getString(R.string.pc)
+            Constants.PLATFORM_XBOX_INT -> Constants.PLATFORM_XBOX_STRING
+            Constants.PLATFORM_PS4_INT -> Constants.PLATFORM_PS4_STRING
+            Constants.PLATFORM_PC_INT -> Constants.PLATFORM_PC_STRING
             else -> null
         }
     }
