@@ -2,7 +2,7 @@
 Example project using modern tech
 
 
-[Download Link via Hockeyapp](https://rink.hockeyapp.net/apps/a7579e6f046a4786a91c985ff6c45350/app_versions/4)
+[Download Link via Hockeyapp](https://rink.hockeyapp.net/apps/a7579e6f046a4786a91c985ff6c45350/app_versions/5)
 If you don't have an account to search: select PC and use ninja for epic username
 
 
