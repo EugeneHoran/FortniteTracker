@@ -26,6 +26,7 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
     }
 
     private var baseActivity: BaseActivity<*>? = null
+    //TODO add this for setting viewmodel to layout
     private var viewModel: V? = null
     @get:LayoutRes
     abstract val layoutId: Int

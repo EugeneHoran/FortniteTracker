@@ -21,7 +21,9 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     @get:LayoutRes
     abstract val layoutId: Int
 
+    //TODO add this for setting viewmodel to layout
     private lateinit var viewModel: V
+
     /**
      * Override for set view model
      *

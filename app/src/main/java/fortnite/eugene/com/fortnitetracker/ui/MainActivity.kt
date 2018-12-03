@@ -37,7 +37,6 @@ class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickList
         observeLoginStatus()
     }
 
-
     private fun observeLoginStatus() {
         loginViewModel.loginStatus.observe(this, Observer {
             if (it != null) {

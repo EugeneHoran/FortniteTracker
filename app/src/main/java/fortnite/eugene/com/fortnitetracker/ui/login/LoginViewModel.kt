@@ -62,17 +62,11 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
     private fun formatEpicUserByPlatform(platform: String, epicUser: String): String {
         return when (platform) {
             Constants.PLATFORM_XBOX_STRING, "xbox" -> Constants.PLATFORM_XBOX_STRING + "(" + epicUser + ")"
-            Constants.PLATFORM_PS4_STRING -> Constants.PLATFORM_PS4_STRING + "(" + epicUser + ")"
+//            Constants.PLATFORM_PS4_STRING -> Constants.PLATFORM_PS4_STRING + "(" + epicUser + ")"
             else -> epicUser
         }
     }
 
-    private fun formatPlatform(platform: String): String {
-        return when (platform) {
-            "xbox" -> Constants.PLATFORM_XBOX_STRING
-            else -> platform
-        }
-    }
 
     fun clearSearchHistory() {
         ioThread {
