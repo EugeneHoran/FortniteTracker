@@ -7,46 +7,102 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.login.EpicLoginFragment"
+        android:elevation="12dp"
         android:animateLayoutChanges="true">
 
-
-    <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
-            android:id="@+id/toggleButtonPlatform"
+    <androidx.cardview.widget.CardView
+            android:id="@+id/cardLoginHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:selectedColor="?attr/colorPrimaryDark"
-            android:layout_margin="12dp"
-            app:allowDeselection="false"
-            app:cardCornerRadius="3dp"
-            app:cardBackgroundColor="@color/colorPrimaryLight"
-            app:customLayout="@layout/view_custom_toggle_button"
-            app:menu="@menu/toggle_console"
-            app:toggleMode="even"/>
+            app:cardBackgroundColor="@color/colorPrimary">
 
-    <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:hint="@string/xbox_gamertag">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextEpicUserName"
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
 
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            app:cornerRadius="48dp"
-            app:icon="@drawable/ic_search_24dp"
-            app:iconTint="@android:color/black"
-            app:iconGravity="textStart"
-            android:text="@string/search"
-            android:textColor="@android:color/black"/>
+            <fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
+                    android:id="@+id/toggleButtonPlatform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:selectedColor="?attr/colorPrimaryDark"
+                    app:allowDeselection="false"
+                    app:cardCornerRadius="3dp"
+                    app:cardBackgroundColor="@color/colorPrimaryLight"
+                    app:customLayout="@layout/view_custom_toggle_button"
+                    app:menu="@menu/toggle_console"
+                    app:toggleMode="even"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="12dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/xbox_gamertag"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextEpicUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cornerRadius="48dp"
+                    app:icon="@drawable/ic_search_24dp"
+                    app:iconTint="@android:color/black"
+                    app:iconGravity="textStart"
+                    android:text="@string/search"
+                    android:textColor="@android:color/black"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                    android:id="@+id/historyHeader"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/colorPrimaryLight"
+                    android:visibility="gone">
+
+                <TextView
+                        android:text="@string/search_history"
+                        android:paddingStart="12dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:ignore="RtlSymmetry"/>
+
+                <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+
+                <ImageView
+                        android:id="@+id/imgDeleteSearchHistory"
+                        android:src="@drawable/ic_delete_sweep"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="8dp"
+                        android:padding="8dp"
+                        android:tint="@color/white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/image_selector"
+                        android:tooltipText="Delete All" tools:ignore="UnusedAttribute"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

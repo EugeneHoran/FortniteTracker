@@ -57,15 +57,15 @@ class NavigationController(
                     loginViewModel.userStats.value!!.accountId!!,
                     loginViewModel.userStats.value!!.getDisplayNameFormatted(),
                     loginViewModel.userStats.value!!.getLogoInt()
-                ).replaceFragment(MatchHistoryFragment.TAG)
+                ).replaceFragmentWithTransition(MatchHistoryFragment.TAG)
                 return true
             }
             R.id.navigation_challenges -> {
-                ChallengesFragment.newInstance().replaceFragment(ChallengesFragment.TAG)
+                ChallengesFragment.newInstance().replaceFragmentWithTransition(ChallengesFragment.TAG)
                 return true
             }
             R.id.navigation_item_shop -> {
-                StoreFragment.newInstance().replaceFragment(StoreFragment.TAG)
+                StoreFragment.newInstance().replaceFragmentWithTransition(StoreFragment.TAG)
                 return true
             }
         }
@@ -73,20 +73,28 @@ class NavigationController(
     }
 
     fun navLoginFragment() {
-        EpicLoginFragment.newInstance().replaceFragment(EpicLoginFragment.TAG)
+        EpicLoginFragment.newInstance().replaceFragmentWithTransition(EpicLoginFragment.TAG)
     }
 
     fun navStatsFragment(accountStats: AccountStats) {
-        StatsParentFragment.newInstance(accountStats).replaceFragment(StatsParentFragment.TAG)
+        StatsParentFragment.newInstance(accountStats).replaceFragmentWithTransition(StatsParentFragment.TAG)
     }
 
-    private fun Fragment.replaceFragment(tag: String?) {
+    private fun Fragment.replaceFragmentWithTransition(tag: String?) {
         val frag = this
         fm.beginTransaction().apply {
             enterTransition = TransitionSet().addTransition(Fade(Fade.IN).setInterpolator {
                 (it - 0.5f) * 2
             }).addTransition(Slide(Gravity.BOTTOM))
             exitTransition = Fade(Fade.OUT)
+            replace(container, frag, tag)
+            commit()
+        }
+    }
+
+    private fun Fragment.replaceFragment(tag: String?) {
+        val frag = this
+        fm.beginTransaction().apply {
             replace(container, frag, tag)
             commit()
         }

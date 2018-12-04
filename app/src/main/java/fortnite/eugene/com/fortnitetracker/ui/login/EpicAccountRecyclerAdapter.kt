@@ -16,8 +16,8 @@ class EpicAccountRecyclerAdapter(
 ) : RecyclerView.Adapter<EpicAccountRecyclerAdapter.AccountViewHolder>() {
 
     interface EpicAccountClickListener {
-        fun onAccountClicked(userAccount: UserAccount)
-        fun onAccountDeleted(userAccount: UserAccount)
+        fun accountItemClicked(userAccount: UserAccount)
+        fun deletedAccount(userAccount: UserAccount)
     }
 
     private var userAccountList = mutableListOf<UserAccount>()
@@ -41,7 +41,7 @@ class EpicAccountRecyclerAdapter(
     }
 
     fun removeAt(position: Int) {
-        epicAccountClickListener.onAccountDeleted(userAccountList[position])
+        epicAccountClickListener.deletedAccount(userAccountList[position])
     }
 
     override fun onBindViewHolder(holder: EpicAccountRecyclerAdapter.AccountViewHolder, position: Int) {
@@ -49,7 +49,7 @@ class EpicAccountRecyclerAdapter(
         holder.image.setImageDrawable(ContextCompat.getDrawable(holder.image.context, consoleImages[item.platformId]!!))
         holder.user.text = item.displayName
         holder.itemView.setOnClickListener {
-            epicAccountClickListener.onAccountClicked(item)
+            epicAccountClickListener.accountItemClicked(item)
         }
     }
 

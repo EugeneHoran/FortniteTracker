@@ -27,4 +27,11 @@
     <string name="xbox_gamertag">Xbox Gamertag</string>
     <string name="psn_gamertag">PSN Gamertag</string>
     <string name="epic_username">Epic Username</string>
+    <string name="search_history">Search History</string>
+
+    <array name="platform_toggle">
+        <item>@string/xbox_gamertag</item>
+        <item>@string/psn_gamertag</item>
+        <item>@string/epic_username</item>
+    </array>
 </resources>

@@ -71,9 +71,6 @@ class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickList
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            R.id.menu_clear -> {
-                loginViewModel.clearSearchHistory()
-            }
             R.id.menu_search -> {
                 onLogout()
             }

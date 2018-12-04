@@ -13,4 +13,6 @@
 
     <color name="white">#ffffff</color>
     <color name="progressBlue">#4583FA</color>
+
+    <color name="colorClickTransparent">#80BDBDBD</color>
 </resources>

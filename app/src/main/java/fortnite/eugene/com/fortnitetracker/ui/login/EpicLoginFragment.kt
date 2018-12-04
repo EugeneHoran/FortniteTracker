@@ -24,7 +24,7 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
     }
 
     override val layoutId: Int = R.layout.fragment_login
-    override val scrollFlags: Int? = Constants.SCROLL_FLAG_NONE
+    override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
 
     private lateinit var loginViewModel: LoginViewModel
     private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
@@ -38,7 +38,6 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         super.onViewCreated(view, savedInstanceState)
         btnSearch.setOnClickListener { searchAccount() }
         recyclerAccount.adapter = epicAccountRecyclerAdapter
-
         val swipeHandler = object : SwipeToDeleteCallback(context!!) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = recyclerAccount.adapter as EpicAccountRecyclerAdapter
@@ -47,14 +46,17 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(recyclerAccount)
+
         toggleButtonPlatform.onToggledListener = { toggle, _ ->
-            when (toggle.position) {
-                0 -> textInputUser.hint = getString(R.string.xbox_gamertag)
-                1 -> textInputUser.hint = getString(R.string.psn_gamertag)
-                2 -> textInputUser.hint = getString(R.string.epic_username)
-            }
+            textInputUser.hint = resources.getStringArray(R.array.platform_toggle)[toggle.position]
+        }
+        imgDeleteSearchHistory.setOnClickListener {
+            snackbar("Clear Search History?").setAction("Clear") {
+                loginViewModel.clearSearchHistory()
+            }.show()
         }
     }
+
 
     override fun initData(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
         initToolbar(getString(R.string.search_player_stats), null, R.drawable.ic_search_24dp)
@@ -70,22 +72,13 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         loginViewModel.getUserStats(getPlatform()!!, getEpicName()!!)
     }
 
-    override fun onAccountClicked(userAccount: UserAccount) {
-        loginViewModel.getUserStats(userAccount.platformName, userAccount.displayName)
-    }
-
-    override fun onAccountDeleted(userAccount: UserAccount) {
-        snackbar(userAccount.epicUserHandle + " deleted").setAction("Undo") {
-            loginViewModel.undoDeletedAccount()
-        }.show()
-        loginViewModel.deleteAccount(userAccount)
-    }
-
     private fun observeUserData() {
         loginViewModel.userAccountList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (it.isNotEmpty()) {
-                    getBaseActivity().onInflateMenu(R.menu.menu_accounts)
+                    historyHeader.visibility = View.VISIBLE
+                } else {
+                    historyHeader.visibility = View.GONE
                 }
                 epicAccountRecyclerAdapter.setItems(it)
             }
@@ -119,24 +112,30 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         }
     }
 
+    override fun accountItemClicked(userAccount: UserAccount) {
+        loginViewModel.getUserStats(userAccount.platformName, userAccount.displayName)
+    }
+
+    override fun deletedAccount(userAccount: UserAccount) {
+        snackbar(userAccount.epicUserHandle + " deleted").setAction("Undo") {
+            loginViewModel.undoDeletedAccount()
+        }.show()
+        loginViewModel.deleteAccount(userAccount)
+    }
+
     /**
      * View Helpers
      */
     private fun showLoading() {
-        toggleButtonPlatform.visibility = View.GONE
-        textInputUser.visibility = View.GONE
-        btnSearch.visibility = View.GONE
-
         pbLoading.visibility = View.VISIBLE
+        cardLoginHolder.visibility = View.GONE
         recyclerAccount.visibility = View.GONE
+
     }
 
     private fun dismissLoading() {
-        toggleButtonPlatform.visibility = View.VISIBLE
-        textInputUser.visibility = View.VISIBLE
-        btnSearch.visibility = View.VISIBLE
-
         pbLoading.visibility = View.GONE
+        cardLoginHolder.visibility = View.VISIBLE
         recyclerAccount.visibility = View.VISIBLE
     }
 }
