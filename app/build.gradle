@@ -77,7 +77,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     /** Libs **/
-    implementation project(':togglebuttonlayout')
+
     implementation 'com.polyak:icon-switch:1.0.0'
     implementation 'com.github.lecho:hellocharts-android:v1.5.8'
     implementation 'com.github.RaviKoradiya:Toolbar-Center-Title:1.0.3'
