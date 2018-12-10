@@ -13,7 +13,7 @@ import fortnite.eugene.com.fortnitetracker.utils.SingleLiveEvent
 import fortnite.eugene.com.fortnitetracker.utils.ioThread
 import javax.inject.Inject
 
-class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
+class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel<LoginNavigator>() {
 
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi
@@ -49,6 +49,7 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
                         }
                         userStats.value = it.resource
                         loginStatus.value = true
+//                        getNavigator()?.login()
                     } else {
                         error.value = it.resource!!.error
                         showLoading.value = false
@@ -75,15 +76,7 @@ class LoginViewModel(private val userDao: UserAccountDao) : BaseViewModel() {
     }
 
     fun deleteAccount(userAccount: UserAccount) {
-        deletedAccount = UserAccount(
-            userAccount.accountId,
-            userAccount.epicUserHandle,
-            userAccount.platformId,
-            userAccount.platformName,
-            userAccount.platformNameLong,
-            userAccount.timestamp,
-            userAccount.displayName
-        )
+        deletedAccount = UserAccount(userAccount)
         ioThread {
             userDao.deleteAccount(userAccount)
         }

@@ -4,6 +4,12 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
+    <!--Consoles-->
+    <string name="xbox">Xbox</string>
+    <string name="ps4">PS4</string>
+    <string name="pc">PC</string>
+
+
     <string name="search">Search</string>
     <string name="clear_history">Clear Search History</string>
 
@@ -28,6 +34,9 @@
     <string name="psn_gamertag">PSN Gamertag</string>
     <string name="epic_username">Epic Username</string>
     <string name="search_history">Search History</string>
+    <string name="summary">Summary</string>
+    <string name="lifetime">Lifetime</string>
+    <string name="season_7">Season 7</string>
 
     <array name="platform_toggle">
         <item>@string/xbox_gamertag</item>

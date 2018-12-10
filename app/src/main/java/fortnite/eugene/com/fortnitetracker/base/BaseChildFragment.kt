@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 
-abstract class BaseChildFragment<V : BaseViewModel> : Fragment() {
+abstract class BaseChildFragment<V : BaseViewModel<*>> : Fragment() {
     @get:LayoutRes
     abstract val layoutId: Int
 

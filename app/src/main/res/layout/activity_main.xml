@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!--<variable-->
+        <!--name="viewModel"-->
+        <!--type="com.example.ViewModel"/>-->
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:context=".ui.MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:navigationIcon="@drawable/ic_search_24dp"
+                    app:layout_scrollFlags="enterAlways|scroll"/>
+
+
+            <fortnite.eugene.com.fortnitetracker.utils.toggle.ToggleButtonLayout
+                    android:id="@+id/toggleButtonSeasons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:selectedColor="?attr/colorPrimaryDark"
+                    android:layout_margin="12dp"
+                    app:allowDeselection="false"
+                    app:cardCornerRadius="3dp"
+                    app:toggleMode="even"
+                    app:cardBackgroundColor="@color/colorPrimaryLight"
+                    app:customLayout="@layout/view_custom_toggle_button"
+                    app:menu="@menu/toggle_seasons"
+                    android:visibility="gone"/>
+
+            <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/colorPrimary"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    android:visibility="gone"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/bottom_nav_height"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/navigation"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_nav_height"
+                android:layout_gravity="bottom"
+                android:visibility="visible"
+                android:background="@color/colorPrimary"
+                app:menu="@menu/navigation_logged_out"
+                app:itemIconTint="@color/bottom_nav_colors"
+                app:itemTextColor="@color/bottom_nav_colors"
+                app:labelVisibilityMode="labeled"
+                app:layout_behavior="fortnite.eugene.com.fortnitetracker.utils.BottomNavigationBehavior"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

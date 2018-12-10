@@ -1,7 +1,10 @@
 package fortnite.eugene.com.fortnitetracker.ui.login
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,8 +17,8 @@ import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.fortnitetracker.utils.SwipeToDeleteCallback
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class EpicLoginFragment : BaseFragment<LoginViewModel>(),
-    EpicAccountRecyclerAdapter.EpicAccountClickListener {
+class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionListener, View.OnClickListener,
+    TextView.OnEditorActionListener, LoginNavigator {
 
     companion object {
         val TAG: String = EpicLoginFragment::class.java.simpleName
@@ -24,10 +27,11 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
     }
 
     override val layoutId: Int = R.layout.fragment_login
+
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
 
     private lateinit var loginViewModel: LoginViewModel
-    private var epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(this)
+    private lateinit var epicAccountRecyclerAdapter: EpicAccountRecyclerAdapter
 
     override fun getViewModel(): LoginViewModel {
         loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
@@ -36,31 +40,43 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnSearch.setOnClickListener { searchAccount() }
+        epicAccountRecyclerAdapter = EpicAccountRecyclerAdapter(context!!, this)
         recyclerAccount.adapter = epicAccountRecyclerAdapter
-        val swipeHandler = object : SwipeToDeleteCallback(context!!) {
+        ItemTouchHelper(object : SwipeToDeleteCallback(context!!) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val adapter = recyclerAccount.adapter as EpicAccountRecyclerAdapter
-                adapter.removeAt(viewHolder.adapterPosition)
+                accountSwipeDelete(epicAccountRecyclerAdapter.getItem(viewHolder.adapterPosition))
             }
-        }
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(recyclerAccount)
-
+        }).attachToRecyclerView(recyclerAccount)
         toggleButtonPlatform.onToggledListener = { toggle, _ ->
             textInputUser.hint = resources.getStringArray(R.array.platform_toggle)[toggle.position]
         }
-        imgDeleteSearchHistory.setOnClickListener {
+        editTextEpicUserName.setOnEditorActionListener(this)
+        btnSearch.setOnClickListener(this)
+        imgDeleteSearchHistory.setOnClickListener(this)
+    }
+
+    override fun initData(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
+        initToolbar(getString(R.string.search_player_stats), null, R.drawable.ic_search_24dp)
+//        viewModel.setNavigator(this)
+        observeUserData()
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+            searchAccount()
+            return true
+        }
+        return false
+    }
+
+    override fun onClick(v: View?) {
+        if (v == btnSearch) {
+            searchAccount()
+        } else if (v == imgDeleteSearchHistory) {
             snackbar("Clear Search History?").setAction("Clear") {
                 loginViewModel.clearSearchHistory()
             }.show()
         }
-    }
-
-
-    override fun initData(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
-        initToolbar(getString(R.string.search_player_stats), null, R.drawable.ic_search_24dp)
-        observeUserData()
     }
 
     private fun searchAccount() {
@@ -112,11 +128,11 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(),
         }
     }
 
-    override fun accountItemClicked(userAccount: UserAccount) {
+    override fun accountClickLogin(userAccount: UserAccount) {
         loginViewModel.getUserStats(userAccount.platformName, userAccount.displayName)
     }
 
-    override fun deletedAccount(userAccount: UserAccount) {
+    override fun accountSwipeDelete(userAccount: UserAccount) {
         snackbar(userAccount.epicUserHandle + " deleted").setAction("Undo") {
             loginViewModel.undoDeletedAccount()
         }.show()

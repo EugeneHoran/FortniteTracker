@@ -7,15 +7,15 @@ import java.text.NumberFormat
 import java.util.*
 
 data class Kd(
-    @SerializedName("label") val label: String?,
-    @SerializedName("field") val field: String?,
-    @SerializedName("category") val category: String?,
-    @SerializedName("valueDec") val valueDec: Double?,
-    @SerializedName("value") val value: String?,
-    @SerializedName("rank") val rank: Int?,
-    @SerializedName("percentile") val percentile: Double?,
-    @SerializedName("displayValue") val displayValue: String?,
-    var progressComparison: Double? = null
+        @SerializedName("label") val label: String?,
+        @SerializedName("field") val field: String?,
+        @SerializedName("category") val category: String?,
+        @SerializedName("valueDec") val valueDec: Double?,
+        @SerializedName("value") val value: String?,
+        @SerializedName("rank") val rank: Int?,
+        @SerializedName("percentile") val percentile: Double?,
+        @SerializedName("displayValue") val displayValue: String?,
+        var progressComparison: Double? = null
 ) : DisplayStatsItem(), Parcelable {
 
     override fun getProgress(): Double? {
@@ -47,14 +47,14 @@ data class Kd(
      * Parcel
      */
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Double::class.java.classLoader) as? Double,
-        parcel.readString()
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readString(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

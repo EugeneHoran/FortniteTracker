@@ -14,4 +14,16 @@ data class UserAccount(
     var platformNameLong: String,
     var timestamp: Long,
     var displayName: String
-)
+) {
+    constructor(userAccount: UserAccount) : this(
+        userAccount.accountId,
+        userAccount.epicUserHandle,
+        userAccount.platformId,
+        userAccount.platformName,
+        userAccount.platformNameLong,
+        userAccount.timestamp,
+        userAccount.displayName
+    ) {
+
+    }
+}

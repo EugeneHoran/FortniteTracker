@@ -7,10 +7,13 @@ import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistory
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryHeader
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryItem
 import fortnite.eugene.com.fortnitetracker.network.FortniteTrackerApi
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import retrofit2.Response
 import javax.inject.Inject
 
 
-class MatchHistoryViewModel(private val accountId: String) : BaseViewModel() {
+class MatchHistoryViewModel(private val accountId: String) : BaseViewModel<Any>() {
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi
     var matchHistory: MediatorLiveData<List<MatchHistoryItem>> = MediatorLiveData()
@@ -22,35 +25,48 @@ class MatchHistoryViewModel(private val accountId: String) : BaseViewModel() {
 
     fun refreshData() {
         showLoading.value = true
-        matchHistory.addSource(fortniteTrackerApi.getUserMatches(accountId)) {
-            if (it != null) {
-                if (it.error != null) {
-                } else {
-                    matchHistory.value = getMatchHistoryDisplayData(it.resource!!.sortedByDescending { matchHistory ->
-                        matchHistory.dateCollected
-                    })
-                }
-            }
-            showLoading.value = false
-        }
+        initData()
     }
 
-    private fun getMatchHistoryDisplayData(matchHistoryList: List<MatchHistory>): List<MatchHistoryItem> {
-        val matchGroupList = mutableListOf<MatchHistoryItem>()
-        if (matchHistoryList.isEmpty()) {
-            return matchGroupList
-        }
-        val groupHistoryByDate = matchHistoryList.groupBy { it.getFilteredDateFormat() }
-        groupHistoryByDate.forEach {
-            val matchHistoryHeader = MatchHistoryHeader(it.key.toString(), it.key!!)
-            it.value.forEach { match ->
-                matchHistoryHeader.addMatches(match.matches!!)
-                matchHistoryHeader.addKills(match.kills!!)
-                matchHistoryHeader.addWins(match.top1!!)
-            }
-            matchGroupList.add(matchHistoryHeader)
-            matchGroupList.addAll(it.value)
-        }
-        return matchGroupList
+    private fun initData() {
+        getCompositeDisposable().add(
+            fortniteTrackerApi.getMatchHistory(accountId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map { matchHistoryListResponse: Response<List<MatchHistory>> ->
+                    val matchGroupList = mutableListOf<MatchHistoryItem>()
+                    if (matchHistoryListResponse.isSuccessful) {
+                        matchHistoryListResponse.body()!!.sortedByDescending { matchHistory ->
+                            matchHistory.dateCollected
+                        }
+                        val groupHistoryByDate =
+                            matchHistoryListResponse.body()!!.groupBy { it.getFilteredDateFormat() }
+                        groupHistoryByDate.forEach {
+                            val matchHistoryHeader = MatchHistoryHeader(it.key.toString(), it.key!!)
+                            it.value.forEach { match ->
+                                matchHistoryHeader.addMatches(match.matches!!)
+                                matchHistoryHeader.addKills(match.kills!!)
+                                matchHistoryHeader.addWins(match.top1!!)
+                            }
+                            matchGroupList.add(matchHistoryHeader)
+                            matchGroupList.addAll(it.value)
+                        }
+                        return@map matchGroupList
+                    } else {
+                        return@map matchGroupList
+                    }
+                }.subscribe(this::handleResponse, this::handleError)
+        )
     }
+
+    private fun handleResponse(matchHistoryList: List<MatchHistoryItem>) {
+        matchHistory.value = matchHistoryList
+        showLoading.value = false
+    }
+
+    private fun handleError(throwable: Throwable) {
+        showLoading.value = false
+        error(throwable.message!!)
+    }
+
 }

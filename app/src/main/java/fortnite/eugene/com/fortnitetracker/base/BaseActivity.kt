@@ -8,12 +8,22 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import com.google.android.material.appbar.AppBarLayout
 import fortnite.eugene.com.fortnitetracker.R
 
+//  T : ViewDataBinding,
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(), BaseFragment.Callback {
+    private var viewDataBinding: T? = null
 
-abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
-    BaseFragment.Callback {
+    fun getViewDataBinding(): T {
+        return viewDataBinding!!
+    }
+
+    abstract val snackbarViewId: Int
+
+    lateinit var snackbarView: View
 
     /**
      * @return layout resource id
@@ -21,7 +31,7 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
     @get:LayoutRes
     abstract val layoutId: Int
 
-    //TODO add this for setting viewmodel to layout
+
     private lateinit var viewModel: V
 
     /**
@@ -33,10 +43,11 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layoutId)
+        viewDataBinding = DataBindingUtil.setContentView(this, layoutId)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
         }
+        snackbarView = findViewById(snackbarViewId)
         viewModel = getViewModel()
     }
 
@@ -62,8 +73,7 @@ abstract class BaseActivity<V : BaseViewModel> : AppCompatActivity(),
         }
     }
 
-
-    fun hideKeyboard() {
+        fun hideKeyboard() {
         val view = this.currentFocus
         if (view != null) {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(

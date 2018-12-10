@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/toggle_xbox"
-          android:title="Xbox"/>
+          android:title="@string/xbox"/>
 
     <item android:id="@+id/toggle_ps4"
-          android:title="PS4"/>
+          android:title="@string/ps4"/>
 
     <item android:id="@+id/toggle_pc"
-          android:title="PC"/>
+          android:title="@string/pc"/>
 
 </menu>

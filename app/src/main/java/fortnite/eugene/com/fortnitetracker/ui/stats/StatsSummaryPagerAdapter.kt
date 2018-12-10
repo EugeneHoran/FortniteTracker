@@ -1,6 +1,5 @@
 package fortnite.eugene.com.fortnitetracker.ui.stats
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.PagerAdapter
 import fortnite.eugene.com.fortnitetracker.R
+import fortnite.eugene.com.fortnitetracker.base.BaseViewHolder
 import fortnite.eugene.com.fortnitetracker.model.stats.ChartDataItem
 import fortnite.eugene.com.fortnitetracker.model.stats.LifeTimeStat
 import kotlinx.android.synthetic.main.recycler_pie_chart_item.view.*
@@ -75,9 +75,11 @@ class StatsSummaryPagerAdapter(
         return null
     }
 
+    /**
+     * RecyclerView Adapter
+     */
     class StatsSummaryRecyclerAdapter2(private var itemList: List<Any?>, var summaryCallback: SummaryCallback) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
 
         override fun getItemViewType(position: Int): Int {
             return when {
@@ -115,38 +117,35 @@ class StatsSummaryPagerAdapter(
             }
         }
 
+        class CombinedViewHolder(itemView: View) : BaseViewHolder<LifeTimeStat>(itemView) {
+            override fun bind(item: LifeTimeStat) {
+                itemView.itemPercentile.visibility = View.GONE
+                itemView.percentileProgress.visibility = View.GONE
+                itemView.itemRank.visibility = View.GONE
+                itemView.title.text = item.key!!
+                itemView.displayText.text = item.value!!
+            }
+        }
+
         class PieChartViewHolder(itemView: View, private var summaryCallback: SummaryCallback) :
-            RecyclerView.ViewHolder(itemView),
+            BaseViewHolder<ChartDataItem>(itemView),
             PieChartOnValueSelectListener {
-            private lateinit var chartData: ChartDataItem
-            @SuppressLint("SetTextI18n")
-            fun bind(pieChartData: ChartDataItem) {
-                chartData = pieChartData
+
+            override fun bind(item: ChartDataItem) {
                 itemView.pieChartView.isChartRotationEnabled = false
-                itemView.pieChartView.pieChartData = pieChartData.pieChartData
+                itemView.pieChartView.pieChartData = item.pieChartData
                 itemView.pieChartView.onValueTouchListener = this
-                itemView.txtSolo.text = chartData.soloMatched.toString() + " Solo matches"
-                itemView.txtDuo.text = chartData.duoMatches.toString() + " Duo matches"
-                itemView.txtSquads.text = chartData.squadMatches.toString() + " Squad matches"
+                itemView.txtSolo.text = String.format("${item.soloMatched} Solo matches")
+                itemView.txtDuo.text = String.format("${item.duoMatches} Duo matches")
+                itemView.txtSquads.text = String.format("${item.squadMatches} Squad matches")
             }
 
             override fun onValueSelected(p0: Int, p1: SliceValue?) {
                 summaryCallback.onChartItemSelected(p0)
             }
 
-            override fun onValueDeselected() {
-
-            }
+            override fun onValueDeselected() {}
         }
 
-        class CombinedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(lifeTimeStat: LifeTimeStat) {
-                itemView.itemPercentile.visibility = View.GONE
-                itemView.percentileProgress.visibility = View.GONE
-                itemView.itemRank.visibility = View.GONE
-                itemView.title.text = lifeTimeStat.key!!
-                itemView.displayText.text = lifeTimeStat.value!!
-            }
-        }
     }
 }

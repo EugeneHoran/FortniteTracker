@@ -7,19 +7,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseActivity
+import fortnite.eugene.com.fortnitetracker.databinding.ActivityMainBinding
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 import fortnite.eugene.com.fortnitetracker.utils.Constants
-import kotlinx.android.synthetic.main.activity_main2.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickListener {
+class MainActivity : BaseActivity<ActivityMainBinding, LoginViewModel>(), Toolbar.OnMenuItemClickListener {
     private lateinit var navigationController: NavigationController
     private lateinit var loginViewModel: LoginViewModel
 
-
-    override val layoutId: Int = R.layout.activity_main2
+    override val layoutId: Int = R.layout.activity_main
 
     override fun getViewModel(): LoginViewModel {
         loginViewModel = ViewModelProviders.of(this, AppFactory(this)).get(LoginViewModel::class.java)
@@ -37,16 +37,14 @@ class MainActivity : BaseActivity<LoginViewModel>(), Toolbar.OnMenuItemClickList
         observeLoginStatus()
     }
 
+    override val snackbarViewId: Int = R.id.navigation
+
     private fun observeLoginStatus() {
         loginViewModel.loginStatus.observe(this, Observer {
             if (it != null) {
-                if (it) {
-                    navigation.menu.clear()
-                    navigation.inflateMenu(R.menu.navigation_logged_in)
-                } else {
-                    navigation.menu.clear()
-                    navigation.inflateMenu(R.menu.navigation_logged_out)
-                }
+                navigation.menu.clear()
+                if (it) navigation.inflateMenu(R.menu.navigation_logged_in)
+                else navigation.inflateMenu(R.menu.navigation_logged_out)
             }
         })
     }

@@ -19,24 +19,20 @@ interface FortniteTrackerApi {
         @Path("epic_nickname") epic_nickname: String
     ): LiveData<Resource<AccountStats>>
 
-    @GET("v1/profile/account/{accountId}/matches")
-    fun getUserMatches(
-        @Path("accountId") accountId: String
-    ): LiveData<Resource<List<MatchHistory>>>
-
-    @GET("v1/challenges")
-    fun getChallenges(): LiveData<Resource<Challenges>>
-
-    @GET("v1/challenges")
-    fun getChallenge(): Observable<Response<Challenges>>
-
-    @GET("v1/store")
-    fun getStore(): Observable<List<StoreItem>>
-
-
     @GET("v1/profile/{platform}/{epic_nickname}")
     fun getStats(
         @Path("platform") platform: String,
         @Path("epic_nickname") epic_nickname: String
     ): Observable<Response<AccountStats>>
+
+    @GET("v1/profile/account/{accountId}/matches")
+    fun getMatchHistory(
+        @Path("accountId") accountId: String
+    ): Observable<Response<List<MatchHistory>>>
+
+    @GET("v1/challenges")
+    fun getChallenge(): Observable<Response<Challenges>>
+
+    @GET("v1/store")
+    fun getStore(): Observable<Response<List<StoreItem>>>
 }

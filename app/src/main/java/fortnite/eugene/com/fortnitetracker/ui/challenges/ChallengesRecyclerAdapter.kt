@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseRecyclerAdapter
+import fortnite.eugene.com.fortnitetracker.base.BaseViewHolder
 import fortnite.eugene.com.fortnitetracker.model.challenges.ChallengeDisplayItem
 import kotlinx.android.synthetic.main.recycler_challenge_item.view.*
 
@@ -46,11 +47,11 @@ class ChallengesRecyclerAdapter : BaseRecyclerAdapter<ChallengeDisplayItem>() {
         }
     }
 
-    class ChallengeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: ChallengeDisplayItem) {
+    class ChallengeViewHolder(itemView: View) : BaseViewHolder<ChallengeDisplayItem>(itemView) {
+        override fun bind(item: ChallengeDisplayItem) {
             Glide.with(itemView.context!!).load(item.rewardPictureUrl).into(itemView.imageReward)
             itemView.textChallengeName.text = item.name
-            itemView.textChallengeTotal.text = item.questsTotal + " / " + item.questsCompleted
+            itemView.textChallengeTotal.text = String.format("${item.questsTotal} / ${item.questsCompleted}")
             itemView.textChallengeReward.text = item.rewardName
 
         }

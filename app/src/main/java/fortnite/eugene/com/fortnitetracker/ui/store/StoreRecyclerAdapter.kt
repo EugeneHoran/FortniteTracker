@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseRecyclerAdapter
+import fortnite.eugene.com.fortnitetracker.base.BaseViewHolder
 import fortnite.eugene.com.fortnitetracker.model.store.StoreDisplayItem
 import fortnite.eugene.com.fortnitetracker.model.store.StoreHeaderItem
 import fortnite.eugene.com.fortnitetracker.model.store.StoreItem
@@ -63,11 +64,11 @@ class StoreRecyclerAdapter : BaseRecyclerAdapter<StoreDisplayItem>() {
         }
     }
 
-    class StoreItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: StoreItem) {
+    class StoreItemViewHolder(itemView: View) : BaseViewHolder<StoreItem>(itemView) {
+        override fun bind(item: StoreItem) {
             Glide.with(itemView.context!!).load(item.imageUrl!!).into(itemView.imageViewStoreItem)
             itemView.textStoreTitle.text = item.name
-            itemView.textStoreCost.text = "${item.vBucks!!} V-Bucks"
+            itemView.textStoreCost.text = String.format("${item.vBucks!!} V-Bucks")
             itemView.cardStoreHolder.setCardBackgroundColor(Color.parseColor(item.getRarityColor()))
         }
     }

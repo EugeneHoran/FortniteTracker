@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
 
 class AccountDiffUtil(private val newList: List<UserAccount>, private val oldList: List<UserAccount>) :
-    DiffUtil.Callback() {
+        DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size
     override fun getNewListSize() = newList.size

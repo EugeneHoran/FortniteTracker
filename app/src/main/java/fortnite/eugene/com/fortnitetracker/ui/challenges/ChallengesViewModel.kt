@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ChallengesViewModel : BaseViewModel() {
+class ChallengesViewModel : BaseViewModel<Any>() {
 
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi
@@ -20,33 +20,31 @@ class ChallengesViewModel : BaseViewModel() {
 
     init {
         showLoading.value = true
-        getCompositeDisposable().add(fortniteTrackerApi.getChallenge()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (it.isSuccessful) {
-                    val itemList = mutableListOf<ChallengeDisplayItem>()
-                    it.body()!!.items!!.forEach { displayItem: Item? ->
-                        itemList.add(displayItem!!.getDisplayItemData())
+        getCompositeDisposable().add(
+            fortniteTrackerApi.getChallenge()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    if (it.isSuccessful) {
+                        val itemList = mutableListOf<ChallengeDisplayItem>()
+                        it.body()!!.items!!.forEach { displayItem: Item? ->
+                            itemList.add(displayItem!!.getDisplayItemData())
+                        }
+                        return@map itemList
+                    } else {
+                        return@map emptyList<ChallengeDisplayItem>()
                     }
-                    challenges.value = itemList
-                }
-                showLoading.value = false
-            })
+                }.subscribe(this::handleResponse, this::handleError)
+        )
+    }
 
-//        challenges.addSource(fortniteTrackerApi.getChallenges()) {
-//            if (it != null) {
-//                if (it.error != null) {
-//                    error.value = it.error!!.message
-//                } else {
-//                    val itemList = mutableListOf<ChallengeDisplayItem>()
-//                    it.resource!!.items!!.forEach { displayItem: Item? ->
-//                        itemList.add(displayItem!!.getDisplayItemData())
-//                    }
-//                    challenges.value = itemList
-//                }
-//            }
-//            showLoading.value = false
-//        }
+    private fun handleResponse(response: List<ChallengeDisplayItem>) {
+        challenges.value = response
+        showLoading.value = false
+    }
+
+    private fun handleError(throwable: Throwable) {
+        error.value = throwable.message
+        showLoading.value = false
     }
 }

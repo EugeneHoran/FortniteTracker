@@ -9,8 +9,8 @@ const val HOUR_MILLIS = 60 * MINUTE_MILLIS
 const val DAY_MILLIS = 24 * HOUR_MILLIS
 
 fun String.toDate(
-    dateFormat: String = "yyyy-MM-dd'T'HH:mm:ss.SSS",
-    timeZone: TimeZone = TimeZone.getTimeZone("UTC")
+        dateFormat: String = "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        timeZone: TimeZone = TimeZone.getTimeZone("UTC")
 ): Date {
     val parser = SimpleDateFormat(dateFormat, Locale.getDefault())
     parser.timeZone = timeZone
@@ -19,8 +19,8 @@ fun String.toDate(
 
 
 fun Date.formatTo(
-    dateFormat: String,
-    timeZone: TimeZone = TimeZone.getDefault()
+        dateFormat: String,
+        timeZone: TimeZone = TimeZone.getDefault()
 ): String {
     val formatter = SimpleDateFormat(dateFormat, Locale.getDefault())
     formatter.timeZone = timeZone

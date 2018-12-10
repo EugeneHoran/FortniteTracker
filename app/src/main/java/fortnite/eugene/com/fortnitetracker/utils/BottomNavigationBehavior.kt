@@ -15,8 +15,8 @@ class BottomNavigationBehavior : CoordinatorLayout.Behavior<BottomNavigationView
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     override fun layoutDependsOn(
-        parent: CoordinatorLayout, child: BottomNavigationView,
-        dependency: View
+            parent: CoordinatorLayout, child: BottomNavigationView,
+            dependency: View
     ): Boolean {
         if (dependency is Snackbar.SnackbarLayout) {
             updateSnackbar(child, dependency)

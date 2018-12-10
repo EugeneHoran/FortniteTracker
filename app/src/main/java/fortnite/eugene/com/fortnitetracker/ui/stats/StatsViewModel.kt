@@ -7,7 +7,7 @@ import fortnite.eugene.com.fortnitetracker.model.stats.StatsInfo
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 
 
-class StatsViewModel(private val accountStats: AccountStats) : BaseViewModel() {
+class StatsViewModel(private val accountStats: AccountStats) : BaseViewModel<Any>() {
     var seasonToggle: Int = Constants.SEASON_COMBINED
     var soloStats: MutableLiveData<StatsInfo> = MutableLiveData()
     var duoStats: MutableLiveData<StatsInfo> = MutableLiveData()

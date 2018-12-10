@@ -9,12 +9,11 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.ravikoradiya.library.CenterTitle
 import fortnite.eugene.com.fortnitetracker.R
 
-abstract class BaseFragment<V : BaseViewModel> : Fragment() {
+abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
 
     interface Callback {
         fun onFragmentAttached()
@@ -25,19 +24,29 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
         fun onLogout()
     }
 
-    private var baseActivity: BaseActivity<*>? = null
-    //TODO add this for setting viewmodel to layout
-    private var viewModel: V? = null
+    private var baseActivity: BaseActivity<*, *>? = null
+
+    /**
+     * @return layout resource id
+     */
     @get:LayoutRes
     abstract val layoutId: Int
+
+    /**
+     * Override for set view model
+     *
+     * @return view model instance
+     */
+    private var viewModel: V? = null
+
     abstract val scrollFlags: Int?
-    fun getBaseActivity(): BaseActivity<*> = baseActivity!!
+    fun getBaseActivity(): BaseActivity<*, *> = baseActivity!!
     abstract fun getViewModel(): V
     abstract fun initData(savedInstanceState: Bundle?, viewModel: V)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is BaseActivity<*>) {
+        if (context is BaseActivity<*, *>) {
             this.baseActivity = context
             baseActivity!!.onFragmentAttached()
         }
@@ -85,7 +94,7 @@ abstract class BaseFragment<V : BaseViewModel> : Fragment() {
 
     fun snackbar(text: String): Snackbar {
         return Snackbar.make(
-            getBaseActivity().findViewById<BottomNavigationView>(R.id.navigation),
+            getBaseActivity().snackbarView,
             text,
             Snackbar.LENGTH_LONG
         )

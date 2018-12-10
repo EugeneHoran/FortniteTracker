@@ -9,7 +9,7 @@ import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
 import fortnite.eugene.com.fortnitetracker.utils.Constants
-import fortnite.eugene.com.togglebuttonlayout.ToggleButtonLayout
+import fortnite.eugene.com.fortnitetracker.utils.toggle.ToggleButtonLayout
 import kotlinx.android.synthetic.main.fragment_account.*
 
 

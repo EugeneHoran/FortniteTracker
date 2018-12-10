@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseRecyclerAdapter
+import fortnite.eugene.com.fortnitetracker.base.BaseViewHolder
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistory
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryHeader
 import fortnite.eugene.com.fortnitetracker.model.matches.MatchHistoryItem
@@ -67,8 +68,8 @@ class MatchHistoryRecyclerAdapter : BaseRecyclerAdapter<MatchHistoryItem>(), Sti
         }
     }
 
-    class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchHistoryHeader) {
+    class HeaderViewHolder(itemView: View) : BaseViewHolder<MatchHistoryHeader>(itemView) {
+        override fun bind(item: MatchHistoryHeader) {
             itemView.date.text = item.getDateDisplay()
             itemView.matches.text = item.matches.toString()
             itemView.wins.text = item.wins.toString()
@@ -77,8 +78,8 @@ class MatchHistoryRecyclerAdapter : BaseRecyclerAdapter<MatchHistoryItem>(), Sti
         }
     }
 
-    class MatchHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MatchHistory) {
+    class MatchHistoryViewHolder(itemView: View) : BaseViewHolder<MatchHistory>(itemView) {
+        override fun bind(item: MatchHistory) {
             itemView.textMatchTimeAgo.text = item.dateCollected!!.toDate().formatToTimeAgo()
             itemView.matchMatches.text = item.matches!!.toString()
             itemView.matchWins.text = item.top1!!.toString()
