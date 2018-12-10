@@ -19,7 +19,7 @@ private const val ARG_ACCOUNT_ID = "param_account_id"
 private const val ARG_DISPLAY_NAME = "param_display_name"
 private const val ARG_DISPLAY_LOGO = "param_display_logo"
 
-class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefreshLayout.OnRefreshListener {
+class MatchHistoryFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     companion object {
         val TAG: String = MatchHistoryFragment::class.java.simpleName
         @JvmStatic
@@ -41,13 +41,6 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
     override val layoutId: Int = R.layout.layout_recycler
 
-    override fun getViewModel(): MatchHistoryViewModel =
-        ViewModelProviders.of(this, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
-
-    override fun initData(savedInstanceState: Bundle?, viewModel: MatchHistoryViewModel) {
-        this.matchHistoryViewModel = viewModel
-        observeMatchHistory(viewModel)
-    }
 
     private var matchHistoryAdapter = MatchHistoryRecyclerAdapter()
 
@@ -63,11 +56,6 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getBaseActivity().onInflateMenu(R.menu.menu_search)
-        initToolbar(
-            displayName,
-            "Match History",
-            logoInt
-        )
         val mLinearLayoutManager = StickyHeadersLinearLayoutManager<MatchHistoryRecyclerAdapter>(
             activity!!,
             RecyclerView.VERTICAL,
@@ -78,6 +66,13 @@ class MatchHistoryFragment : BaseFragment<MatchHistoryViewModel>(), SwipeRefresh
         recyclerView.addItemDecoration(DividerItemDecoration(context!!, RecyclerView.VERTICAL))
         recyclerView.adapter = matchHistoryAdapter
         swipe_container.setOnRefreshListener(this)
+    }
+
+    override fun initData(savedInstanceState: Bundle?) {
+        initToolbar(displayName, "Match History", logoInt)
+        matchHistoryViewModel =
+                ViewModelProviders.of(this, AppFactory(accountId!!)).get(MatchHistoryViewModel::class.java)
+        observeMatchHistory(matchHistoryViewModel)
     }
 
     override fun onRefresh() {

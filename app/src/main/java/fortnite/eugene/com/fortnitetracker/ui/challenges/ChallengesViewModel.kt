@@ -10,7 +10,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ChallengesViewModel : BaseViewModel<Any>() {
+class ChallengesViewModel : BaseViewModel() {
 
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi

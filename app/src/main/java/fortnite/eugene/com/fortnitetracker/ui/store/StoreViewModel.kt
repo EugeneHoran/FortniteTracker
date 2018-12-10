@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class StoreViewModel : BaseViewModel<Any>() {
+class StoreViewModel : BaseViewModel() {
 
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi

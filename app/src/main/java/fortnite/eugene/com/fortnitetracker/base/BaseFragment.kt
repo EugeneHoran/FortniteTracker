@@ -13,18 +13,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.ravikoradiya.library.CenterTitle
 import fortnite.eugene.com.fortnitetracker.R
 
-abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
+abstract class BaseFragment : Fragment() {
 
     interface Callback {
         fun onFragmentAttached()
         fun onFragmentDetached(tag: String)
         fun onUpdateScrollFlags(scrollFlags: Int?)
         fun onInflateMenu(menuId: Int?)
-        fun onLogin(parameters: Any? = null)
-        fun onLogout()
     }
 
-    private var baseActivity: BaseActivity<*, *>? = null
+    private var baseActivity: BaseActivity? = null
 
     /**
      * @return layout resource id
@@ -32,21 +30,14 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
     @get:LayoutRes
     abstract val layoutId: Int
 
-    /**
-     * Override for set view model
-     *
-     * @return view model instance
-     */
-    private var viewModel: V? = null
-
     abstract val scrollFlags: Int?
-    fun getBaseActivity(): BaseActivity<*, *> = baseActivity!!
-    abstract fun getViewModel(): V
-    abstract fun initData(savedInstanceState: Bundle?, viewModel: V)
+    fun getBaseActivity(): BaseActivity = baseActivity!!
+
+    abstract fun initData(savedInstanceState: Bundle?)
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is BaseActivity<*, *>) {
+        if (context is BaseActivity) {
             this.baseActivity = context
             baseActivity!!.onFragmentAttached()
         }
@@ -59,8 +50,7 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         baseActivity!!.onUpdateScrollFlags(scrollFlags)
-        viewModel = getViewModel()
-        initData(savedInstanceState, viewModel!!)
+        initData(savedInstanceState)
     }
 
     override fun onDetach() {
@@ -72,11 +62,7 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
         super.onDetach()
     }
 
-    fun initToolbar(
-        title: String? = null,
-        subTitle: String? = null,
-        navIcon: Int? = null
-    ) {
+    fun initToolbar(title: String? = null, subTitle: String? = null, navIcon: Int? = null) {
         if (baseActivity != null) {
             val toolbar = baseActivity!!.findViewById<Toolbar>(R.id.toolbar)
             if (toolbar != null) {
@@ -94,7 +80,7 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
 
     fun snackbar(text: String): Snackbar {
         return Snackbar.make(
-            getBaseActivity().snackbarView,
+            getBaseActivity().getSnackbarView(),
             text,
             Snackbar.LENGTH_LONG
         )

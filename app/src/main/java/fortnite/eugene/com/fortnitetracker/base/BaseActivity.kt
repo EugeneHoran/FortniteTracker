@@ -8,47 +8,32 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.google.android.material.appbar.AppBarLayout
 import fortnite.eugene.com.fortnitetracker.R
 
 //  T : ViewDataBinding,
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(), BaseFragment.Callback {
-    private var viewDataBinding: T? = null
-
-    fun getViewDataBinding(): T {
-        return viewDataBinding!!
-    }
-
-    abstract val snackbarViewId: Int
-
-    lateinit var snackbarView: View
-
+abstract class BaseActivity : AppCompatActivity(), BaseFragment.Callback {
     /**
      * @return layout resource id
      */
     @get:LayoutRes
     abstract val layoutId: Int
 
-
-    private lateinit var viewModel: V
-
     /**
-     * Override for set view model
-     *
-     * @return view model instance
+     * @return snackbar resource id
      */
-    abstract fun getViewModel(): V
+    abstract val snackbarViewId: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewDataBinding = DataBindingUtil.setContentView(this, layoutId)
+        setContentView(layoutId)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
         }
-        snackbarView = findViewById(snackbarViewId)
-        viewModel = getViewModel()
+    }
+
+    fun getSnackbarView(): View {
+        return findViewById(snackbarViewId)
     }
 
     override fun onFragmentAttached() {
@@ -73,7 +58,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppComp
         }
     }
 
-        fun hideKeyboard() {
+    fun hideKeyboard() {
         val view = this.currentFocus
         if (view != null) {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(

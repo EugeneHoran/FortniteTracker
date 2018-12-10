@@ -12,7 +12,7 @@ import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.layout_recycler.*
 
-class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
+class ChallengesFragment : BaseFragment() {
     companion object {
         val TAG: String = ChallengesFragment::class.java.simpleName
         @JvmStatic
@@ -21,8 +21,10 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
 
     override val layoutId: Int = R.layout.layout_recycler
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
-    override fun getViewModel(): ChallengesViewModel {
-        return ViewModelProviders.of(activity!!).get(ChallengesViewModel::class.java)
+
+    override fun initData(savedInstanceState: Bundle?) {
+        initToolbar("Weekly Challenges", null, R.drawable.ic_trophy)
+        observeChallenges(ViewModelProviders.of(activity!!).get(ChallengesViewModel::class.java))
     }
 
     private val adapter = ChallengesRecyclerAdapter()
@@ -33,11 +35,6 @@ class ChallengesFragment : BaseFragment<ChallengesViewModel>() {
         recyclerView.layoutManager = LinearLayoutManager(context!!)
         recyclerView.addItemDecoration(DividerItemDecoration(context!!, LinearLayoutManager.VERTICAL))
         recyclerView.adapter = adapter
-    }
-
-    override fun initData(savedInstanceState: Bundle?, viewModel: ChallengesViewModel) {
-        initToolbar("Weekly Challenges", null, R.drawable.ic_trophy)
-        observeChallenges(viewModel)
     }
 
     private fun observeChallenges(challengesViewModel: ChallengesViewModel) {

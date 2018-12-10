@@ -7,27 +7,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseActivity
-import fortnite.eugene.com.fortnitetracker.databinding.ActivityMainBinding
 import fortnite.eugene.com.fortnitetracker.inject.AppFactory
 import fortnite.eugene.com.fortnitetracker.model.stats.AccountStats
+import fortnite.eugene.com.fortnitetracker.ui.login.LoginCallbacks
 import fortnite.eugene.com.fortnitetracker.ui.login.LoginViewModel
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity<ActivityMainBinding, LoginViewModel>(), Toolbar.OnMenuItemClickListener {
+class MainActivity : BaseActivity(), LoginCallbacks, Toolbar.OnMenuItemClickListener {
+    override val layoutId: Int = R.layout.activity_main
+    override val snackbarViewId: Int = R.id.navigation
+
     private lateinit var navigationController: NavigationController
     private lateinit var loginViewModel: LoginViewModel
 
-    override val layoutId: Int = R.layout.activity_main
-
-    override fun getViewModel(): LoginViewModel {
-        loginViewModel = ViewModelProviders.of(this, AppFactory(this)).get(LoginViewModel::class.java)
-        return loginViewModel
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loginViewModel = ViewModelProviders.of(this, AppFactory(this)).get(LoginViewModel::class.java)
         toolbar.setOnMenuItemClickListener(this)
         navigation.setOnNavigationItemReselectedListener { }
         navigation.setOnNavigationItemSelectedListener {
@@ -36,8 +33,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, LoginViewModel>(), Toolba
         navigationController = NavigationController(savedInstanceState, supportFragmentManager, loginViewModel, this)
         observeLoginStatus()
     }
-
-    override val snackbarViewId: Int = R.id.navigation
 
     private fun observeLoginStatus() {
         loginViewModel.loginStatus.observe(this, Observer {
@@ -53,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, LoginViewModel>(), Toolba
         navigationController.navStatsFragment(parameters as AccountStats)
     }
 
-    override fun onLogout() {
+    private fun onLogout() {
         loginViewModel.loginStatus.value = false
         loginViewModel.userStats.value = null
         navigationController.navLoginFragment()

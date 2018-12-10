@@ -11,7 +11,7 @@ import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import kotlinx.android.synthetic.main.layout_recycler.*
 
-class StoreFragment : BaseFragment<StoreViewModel>() {
+class StoreFragment : BaseFragment() {
     companion object {
         val TAG: String = StoreFragment::class.java.simpleName
         @JvmStatic
@@ -20,12 +20,14 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
 
     override val layoutId: Int = R.layout.layout_recycler
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
-    override fun getViewModel() = ViewModelProviders.of(activity!!).get(StoreViewModel::class.java)
+
+    private lateinit var storeViewModel: StoreViewModel
 
     private val storeAdapter = StoreRecyclerAdapter()
 
-    override fun initData(savedInstanceState: Bundle?, viewModel: StoreViewModel) {
+    override fun initData(savedInstanceState: Bundle?) {
         initToolbar(getString(R.string.item_shop), null, R.drawable.ic_store)
+        storeViewModel = ViewModelProviders.of(activity!!).get(StoreViewModel::class.java)
         observeData()
     }
 
@@ -48,12 +50,12 @@ class StoreFragment : BaseFragment<StoreViewModel>() {
     }
 
     private fun observeData() {
-        getViewModel().storeItems.observe(this, Observer {
+        storeViewModel.storeItems.observe(this, Observer {
             if (it != null && it.isNotEmpty()) {
                 storeAdapter.setItemList(it)
             }
         })
-        getViewModel().error.observeSingleEvent(this, Observer {
+        storeViewModel.error.observeSingleEvent(this, Observer {
             if (it.isNotBlank()) {
                 Toast.makeText(context!!, it!!, Toast.LENGTH_SHORT).show()
                 storeAdapter.clear()

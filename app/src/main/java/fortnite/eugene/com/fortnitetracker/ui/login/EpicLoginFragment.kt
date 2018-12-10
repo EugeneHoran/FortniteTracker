@@ -1,5 +1,6 @@
 package fortnite.eugene.com.fortnitetracker.ui.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
@@ -13,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView
 import fortnite.eugene.com.fortnitetracker.R
 import fortnite.eugene.com.fortnitetracker.base.BaseFragment
 import fortnite.eugene.com.fortnitetracker.data.entity.UserAccount
+import fortnite.eugene.com.fortnitetracker.ui.MainActivity
 import fortnite.eugene.com.fortnitetracker.utils.Constants
 import fortnite.eugene.com.fortnitetracker.utils.SwipeToDeleteCallback
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionListener, View.OnClickListener,
-    TextView.OnEditorActionListener, LoginNavigator {
+class EpicLoginFragment : BaseFragment(), OnAccountInteractionListener, View.OnClickListener,
+    TextView.OnEditorActionListener {
 
     companion object {
         val TAG: String = EpicLoginFragment::class.java.simpleName
@@ -27,16 +29,11 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionLi
     }
 
     override val layoutId: Int = R.layout.fragment_login
-
     override val scrollFlags: Int? = Constants.SCROLL_FLAG_DEFAULT
+    private var mainActivity: MainActivity? = null
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var epicAccountRecyclerAdapter: EpicAccountRecyclerAdapter
-
-    override fun getViewModel(): LoginViewModel {
-        loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
-        return loginViewModel
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,9 +52,10 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionLi
         imgDeleteSearchHistory.setOnClickListener(this)
     }
 
-    override fun initData(savedInstanceState: Bundle?, viewModel: LoginViewModel) {
+    override fun initData(savedInstanceState: Bundle?) {
         initToolbar(getString(R.string.search_player_stats), null, R.drawable.ic_search_24dp)
-//        viewModel.setNavigator(this)
+        loginViewModel = ViewModelProviders.of(activity!!).get(LoginViewModel::class.java)
+        observeAccounts()
         observeUserData()
     }
 
@@ -85,23 +83,22 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionLi
             Toast.makeText(context, getString(R.string.enter_epic_username), Toast.LENGTH_SHORT).show()
             return
         }
-        loginViewModel.getUserStats(getPlatform()!!, getEpicName()!!)
+        loginViewModel.getStats(getPlatform()!!, getEpicName()!!)
     }
 
-    private fun observeUserData() {
+    private fun observeAccounts() {
         loginViewModel.userAccountList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.isNotEmpty()) {
-                    historyHeader.visibility = View.VISIBLE
-                } else {
-                    historyHeader.visibility = View.GONE
-                }
+                historyHeader.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
                 epicAccountRecyclerAdapter.setItems(it)
             }
         })
+    }
+
+    private fun observeUserData() {
         loginViewModel.userStats.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (it.error == null) getBaseActivity().onLogin(it)
+                if (it.error == null) mainActivity!!.onLogin(it)
             }
         })
         loginViewModel.error.observeSingleEvent(viewLifecycleOwner, Observer {
@@ -129,7 +126,8 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionLi
     }
 
     override fun accountClickLogin(userAccount: UserAccount) {
-        loginViewModel.getUserStats(userAccount.platformName, userAccount.displayName)
+        loginViewModel.getStats(userAccount.platformName, userAccount.displayName)
+//        loginViewModel.getUserStats(userAccount.platformName, userAccount.displayName)
     }
 
     override fun accountSwipeDelete(userAccount: UserAccount) {
@@ -146,12 +144,23 @@ class EpicLoginFragment : BaseFragment<LoginViewModel>(), OnAccountInteractionLi
         pbLoading.visibility = View.VISIBLE
         cardLoginHolder.visibility = View.GONE
         recyclerAccount.visibility = View.GONE
-
     }
 
     private fun dismissLoading() {
         pbLoading.visibility = View.GONE
         cardLoginHolder.visibility = View.VISIBLE
         recyclerAccount.visibility = View.VISIBLE
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is MainActivity) {
+            this.mainActivity = context
+        }
+    }
+
+    override fun onDetach() {
+        mainActivity = null
+        super.onDetach()
     }
 }

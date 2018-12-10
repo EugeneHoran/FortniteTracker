@@ -11,10 +11,9 @@ import fortnite.eugene.com.fortnitetracker.ui.store.StoreViewModel
 import io.reactivex.disposables.CompositeDisposable
 import java.lang.ref.WeakReference
 
-abstract class BaseViewModel<N> : ViewModel() {
+abstract class BaseViewModel: ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
-    private var navigator: WeakReference<N>? = null
 
     private val injector: ViewModelInjector = DaggerViewModelInjector
         .builder()
@@ -43,18 +42,4 @@ abstract class BaseViewModel<N> : ViewModel() {
     }
 
     fun getCompositeDisposable(): CompositeDisposable = compositeDisposable
-
-    fun getNavigator(): N? {
-        return navigator?.get()
-    }
-
-    fun setNavigator(navigator: N) {
-        this.navigator = WeakReference(navigator)
-    }
-
-    fun clearNavigator() {
-        if (navigator != null) {
-            navigator = null
-        }
-    }
 }

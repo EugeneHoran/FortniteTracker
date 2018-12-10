@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_account.*
 
 private const val ARG_STATS = "param_stats"
 
-class StatsParentFragment : BaseFragment<StatsViewModel>(), StatsSummaryPagerAdapter.SummaryCallback {
+class StatsParentFragment : BaseFragment(), StatsSummaryPagerAdapter.SummaryCallback {
     companion object {
         val TAG: String = StatsParentFragment::class.java.simpleName
         @JvmStatic
@@ -38,9 +38,6 @@ class StatsParentFragment : BaseFragment<StatsViewModel>(), StatsSummaryPagerAda
     override val layoutId: Int = R.layout.fragment_account
     override val scrollFlags: Int? = null
 
-    override fun getViewModel(): StatsViewModel = ViewModelProviders.of(this, AppFactory(accountStats))
-        .get(StatsViewModel::class.java)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,19 +49,17 @@ class StatsParentFragment : BaseFragment<StatsViewModel>(), StatsSummaryPagerAda
         super.onViewCreated(view, savedInstanceState)
         toggleButtonSeasons = getBaseActivity().findViewById(R.id.toggleButtonSeasons)
         tabs = getBaseActivity().findViewById(R.id.tabs)
-        initToolbar(
-            accountStats.getDisplayNameFormatted(),
-            getString(R.string.stats),
-            accountStats.getLogoInt()
-        )
+
 
         getBaseActivity().onInflateMenu(R.menu.menu_search)
         summaryRecyclerViewPager = StatsSummaryPagerAdapter(context!!, accountStats.getSummaryData(), this)
         toggleButtonSeasons!!.visibility = View.VISIBLE
     }
 
-    override fun initData(savedInstanceState: Bundle?, viewModel: StatsViewModel) {
-        statsViewModel = viewModel
+
+    override fun initData(savedInstanceState: Bundle?) {
+        initToolbar(accountStats.getDisplayNameFormatted(), getString(R.string.stats), accountStats.getLogoInt())
+        statsViewModel = ViewModelProviders.of(this, AppFactory(accountStats)).get(StatsViewModel::class.java)
         toggleButtonSeasons!!.setToggled(toggleButtonSeasons!!.toggles[statsViewModel.seasonToggle].id, true)
         toggleButtonSeasons!!.onToggledListener = { toggle, _ ->
             statsViewModel.updateStatFragments(toggle.position)

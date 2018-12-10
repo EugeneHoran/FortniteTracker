@@ -13,7 +13,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
-class MatchHistoryViewModel(private val accountId: String) : BaseViewModel<Any>() {
+class MatchHistoryViewModel(private val accountId: String) : BaseViewModel() {
     @Inject
     lateinit var fortniteTrackerApi: FortniteTrackerApi
     var matchHistory: MediatorLiveData<List<MatchHistoryItem>> = MediatorLiveData()
@@ -68,5 +68,4 @@ class MatchHistoryViewModel(private val accountId: String) : BaseViewModel<Any>(
         showLoading.value = false
         error(throwable.message!!)
     }
-
 }

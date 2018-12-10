@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.layout_recycler.*
 
 private const val ARG_TAB = "param_tab"
 
-class StatChildFragment : BaseChildFragment<StatsViewModel>() {
+class StatChildFragment : BaseChildFragment() {
     companion object {
         val TAG: String = StatChildFragment::class.java.simpleName
         @JvmStatic
@@ -31,7 +31,7 @@ class StatChildFragment : BaseChildFragment<StatsViewModel>() {
     private var statRecyclerAdapter = StatRecyclerAdapter()
     override val layoutId: Int = R.layout.layout_recycler
 
-    override fun getViewModel(): StatsViewModel = ViewModelProviders.of(parentFragment!!)[StatsViewModel::class.java]
+    private lateinit var statsViewModel: StatsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +48,10 @@ class StatChildFragment : BaseChildFragment<StatsViewModel>() {
         recyclerView.adapter = statRecyclerAdapter
     }
 
-    override fun activityCreated(savedInstanceState: Bundle?, viewModel: StatsViewModel) {
-        observeStatData(viewModel)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        statsViewModel = ViewModelProviders.of(parentFragment!!)[StatsViewModel::class.java]
+        observeStatData(statsViewModel)
     }
 
     private fun observeStatData(statsViewModel: StatsViewModel) {

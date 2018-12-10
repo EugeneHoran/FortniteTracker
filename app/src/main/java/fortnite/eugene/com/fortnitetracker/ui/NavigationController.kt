@@ -22,8 +22,8 @@ import fortnite.eugene.com.fortnitetracker.ui.store.StoreFragment
 class NavigationController(
     savedInstanceState: Bundle?,
     private var fm: FragmentManager,
-    var loginViewModel: LoginViewModel,
-    var lifecycleOwner: LifecycleOwner
+    private var loginViewModel: LoginViewModel,
+    private var lifecycleOwner: LifecycleOwner
 ) {
 
     private var container: Int = R.id.container
@@ -33,7 +33,7 @@ class NavigationController(
             navLoginFragment()
             loginViewModel.userAccount.observe(lifecycleOwner, Observer {
                 if (it != null) {
-                    loginViewModel.getUserStats(it.platformName, it.displayName)
+                    loginViewModel.getStats(it.platformName, it.displayName)
                 } else {
                     navLoginFragment()
                 }
